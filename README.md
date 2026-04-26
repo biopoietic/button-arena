@@ -22,11 +22,13 @@ Responses are requested with OpenRouter structured output and validated as:
 3. Select or paste OpenRouter model IDs, set iterations, then run the benchmark.
 4. Use Export to download `global-results.json`.
 5. Replace `public/results/global-results.json` with the exported file before committing public results.
+6. Run `npm run generate:og` to refresh the share image at `public/og/latest-benchmark.png`.
 
 Local user-generated runs are never uploaded by this app. They only become public if the exported JSON is committed or otherwise published.
 
 ## Scripts
 
 - `npm run dev` starts Vite.
-- `npm run build` creates a static Netlify-ready build.
+- `npm run build` regenerates the OG image first, then creates a static Netlify-ready build.
+- `npm run generate:og` reads `public/results/global-results.json` and generates `public/og/latest-benchmark.png` plus an SVG fallback.
 - `npm run lint` runs ESLint.

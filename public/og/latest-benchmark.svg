@@ -1,0 +1,56 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="48" x2="1112" y2="582" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06101D" />
+      <stop offset="1" stop-color="#111D34" />
+    </linearGradient>
+    <linearGradient id="redPanel" x1="72" y1="302" x2="352" y2="522" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6779" />
+      <stop offset="1" stop-color="#A61F3D" />
+    </linearGradient>
+    <linearGradient id="bluePanel" x1="392" y1="302" x2="672" y2="522" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6BC8FF" />
+      <stop offset="1" stop-color="#0F63B8" />
+    </linearGradient>
+    <radialGradient id="redGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(206 154) rotate(37.9111) scale(358.49 266.284)">
+      <stop stop-color="#FF536C" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#FF536C" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(988 136) rotate(138.209) scale(332.302 239.728)">
+      <stop stop-color="#34A6FF" stop-opacity="0.42" />
+      <stop offset="1" stop-color="#34A6FF" stop-opacity="0" />
+    </radialGradient>
+    <filter id="cardShadow" x="0" y="0" width="1200" height="630" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#020711" flood-opacity="0.42" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" rx="32" fill="url(#bg)" />
+  <circle cx="206" cy="154" r="280" fill="url(#redGlow)" />
+  <circle cx="988" cy="136" r="260" fill="url(#blueGlow)" />
+	<path d="M0 530C250 470 360 544 542 544C768 544 860 444 1200 500V630H0V530Z" fill="#07111E" fill-opacity="0.66" />
+
+  <g opacity="0.32">
+    <path d="M711 0L1200 346V0H711Z" fill="#173C63" />
+    <path d="M0 0V260L308 0H0Z" fill="#4D1725" />
+  </g>
+
+  <text x="72" y="72" fill="#C9D8F5" font-size="21" font-weight="700" letter-spacing="3.4" font-family="DejaVu Sans, Arial, sans-serif">BUTTON ARENA</text>
+	<rect x="864" y="44" width="264" height="42" rx="21" fill="#111D34" fill-opacity="0.88" stroke="#28456D" />
+	<text x="996" y="71" fill="#E9F2FF" font-size="18" font-weight="700" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif">UPDATED APR 26, 2026</text>
+
+	<text x="72" y="150" fill="#F7FAFF" font-size="56" font-weight="800" letter-spacing="-1.8" font-family="DejaVu Sans, Arial, sans-serif">Every model's survival vote</text>
+	<text x="72" y="190" fill="#91A6C7" font-size="22" font-family="DejaVu Sans, Arial, sans-serif">700 published runs • 7 models</text>
+
+	<text x="72" y="231" fill="#FF9EAA" font-size="22" font-weight="700" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">35% RED</text>
+	<text x="1128" y="231" fill="#8ED4FF" font-size="22" font-weight="700" letter-spacing="1.2" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif">65% BLUE</text>
+	<rect x="72" y="246" width="1056" height="22" rx="11" fill="#111D34" />
+	<rect x="72" y="246" width="365" height="22" rx="11" fill="url(#redPanel)" />
+	<rect x="437" y="246" width="691" height="22" rx="11" fill="url(#bluePanel)" />
+	<line x1="600" y1="238" x2="600" y2="276" stroke="#E8F0FF" stroke-opacity="0.45" />
+
+	<text x="72" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" font-family="DejaVu Sans, Arial, sans-serif">MODEL</text>
+	<text x="560" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" font-family="DejaVu Sans, Arial, sans-serif">DISTRIBUTION</text>
+	<text x="1128" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif">COUNTS</text>
+	<line x1="72" y1="345" x2="1128" y2="345" stroke="#18263A" /><rect x="72" y="308" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="324" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">GOOGLE</text><text x="200" y="334" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">Gemini 3.1 Pro Preview</text><rect x="560" y="316" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="316" width="350" height="18" rx="9" fill="#E45871" /><rect x="910" y="316" width="0" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="310" x2="735" y2="340" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="334" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">0 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">100 red</tspan></text><line x1="72" y1="388" x2="1128" y2="388" stroke="#18263A" /><rect x="72" y="351" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="367" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">OPENAI</text><text x="200" y="377" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">GPT-5.4</text><rect x="560" y="359" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="359" width="350" height="18" rx="9" fill="#E45871" /><rect x="910" y="359" width="0" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="353" x2="735" y2="383" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="377" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">0 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">100 red</tspan></text><line x1="72" y1="431" x2="1128" y2="431" stroke="#18263A" /><rect x="72" y="394" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="410" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">XAI</text><text x="200" y="420" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">Grok 4.20</text><rect x="560" y="402" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="402" width="84" height="18" rx="9" fill="#E45871" /><rect x="644" y="402" width="266" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="396" x2="735" y2="426" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="420" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">76 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">24 red</tspan></text><line x1="72" y1="474" x2="1128" y2="474" stroke="#18263A" /><rect x="72" y="437" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="453" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">OPENAI</text><text x="200" y="463" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">GPT-5.5</text><rect x="560" y="445" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="445" width="53" height="18" rx="9" fill="#E45871" /><rect x="613" y="445" width="297" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="439" x2="735" y2="469" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="463" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">85 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">15 red</tspan></text><line x1="72" y1="517" x2="1128" y2="517" stroke="#18263A" /><rect x="72" y="480" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="496" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">GOOGLE</text><text x="200" y="506" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">Gemini 3 Flash Preview</text><rect x="560" y="488" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="488" width="11" height="18" rx="9" fill="#E45871" /><rect x="571" y="488" width="339" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="482" x2="735" y2="512" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="506" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">97 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">3 red</tspan></text><line x1="72" y1="560" x2="1128" y2="560" stroke="#18263A" /><rect x="72" y="523" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="539" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">ANTHROPIC</text><text x="200" y="549" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">Claude Opus 4.6</text><rect x="560" y="531" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="531" width="0" height="18" rx="9" fill="#E45871" /><rect x="560" y="531" width="350" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="525" x2="735" y2="555" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="549" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">100 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">0 red</tspan></text><line x1="72" y1="603" x2="1128" y2="603" stroke="#18263A" /><rect x="72" y="566" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" /><text x="127" y="582" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">ANTHROPIC</text><text x="200" y="592" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">Claude Opus 4.7</text><rect x="560" y="574" width="350" height="18" rx="9" fill="#111D34" /><rect x="560" y="574" width="0" height="18" rx="9" fill="#E45871" /><rect x="560" y="574" width="350" height="18" rx="9" fill="#56B9FF" /><line x1="735" y1="568" x2="735" y2="598" stroke="#D8E3F5" stroke-opacity="0.5" /><text x="1128" y="592" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">100 blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">0 red</tspan></text>
+</svg>

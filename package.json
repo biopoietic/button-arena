@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "generate:og": "node scripts/generate-og-image.mjs",
     "lint": "eslint .",
+    "prebuild": "npm run generate:og",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,6 +16,7 @@
     "lucide-react": "^1.11.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
