@@ -41,3 +41,45 @@ body {
 #root {
   min-height: 100svh;
 }
+
+/* ── Shared component classes ──────────────────────────────────── */
+
+.status-badge {
+  @apply inline-flex items-center rounded-md bg-slate-100 px-2.5 py-2 text-xs font-bold leading-none text-slate-500;
+}
+
+.field-label {
+  @apply text-sm font-bold text-slate-700;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-[#7257e8] to-[#5d36d9] shadow-[0_12px_24px_rgba(105,75,224,0.2)] disabled:cursor-not-allowed disabled:opacity-55;
+}
+
+.btn-danger {
+  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-red-500 to-red-700 disabled:cursor-not-allowed disabled:opacity-55;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-slate-50 px-3 text-sm font-bold text-slate-700 min-h-12 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-55;
+}
+
+.btn-icon {
+  @apply inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-50 text-slate-700 min-h-12 min-w-12 hover:bg-slate-100;
+}
+
+.input {
+  @apply w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 text-base text-slate-900 outline-none focus:border-brand;
+}
+
+.empty-state {
+  @apply grid place-items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 min-h-[180px] p-7 text-center text-slate-600;
+}
+
+.table-cell {
+  @apply border-b border-r border-slate-200 px-3 py-2.5 text-xs text-slate-700 align-top text-left last:border-r-0;
+}
+
+.error-row {
+  @apply bg-red-50/60;
+}
