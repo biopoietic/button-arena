@@ -262,7 +262,14 @@ function safeJsonParse(text) {
     const start = text.indexOf('{')
     const end = text.lastIndexOf('}')
     if (start >= 0 && end > start) {
-      return JSON.parse(text.slice(start, end + 1))
+      try {
+        return JSON.parse(text.slice(start, end + 1))
+      } catch {}
+    }
+    // Fallback: extract choice from a truncated response (e.g. finish_reason: "length")
+    const choiceMatch = text.match(/"choice"\s*:\s*"(red|blue)"/i)
+    if (choiceMatch) {
+      return { choice: choiceMatch[1].toLowerCase(), comment: null }
     }
     throw new Error('Response was not valid JSON.')
   }
@@ -873,7 +880,7 @@ function App() {
     normalizeResponses(readStoredJson(STORAGE_KEYS.localResponses, []), 'local'),
   )
   const [logLimit, setLogLimit] = useState(10)
-  const [maxTokens, setMaxTokens] = useState(64)
+  const [maxTokens, setMaxTokens] = useState(256)
   const [modelSearch, setModelSearch] = useState('')
   const [modelStatus, setModelStatus] = useState('loading')
   const [requireParameters, setRequireParameters] = useState(true)

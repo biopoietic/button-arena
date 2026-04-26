@@ -1,10 +1,431 @@
 {
   "metadata": {
-    "title": "Committed benchmark results",
+    "title": "Red/Blue LLM Vote Benchmark",
     "schemaVersion": 1,
-    "lastUpdated": null,
+    "exportedAt": "2026-04-26T07:12:27.621Z",
     "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
-    "note": "Replace this file with an exported local run to publish committed benchmark results."
+    "note": "Local runs are private browser data unless this exported file is committed or published."
   },
-  "responses": []
+  "responses": [
+    {
+      "id": "a8de691e-1682-4ea7-b23d-26c4ca994563",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:42.672Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue wins, both choices survive; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue wins, both choices survive; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1349,
+      "request": {
+        "iteration": 10,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "90c5d097-8527-4652-936a-b0f197b22960",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:40.941Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red is the individually safer choice: if blue fails to reach a majority, red voters survive, while if blue succeeds, everyone survives anyway.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the individually safer choice: if blue fails to reach a majority, red voters survive, while if blue succeeds, everyone survives anyway.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1732,
+      "request": {
+        "iteration": 9,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "627c9cc6-9e6b-4719-8867-5e237dda9c2f",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:39.832Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue gets a majority, both survive; if it does not, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue gets a majority, both survive; if it does not, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1109,
+      "request": {
+        "iteration": 8,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "fc7e031d-4cbd-40fa-8103-b472ab098873",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:37.382Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red guarantees survival if blue gets less than half; blue only helps if enough others also choose it.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees survival if blue gets less than half; blue only helps if enough others also choose it.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 2450,
+      "request": {
+        "iteration": 7,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "0b17d027-2fb4-41aa-8b2b-d00d8882e054",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:36.049Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue wins, both survive; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue wins, both survive; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1333,
+      "request": {
+        "iteration": 6,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "92ff46de-a701-4dcb-92d7-35623b68b46a",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:34.568Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue wins, everyone survives either way; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue wins, everyone survives either way; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1480,
+      "request": {
+        "iteration": 5,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "73419c6c-f65f-4375-aab6-ec236f9afa2d",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:33.162Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red maximizes my own survival regardless of what others do: if blue wins, everyone survives; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red maximizes my own survival regardless of what others do: if blue wins, everyone survives; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1407,
+      "request": {
+        "iteration": 4,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "c6a7fac0-391e-49d4-bbf1-ee75ea6d79e6",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:31.950Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue wins, both survive; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue wins, both survive; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1212,
+      "request": {
+        "iteration": 3,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "afe020e0-9785-4294-9ad7-a3013917ff7d",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:30.670Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red weakly dominates: if blue wins, everyone survives either way; if blue loses, only red survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red weakly dominates: if blue wins, everyone survives either way; if blue loses, only red survives.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1280,
+      "request": {
+        "iteration": 2,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "57a714ff-3871-4c78-9eb4-fb7dd32a36f2",
+      "source": "local",
+      "batchId": "30693692-6930-4fc4-b9a6-2d36db0861d7",
+      "timestamp": "2026-04-26T07:06:27.212Z",
+      "modelId": "openai/gpt-5.4",
+      "modelName": "OpenAI: GPT-5.4",
+      "choice": "red",
+      "comment": "Red guarantees survival if blue fails to reach a majority; blue only works if enough others coordinate.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees survival if blue fails to reach a majority; blue only works if enough others coordinate.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 3458,
+      "request": {
+        "iteration": 1,
+        "maxTokens": 64,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      }
+    },
+    {
+      "id": "fce75081-8804-41ff-abe3-e9d8fe5672d9",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:38.082Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1089,
+      "request": {
+        "iteration": 10,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "9ecd5fb6-2a77-4f41-8ba0-fb06c93d798e",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:36.702Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only way to ensure collective survival; if everyone chooses red to save themselves, everyone dies because the 50% threshold is not met.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Choosing blue is the only way to ensure collective survival; if everyone chooses red to save themselves, everyone dies because the 50% threshold is not met.\"}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1380,
+      "request": {
+        "iteration": 9,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "9391a76b-beee-45ee-8350-b0e9367f545e",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:35.604Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1098,
+      "request": {
+        "iteration": 8,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "46390747-2079-4a24-bb0d-1b1572e774c6",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:34.437Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1167,
+      "request": {
+        "iteration": 7,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "bfff6d7e-2e54-48ae-9293-554ed685b702",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:33.369Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1068,
+      "request": {
+        "iteration": 6,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "580e2d5d-45f1-42af-9af2-e5d5dee4fd25",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:32.230Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1139,
+      "request": {
+        "iteration": 5,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "ee5a1c5b-5031-4b6d-aae8-ef604c8d8dea",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:30.938Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1292,
+      "request": {
+        "iteration": 4,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "0a078c34-0aa9-428f-bf8c-a8a8e39acb40",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:29.788Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1150,
+      "request": {
+        "iteration": 3,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "c0533941-bbfb-4a75-a523-d0469c3f2f17",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:28.666Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1121,
+      "request": {
+        "iteration": 2,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    },
+    {
+      "id": "1a143fb8-be1a-4785-96c4-5859d9d2a87d",
+      "source": "local",
+      "batchId": "1b7659d8-805a-430f-b149-caf33cc86da4",
+      "timestamp": "2026-04-26T06:45:27.305Z",
+      "modelId": "google/gemini-3-flash-preview",
+      "modelName": "Google: Gemini 3 Flash Preview",
+      "choice": "blue",
+      "comment": "Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.",
+      "rawResponse": "{\n  \"choice\": \"blue\",\n  \"comment\": \"Choosing blue is the only path to collective survival; choosing red guarantees the death of the majority and relies on a catastrophic outcome for individual survival.\"\n}",
+      "status": "accepted",
+      "error": "",
+      "latencyMs": 1361,
+      "request": {
+        "iteration": 1,
+        "maxTokens": 64,
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true,
+        "temperature": 0
+      }
+    }
+  ]
 }
