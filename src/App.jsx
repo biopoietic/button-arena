@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import './App.css'
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1'
 const STATIC_RESULTS_URL = '/results/global-results.json'
@@ -56,6 +55,29 @@ const NAV_ITEMS = [
 ]
 
 const RUNS_PAGE_SIZE = 12
+
+const PANEL_CLASSES =
+  'rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)]'
+const PANEL_HEADING_CLASSES = 'flex items-center justify-between gap-3 mb-3.5'
+const PANEL_TITLE_CLASSES = 'm-0 text-sm font-extrabold uppercase text-slate-900'
+const SMALL_STATUS_CLASSES =
+  'inline-flex items-center rounded-md bg-slate-100 px-2.5 py-2 text-xs font-bold leading-none text-slate-500'
+const FIELD_LABEL_CLASSES = 'text-sm font-bold text-slate-700'
+const SECONDARY_BUTTON_CLASSES =
+  'inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-slate-50 px-3 text-sm font-bold text-slate-700 min-h-[38px] hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-55'
+const ICON_BUTTON_CLASSES =
+  'inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-50 text-slate-700 min-h-[38px] min-w-[38px] hover:bg-slate-100'
+const PRIMARY_BUTTON_CLASSES =
+  'inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-[48px] px-5 bg-gradient-to-br from-[#7257e8] to-[#5d36d9] shadow-[0_12px_24px_rgba(105,75,224,0.2)] disabled:cursor-not-allowed disabled:opacity-55'
+const DANGER_BUTTON_CLASSES =
+  'inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-[48px] px-5 bg-gradient-to-br from-red-500 to-red-700 disabled:cursor-not-allowed disabled:opacity-55'
+const TEXT_INPUT_CLASSES =
+  'w-full min-h-[40px] rounded-md border border-slate-300 bg-white px-3 text-base text-slate-900 outline-none focus:border-brand'
+const EMPTY_STATE_BOX_CLASSES =
+  'grid place-items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 min-h-[180px] p-7 text-center text-slate-600'
+const ERROR_ROW_CLASSES = 'bg-red-50/60'
+const TABLE_CELL_CLASSES =
+  'border-b border-r border-slate-200 px-3 py-2.5 text-xs text-slate-700 align-top text-left last:border-r-0'
 
 function Icon({ name, size = 18 }) {
   const paths = {
@@ -178,7 +200,6 @@ function Icon({ name, size = 18 }) {
   return (
     <svg
       aria-hidden="true"
-      className="icon"
       fill="none"
       height={size}
       stroke="currentColor"
@@ -268,7 +289,6 @@ function safeJsonParse(text) {
         return JSON.parse(text.slice(start, end + 1))
       } catch {}
     }
-    // Fallback: extract choice from a truncated response (e.g. finish_reason: "length")
     const choiceMatch = text.match(/"choice"\s*:\s*"(red|blue)"/i)
     if (choiceMatch) {
       return { choice: choiceMatch[1].toLowerCase(), comment: null }
@@ -307,10 +327,6 @@ function extractContent(payload) {
   }
 
   if (typeof content === 'string') {
-    if (finishReason === 'length') {
-      // Content was cut mid-stream; safeJsonParse will try to recover it
-      return content
-    }
     return content
   }
 
@@ -502,16 +518,33 @@ function trimText(value, maxLength = 130) {
   return text.length > maxLength ? `${text.slice(0, maxLength - 1)}...` : text
 }
 
+function Dot({ tone }) {
+  const color = tone === 'blue' ? 'bg-blue-500' : 'bg-red-500'
+  return <i className={`inline-block h-3 w-3 rounded-full mr-2 align-[-1px] ${color}`} />
+}
+
 function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
+  const toneStyles = {
+    neutral: { card: '', icon: 'bg-blue-50 text-blue-600' },
+    blue: { card: 'bg-gradient-to-br from-white to-blue-50/60', icon: 'bg-blue-100 text-blue-600' },
+    red: { card: 'bg-gradient-to-br from-white to-red-50/50', icon: 'bg-red-100 text-red-500' },
+    purple: { card: '', icon: 'bg-brand-soft text-brand' },
+    green: { card: 'bg-gradient-to-br from-white to-emerald-50/60', icon: 'bg-emerald-100 text-emerald-600' },
+  }
+  const tones = toneStyles[tone] ?? toneStyles.neutral
+  const valueClass = tone === 'green' ? 'text-2xl' : 'text-3xl'
+
   return (
-    <article className={`summary-card ${tone}`}>
-      <div className="summary-icon">
+    <article
+      className={`flex items-start gap-4 rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] min-h-[128px] p-5 ${tones.card}`}
+    >
+      <div className={`grid place-items-center rounded-md h-8 w-8 flex-none ${tones.icon}`}>
         <Icon name={icon} size={22} />
       </div>
       <div>
-        <span>{label}</span>
-        <strong>{value}</strong>
-        <small>{detail}</small>
+        <span className="block text-sm text-slate-600">{label}</span>
+        <strong className={`block ${valueClass} leading-tight my-3 text-slate-900`}>{value}</strong>
+        <small className="block text-sm text-slate-600">{detail}</small>
       </div>
     </article>
   )
@@ -519,10 +552,10 @@ function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 
 function EmptyState({ title, detail }) {
   return (
-    <div className="empty-state">
+    <div className={EMPTY_STATE_BOX_CLASSES}>
       <Icon name="shield" size={22} />
-      <strong>{title}</strong>
-      <span>{detail}</span>
+      <strong className="text-slate-800">{title}</strong>
+      <span className="text-sm leading-normal max-w-sm">{detail}</span>
     </div>
   )
 }
@@ -538,13 +571,13 @@ function DistributionChart({ models }) {
   }
 
   return (
-    <div className="model-bars">
-      <div className="chart-legend compact">
+    <div className="grid gap-4 pt-1">
+      <div className="flex items-center justify-center gap-5 text-sm text-slate-600">
         <span>
-          <i className="dot blue"></i>Blue (survive if &gt;50%)
+          <Dot tone="blue" />Blue (survive if &gt;50%)
         </span>
         <span>
-          <i className="dot red"></i>Red (survive if &le;50%)
+          <Dot tone="red" />Red (survive if &le;50%)
         </span>
       </div>
       {[...models].sort((a, b) => {
@@ -556,26 +589,38 @@ function DistributionChart({ models }) {
         const redPercent = 100 - bluePercent
 
         return (
-          <div className="bar-row" key={model.id}>
-            <div className="bar-label" title={model.id}>
+          <div
+            className="grid items-center gap-3 max-sm:grid-cols-1 grid-cols-[minmax(120px,180px)_minmax(170px,1fr)_72px]"
+            key={model.id}
+          >
+            <div className="text-sm text-slate-800 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" title={model.id}>
               {model.name}
             </div>
-            <div className="stacked-bar" aria-label={`${model.name}: ${model.blue} blue, ${model.red} red`}>
-              <div className="bar-segment blue" style={{ width: `${bluePercent}%` }}>
+            <div
+              className="flex h-9 overflow-hidden rounded-md bg-slate-100"
+              aria-label={`${model.name}: ${model.blue} blue, ${model.red} red`}
+            >
+              <div
+                className="flex items-center text-white text-xs font-extrabold pl-3 min-w-0 transition-[width] duration-200 bg-gradient-to-r from-blue-600 to-blue-500"
+                style={{ width: `${bluePercent}%` }}
+              >
                 {model.blue ? formatPercent(model.blue, model.total) : ''}
               </div>
-              <div className="bar-segment red" style={{ width: `${redPercent}%` }}>
+              <div
+                className="flex items-center text-white text-xs font-extrabold pl-3 min-w-0 transition-[width] duration-200 bg-gradient-to-r from-red-500 to-red-600"
+                style={{ width: `${redPercent}%` }}
+              >
                 {model.red ? formatPercent(model.red, model.total) : ''}
               </div>
             </div>
-            <div className="bar-count">
+            <div className="text-xs text-slate-600 text-right max-sm:text-left">
               {model.blue} / {model.red}
-              <span>({model.total})</span>
+              <span className="block">({model.total})</span>
             </div>
           </div>
         )
       })}
-      <div className="axis">
+      <div className="grid grid-cols-5 text-xs text-slate-500 text-center ml-48 max-sm:ml-0">
         <span>0%</span>
         <span>25%</span>
         <span>50%</span>
@@ -598,31 +643,54 @@ function DonutChart({ summary }) {
     )
   }
 
+  const donutStyle = {
+    background: `conic-gradient(#3f78ee 0 ${bluePercent}%, #ef4444 ${bluePercent}% 100%)`,
+  }
+
   return (
-    <div className="donut-wrap">
-      <div className="donut" style={{ '--blue-share': `${bluePercent}%` }}>
-        <div>
-          <strong>{summary.total}</strong>
-          <span>Total</span>
+    <div className="grid items-center gap-7 min-h-[280px] grid-cols-[minmax(210px,260px)_minmax(140px,1fr)] max-sm:grid-cols-1">
+      <div
+        className="relative grid place-items-center aspect-square w-full max-w-[260px] rounded-full justify-self-center after:content-[''] after:absolute after:bg-white after:rounded-full after:h-[54%] after:w-[54%]"
+        style={donutStyle}
+      >
+        <div className="relative z-10 grid text-center text-slate-900">
+          <strong className="text-3xl leading-none">{summary.total}</strong>
+          <span className="text-sm text-slate-600 mt-2">Total</span>
         </div>
       </div>
-      <div className="donut-legend">
-        <div>
-          <i className="dot blue"></i>
-          <span>Blue</span>
-          <strong>
+      <div className="grid gap-6">
+        <div className="grid grid-cols-[auto_1fr] items-start">
+          <Dot tone="blue" />
+          <span className="text-base text-slate-800">Blue</span>
+          <strong className="col-start-2 mt-1.5 text-sm font-normal text-slate-500">
             {summary.blue} ({formatPercent(summary.blue, summary.total)})
           </strong>
         </div>
-        <div>
-          <i className="dot red"></i>
-          <span>Red</span>
-          <strong>
+        <div className="grid grid-cols-[auto_1fr] items-start">
+          <Dot tone="red" />
+          <span className="text-base text-slate-800">Red</span>
+          <strong className="col-start-2 mt-1.5 text-sm font-normal text-slate-500">
             {summary.red} ({formatPercent(summary.red, summary.total)})
           </strong>
         </div>
       </div>
     </div>
+  )
+}
+
+function ChoicePill({ choice }) {
+  if (!choice) {
+    return (
+      <span className="inline-flex items-center rounded-md bg-red-50 text-red-800 px-2 py-1.5 text-xs font-bold lowercase">
+        invalid
+      </span>
+    )
+  }
+  return (
+    <span className="inline-flex items-center text-xs font-bold lowercase text-slate-800">
+      <Dot tone={choice} />
+      {choice}
+    </span>
   )
 }
 
@@ -639,34 +707,27 @@ function ResponseTable({ rows, limit }) {
   }
 
   return (
-    <div className="table-scroll">
-      <table>
+    <div className="overflow-auto">
+      <table className="w-full min-w-[880px] border-collapse">
         <thead>
           <tr>
-            <th>Time</th>
-            <th>Model</th>
-            <th>Choice</th>
-            <th>Comment</th>
-            <th>Raw Response</th>
+            <th className={`${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600`}>Time</th>
+            <th className={`${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600`}>Model</th>
+            <th className={`${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600`}>Choice</th>
+            <th className={`${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600`}>Comment</th>
+            <th className={`${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600`}>Raw Response</th>
           </tr>
         </thead>
         <tbody>
           {visibleRows.map((row) => (
-            <tr className={row.status === 'error' ? 'error-row' : ''} key={row.id}>
-              <td>{formatTime(row.timestamp)}</td>
-              <td title={row.modelId}>{row.modelName}</td>
-              <td>
-                {row.choice ? (
-                  <span className={`choice-pill ${row.choice}`}>
-                    <i className={`dot ${row.choice}`}></i>
-                    {row.choice}
-                  </span>
-                ) : (
-                  <span className="choice-pill invalid">invalid</span>
-                )}
+            <tr className={row.status === 'error' ? ERROR_ROW_CLASSES : ''} key={row.id}>
+              <td className={TABLE_CELL_CLASSES}>{formatTime(row.timestamp)}</td>
+              <td className={TABLE_CELL_CLASSES} title={row.modelId}>{row.modelName}</td>
+              <td className={TABLE_CELL_CLASSES}>
+                <ChoicePill choice={row.choice} />
               </td>
-              <td>{row.status === 'error' ? row.error : row.comment || 'No comment'}</td>
-              <td title={row.rawResponse}>{trimText(row.rawResponse)}</td>
+              <td className={TABLE_CELL_CLASSES}>{row.status === 'error' ? row.error : row.comment || 'No comment'}</td>
+              <td className={TABLE_CELL_CLASSES} title={row.rawResponse}>{trimText(row.rawResponse)}</td>
             </tr>
           ))}
         </tbody>
@@ -677,7 +738,7 @@ function ResponseTable({ rows, limit }) {
 
 function SummaryGrid({ lastUpdated, selectedCount, statusLabel, summary }) {
   return (
-    <section className="summary-grid">
+    <section className="grid gap-4 grid-cols-5 max-[1380px]:grid-cols-3 max-sm:grid-cols-1">
       <SummaryCard detail={`${selectedCount} selected for next local run`} icon="activity" label="Total Runs" value={summary.total} />
       <SummaryCard
         detail={formatPercent(summary.blue, summary.total)}
@@ -708,26 +769,26 @@ function SummaryGrid({ lastUpdated, selectedCount, statusLabel, summary }) {
 function ResultsPanels({ logLimit, setLogLimit, summary }) {
   return (
     <>
-      <section className="chart-grid">
-        <article className="panel wide-panel">
-          <div className="panel-heading">
-            <h2>Vote Distribution By Model</h2>
+      <section className="grid gap-4 grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] max-[1380px]:grid-cols-1">
+        <article className={`${PANEL_CLASSES} p-4 min-w-0`}>
+          <div className={PANEL_HEADING_CLASSES}>
+            <h2 className={PANEL_TITLE_CLASSES}>Vote Distribution By Model</h2>
           </div>
           <DistributionChart models={summary.models} />
         </article>
-        <article className="panel">
-          <div className="panel-heading">
-            <h2>Overall Vote Distribution</h2>
+        <article className={`${PANEL_CLASSES} p-4`}>
+          <div className={PANEL_HEADING_CLASSES}>
+            <h2 className={PANEL_TITLE_CLASSES}>Overall Vote Distribution</h2>
           </div>
           <DonutChart summary={summary} />
         </article>
       </section>
 
-      <article className="panel log-panel">
-        <div className="panel-heading">
-          <h2>Response Log {logLimit === 10 ? '(Latest 10)' : '(All)'}</h2>
+      <article className={`${PANEL_CLASSES} p-4 min-w-0`}>
+        <div className={PANEL_HEADING_CLASSES}>
+          <h2 className={PANEL_TITLE_CLASSES}>Response Log {logLimit === 10 ? '(Latest 10)' : '(All)'}</h2>
           <button
-            className="secondary-button small"
+            className={`${SECONDARY_BUTTON_CLASSES} min-h-[32px]`}
             disabled={!summary.latest.length}
             onClick={() => setLogLimit((current) => (current === 10 ? summary.latest.length : 10))}
             type="button"
@@ -736,7 +797,7 @@ function ResultsPanels({ logLimit, setLogLimit, summary }) {
           </button>
         </div>
         <ResponseTable limit={logLimit} rows={summary.latest} />
-        <div className="log-footer">
+        <div className="flex justify-between text-xs text-slate-500 pt-4 max-sm:flex-col max-sm:gap-2">
           <span>Only responses validated as red or blue are included in aggregates.</span>
           <span>
             {Math.min(logLimit, summary.latest.length) || 0} of {summary.latest.length}
@@ -762,63 +823,78 @@ function RunsTable({ page, rows, setPage }) {
     )
   }
 
+  const headerCell = `${TABLE_CELL_CLASSES} bg-slate-50 font-bold text-slate-600 whitespace-nowrap`
+  const bodyCell = `${TABLE_CELL_CLASSES} whitespace-nowrap`
+
   return (
     <>
-      <div className="table-scroll">
-        <table className="runs-table">
+      <div className="overflow-auto">
+        <table className="w-full min-w-[880px] border-collapse">
           <thead>
             <tr>
-              <th>Time</th>
-              <th>Source</th>
-              <th>Batch</th>
-              <th>Iteration</th>
-              <th>Model</th>
-              <th>Status</th>
-              <th>Choice</th>
-              <th>Latency</th>
-              <th>Raw Response</th>
+              <th className={headerCell}>Time</th>
+              <th className={headerCell}>Source</th>
+              <th className={headerCell}>Batch</th>
+              <th className={headerCell}>Iteration</th>
+              <th className={headerCell}>Model</th>
+              <th className={headerCell}>Status</th>
+              <th className={headerCell}>Choice</th>
+              <th className={headerCell}>Latency</th>
+              <th className={headerCell}>Raw Response</th>
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row) => (
-              <tr className={row.status === 'error' ? 'error-row' : ''} key={row.id}>
-                <td>{formatDateTime(row.timestamp)}</td>
-                <td>
-                  <span className={`source-pill ${row.source}`}>{row.source}</span>
-                </td>
-                <td title={row.batchId ?? ''}>{row.batchId ? row.batchId.slice(0, 8) : '-'}</td>
-                <td>{row.request?.iteration ?? '-'}</td>
-                <td title={row.modelId}>{row.modelName}</td>
-                <td>{row.status}</td>
-                <td>
-                  {row.choice ? (
-                    <span className={`choice-pill ${row.choice}`}>
-                      <i className={`dot ${row.choice}`}></i>
-                      {row.choice}
+            {visibleRows.map((row) => {
+              const sourceClasses =
+                row.source === 'global'
+                  ? 'bg-indigo-50 text-indigo-700'
+                  : 'bg-emerald-50 text-emerald-700'
+              return (
+                <tr className={row.status === 'error' ? ERROR_ROW_CLASSES : ''} key={row.id}>
+                  <td className={bodyCell}>{formatDateTime(row.timestamp)}</td>
+                  <td className={bodyCell}>
+                    <span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-extrabold uppercase ${sourceClasses}`}>
+                      {row.source}
                     </span>
-                  ) : (
-                    <span className="choice-pill invalid">invalid</span>
-                  )}
-                </td>
-                <td>{row.latencyMs == null ? '-' : `${row.latencyMs} ms`}</td>
-                <td title={row.rawResponse || row.error}>{trimText(row.rawResponse || row.error, 180)}</td>
-              </tr>
-            ))}
+                  </td>
+                  <td className={bodyCell} title={row.batchId ?? ''}>{row.batchId ? row.batchId.slice(0, 8) : '-'}</td>
+                  <td className={bodyCell}>{row.request?.iteration ?? '-'}</td>
+                  <td className={bodyCell} title={row.modelId}>{row.modelName}</td>
+                  <td className={bodyCell}>{row.status}</td>
+                  <td className={bodyCell}>
+                    <ChoicePill choice={row.choice} />
+                  </td>
+                  <td className={bodyCell}>{row.latencyMs == null ? '-' : `${row.latencyMs} ms`}</td>
+                  <td
+                    className={`${TABLE_CELL_CLASSES} min-w-[260px]`}
+                    title={row.rawResponse || row.error}
+                  >
+                    {trimText(row.rawResponse || row.error, 180)}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
-      <div className="pager">
+      <div className="flex items-center justify-between gap-4 pt-4 text-sm text-slate-500 max-sm:flex-col max-sm:items-stretch">
         <span>
           {pageStart + 1}-{Math.min(pageStart + RUNS_PAGE_SIZE, rows.length)} of {rows.length}
         </span>
-        <div>
-          <button disabled={safePage <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))} type="button">
+        <div className="flex items-center gap-2.5 max-sm:justify-between">
+          <button
+            className={`${SECONDARY_BUTTON_CLASSES} min-h-[32px] px-2.5 text-xs`}
+            disabled={safePage <= 1}
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            type="button"
+          >
             Previous
           </button>
           <strong>
             Page {safePage} of {totalPages}
           </strong>
           <button
+            className={`${SECONDARY_BUTTON_CLASSES} min-h-[32px] px-2.5 text-xs`}
             disabled={safePage >= totalPages}
             onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
             type="button"
@@ -842,42 +918,48 @@ function ProviderBreakdown({ providers }) {
   }
 
   return (
-    <div className="provider-grid">
+    <div className="grid gap-3.5 grid-cols-2 max-sm:grid-cols-1">
       {providers.map((provider) => (
-        <article className="provider-card" key={provider.id}>
-          <div className="provider-header">
+        <article
+          className="grid gap-4 rounded-lg border border-slate-200 bg-slate-50/60 p-4"
+          key={provider.id}
+        >
+          <div className="flex justify-between gap-3.5 items-start">
             <div>
-              <h3>{provider.name}</h3>
-              <span>{provider.id}</span>
+              <h3 className="m-0 text-lg leading-tight text-slate-900">{provider.name}</h3>
+              <span className="block text-xs text-slate-500 mt-1 break-words">{provider.id}</span>
             </div>
-            <strong>{provider.total}</strong>
+            <strong className="text-2xl leading-none text-slate-900">{provider.total}</strong>
           </div>
-          <div className="provider-meter">
-            <div className="mini-stacked-bar">
-              <span className="blue" style={{ width: formatPercent(provider.blue, provider.total) }}></span>
-              <span className="red" style={{ width: formatPercent(provider.red, provider.total) }}></span>
+          <div className="grid gap-2.5">
+            <div className="flex h-2.5 overflow-hidden rounded-full bg-slate-100">
+              <span className="block h-full bg-blue-500" style={{ width: formatPercent(provider.blue, provider.total) }} />
+              <span className="block h-full bg-red-500" style={{ width: formatPercent(provider.red, provider.total) }} />
             </div>
-            <div className="provider-stats">
+            <div className="flex flex-wrap gap-3 text-xs text-slate-600">
               <span>
-                <i className="dot blue"></i>
+                <Dot tone="blue" />
                 {provider.blue} blue ({formatPercent(provider.blue, provider.total)})
               </span>
               <span>
-                <i className="dot red"></i>
+                <Dot tone="red" />
                 {provider.red} red ({formatPercent(provider.red, provider.total)})
               </span>
             </div>
           </div>
-          <div className="model-breakdown-list">
+          <div className="grid border-t border-slate-200">
             {provider.models.map((model) => (
-              <div className="model-breakdown-row" key={model.id}>
+              <div
+                className="grid items-center gap-3 grid-cols-[minmax(0,1fr)_auto] border-b border-slate-200 py-3 last:border-b-0 last:pb-0"
+                key={model.id}
+              >
                 <div>
-                  <strong>{model.name}</strong>
-                  <span>{model.id}</span>
+                  <strong className="text-sm text-slate-700">{model.name}</strong>
+                  <span className="block text-xs text-slate-500 mt-1 break-words">{model.id}</span>
                 </div>
-                <div className="model-counts">
-                  <span>{model.total}</span>
-                  <small>
+                <div className="text-right">
+                  <span className="block text-lg font-extrabold text-slate-900">{model.total}</span>
+                  <small className="block text-xs text-slate-500 mt-1">
                     {model.blue}B / {model.red}R
                   </small>
                 </div>
@@ -892,10 +974,14 @@ function ProviderBreakdown({ providers }) {
 
 function PrivacyNote() {
   return (
-    <div className="privacy-card">
-      <Icon name="check" size={17} />
-      <strong>Local runs are private</strong>
-      <span>User-generated responses stay in this browser unless exported and committed.</span>
+    <div className="flex flex-col items-start gap-2 rounded-lg border border-slate-200 bg-slate-100 p-4 text-emerald-900">
+      <div className="flex items-center gap-2">
+        <Icon name="check" size={17} />
+        <strong className="text-sm">Local runs are private</strong>
+      </div>
+      <span className="text-xs leading-snug text-emerald-800/70">
+        User-generated responses stay in this browser unless exported and committed.
+      </span>
     </div>
   )
 }
@@ -1283,63 +1369,74 @@ function App() {
   const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
   const activeNavItem = NAV_ITEMS.find((item) => item.id === activeSection) ?? NAV_ITEMS[0]
 
+  const statusBadgeStyles =
+    statusLabel === 'Completed' || statusLabel === 'Ready'
+      ? 'bg-emerald-100 text-emerald-700'
+      : 'bg-blue-100 text-blue-700'
+
   const questionCard = (
-    <article className="panel question-panel">
-      <div className="panel-heading">
-        <h2>Question</h2>
-        <span className="fixed-label">Fixed</span>
+    <article className={`${PANEL_CLASSES} p-4`}>
+      <div className={PANEL_HEADING_CLASSES}>
+        <h2 className={PANEL_TITLE_CLASSES}>Question</h2>
+        <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-2 text-xs font-bold leading-none text-slate-500">
+          Fixed
+        </span>
       </div>
-      <p>{QUESTION}</p>
+      <p className="m-0 text-sm leading-relaxed text-slate-800">{QUESTION}</p>
     </article>
   )
 
   const schemaCard = (
-    <article className="panel">
-      <div className="panel-heading">
-        <h2>Response Format</h2>
-        <button className="icon-button" onClick={copySchema} title="Copy schema" type="button">
+    <article className={`${PANEL_CLASSES} p-4`}>
+      <div className={PANEL_HEADING_CLASSES}>
+        <h2 className={PANEL_TITLE_CLASSES}>Response Format</h2>
+        <button className={ICON_BUTTON_CLASSES} onClick={copySchema} title="Copy schema" type="button">
           <Icon name="clipboard" size={17} />
         </button>
       </div>
-      <pre className="schema-block">{schemaText}</pre>
+      <pre className="m-0 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-3.5 text-xs leading-snug text-teal-800 font-mono whitespace-pre-wrap text-left">
+        {schemaText}
+      </pre>
     </article>
   )
 
   const runSettingsCard = (
-    <article className="panel settings-panel">
-      <div className="panel-heading">
-        <h2>Run Settings</h2>
-        <span className="small-status">
+    <article className={`${PANEL_CLASSES} p-4 grid gap-4`}>
+      <div className={PANEL_HEADING_CLASSES}>
+        <h2 className={PANEL_TITLE_CLASSES}>Run Settings</h2>
+        <span className={SMALL_STATUS_CLASSES}>
           {modelStatus === 'ready' ? `${modelOptions.length} live models` : modelStatus === 'loading' ? 'Loading models' : 'Catalog unavailable'}
         </span>
       </div>
 
-      <label className="field">
-        <span>OpenRouter API key</span>
-        <div className="input-with-icon">
+      <label className="grid gap-2">
+        <span className={FIELD_LABEL_CLASSES}>OpenRouter API key</span>
+        <div className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-[40px]">
           <Icon name="key" size={16} />
           <input
             autoComplete="off"
+            className="flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-slate-900"
             onChange={(event) => setApiKey(event.target.value)}
             placeholder="sk-or-..."
             type="password"
             value={apiKey}
           />
         </div>
-        <small>Stored in localStorage on this device only.</small>
+        <small className="text-xs text-slate-500">Stored in localStorage on this device only.</small>
       </label>
 
-      <div className="field">
-        <span>Models</span>
+      <div className="grid gap-2">
+        <span className={FIELD_LABEL_CLASSES}>Models</span>
         {modelStatus === 'error' && (
-          <div className="inline-alert">
+          <div className="flex items-center gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800">
             <Icon name="alert" size={16} />
             Could not load the OpenRouter model catalog. Check the network connection and reload.
           </div>
         )}
-        <div className="model-search">
+        <div className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-[40px]">
           <Icon name="search" size={16} />
           <input
+            className="flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-slate-900"
             onChange={(event) => setModelSearch(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') addModel(modelSearch)
@@ -1348,45 +1445,63 @@ function App() {
             type="text"
             value={modelSearch}
           />
-          <button onClick={() => addModel(modelSearch)} type="button">
+          <button className={`${SECONDARY_BUTTON_CLASSES} min-h-[30px] px-3`} onClick={() => addModel(modelSearch)} type="button">
             Add
           </button>
         </div>
-        <label className="toggle-line">
+        <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
           <input
             checked={showStructuredOnly}
+            className="accent-brand"
             onChange={(event) => setShowStructuredOnly(event.target.checked)}
             type="checkbox"
           />
           Only show structured-output capable models (recommended)
         </label>
-        <div className="model-results">
+        <div className="grid gap-1.5 max-h-[230px] overflow-auto">
           {filteredModels.length ? (
-            filteredModels.map((model) => (
-              <button
-                className={selectedModelIds.includes(model.id) ? 'selected' : ''}
-                key={model.id}
-                onClick={() => addModel(model.id)}
-                type="button"
-              >
-                <span>
-                  <strong>{modelLabel(model)}</strong>
-                  <small>{model.id}</small>
-                </span>
-                {supportsStructuredOutput(model) && <em>structured</em>}
-              </button>
-            ))
+            filteredModels.map((model) => {
+              const isSelected = selectedModelIds.includes(model.id)
+              return (
+                <button
+                  className={`flex items-center justify-between gap-2.5 rounded-lg border bg-slate-50 p-2.5 text-left text-slate-800 ${
+                    isSelected ? 'border-brand' : 'border-slate-200'
+                  }`}
+                  key={model.id}
+                  onClick={() => addModel(model.id)}
+                  type="button"
+                >
+                  <span>
+                    <strong className="block text-sm">{modelLabel(model)}</strong>
+                    <small className="block text-xs text-slate-500 mt-1 break-words">{model.id}</small>
+                  </span>
+                  {supportsStructuredOutput(model) && (
+                    <em className="inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 px-2 py-1.5 text-xs font-bold not-italic">
+                      structured
+                    </em>
+                  )}
+                </button>
+              )
+            })
           ) : (
-            <div className="model-results-empty">
+            <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 text-center text-xs text-slate-500">
               {modelStatus === 'loading' ? 'Loading OpenRouter models...' : 'No matching live models.'}
             </div>
           )}
         </div>
-        <div className="selected-models">
+        <div className="flex flex-wrap gap-2">
           {selectedModels.map((model) => (
-            <span className="model-chip" key={model.id}>
+            <span
+              className="inline-flex items-center gap-2 max-w-full rounded-md border border-slate-200 bg-slate-100 pl-2.5 pr-2 py-1.5 text-xs font-bold text-slate-700"
+              key={model.id}
+            >
               {modelLabel(model)}
-              <button aria-label={`Remove ${modelLabel(model)}`} onClick={() => removeModel(model.id)} type="button">
+              <button
+                aria-label={`Remove ${modelLabel(model)}`}
+                className="bg-transparent border-0 p-0 text-slate-500 font-black"
+                onClick={() => removeModel(model.id)}
+                type="button"
+              >
                 x
               </button>
             </span>
@@ -1394,10 +1509,11 @@ function App() {
         </div>
       </div>
 
-      <div className="settings-grid">
-        <label className="field compact-field">
-          <span>Iterations per model</span>
+      <div className="grid gap-2.5 grid-cols-3 max-sm:grid-cols-1">
+        <label className="grid gap-2">
+          <span className={FIELD_LABEL_CLASSES}>Iterations per model</span>
           <input
+            className={TEXT_INPUT_CLASSES}
             max="1000"
             min="1"
             onChange={(event) => setIterations(event.target.value)}
@@ -1405,19 +1521,34 @@ function App() {
             value={iterations}
           />
         </label>
-        <label className="field compact-field">
-          <span>Max tokens</span>
-          <input min="1" onChange={(event) => setMaxTokens(event.target.value)} placeholder="unlimited" type="number" value={maxTokens} />
+        <label className="grid gap-2">
+          <span className={FIELD_LABEL_CLASSES}>Max tokens</span>
+          <input
+            className={TEXT_INPUT_CLASSES}
+            min="1"
+            onChange={(event) => setMaxTokens(event.target.value)}
+            placeholder="unlimited"
+            type="number"
+            value={maxTokens}
+          />
         </label>
-        <label className="field compact-field">
-          <span>Concurrency</span>
-          <input max="20" min="1" onChange={(event) => setConcurrency(event.target.value)} type="number" value={concurrency} />
+        <label className="grid gap-2">
+          <span className={FIELD_LABEL_CLASSES}>Concurrency</span>
+          <input
+            className={TEXT_INPUT_CLASSES}
+            max="20"
+            min="1"
+            onChange={(event) => setConcurrency(event.target.value)}
+            type="number"
+            value={concurrency}
+          />
         </label>
       </div>
 
-      <label className="toggle-line">
+      <label className="flex items-center gap-2 text-sm font-bold text-slate-700">
         <input
           checked={requireParameters}
+          className="accent-brand"
           onChange={(event) => setRequireParameters(event.target.checked)}
           type="checkbox"
         />
@@ -1425,71 +1556,79 @@ function App() {
       </label>
 
       {runError && (
-        <div className="inline-alert">
+        <div className="flex items-center gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800">
           <Icon name="alert" size={16} />
           {runError}
         </div>
       )}
 
       {isRunning && (
-        <div className="run-progress" role="status">
-          <div>
+        <div className="grid gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3" role="status">
+          <div className="flex items-center justify-between text-sm text-slate-700">
             <span>{runProgress.active}</span>
             <strong>
               {runProgress.completed}/{runProgress.total}
             </strong>
           </div>
-          <div className="progress-track">
-            <span style={{ width: `${progressPercent}%` }}></span>
+          <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+            <span
+              className="block h-full bg-gradient-to-r from-blue-500 to-brand transition-[width] duration-150"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
         </div>
       )}
 
-      <div className="run-actions">
+      <div className="flex items-center gap-2.5 max-sm:flex-col max-sm:items-stretch">
         {isRunning ? (
-          <button className="danger-button" onClick={stopRun} type="button">
+          <button className={`${DANGER_BUTTON_CLASSES} flex-1`} onClick={stopRun} type="button">
             <Icon name="stop" size={16} />
             Stop Run
           </button>
         ) : (
-          <button className="primary-button" onClick={runBenchmark} type="button">
+          <button className={`${PRIMARY_BUTTON_CLASSES} flex-1`} onClick={runBenchmark} type="button">
             <Icon name="play" size={16} />
             Run Benchmark
           </button>
         )}
-        <button className="secondary-button" disabled={isRunning || !localResponses.length} onClick={clearLocalResults} type="button">
+        <button
+          className={SECONDARY_BUTTON_CLASSES}
+          disabled={isRunning || !localResponses.length}
+          onClick={clearLocalResults}
+          type="button"
+        >
           <Icon name="trash" size={16} />
           Clear Local
         </button>
       </div>
-      <p className="fine-print">Each request is one-shot with no conversation history.</p>
+      <p className="-mt-1 m-0 text-xs text-slate-500">Each request is one-shot with no conversation history.</p>
     </article>
   )
 
   const pageContent = {
     overview: (
-      <div className="overview-layout">
-        <div className="left-column">
+      <div className="grid items-start gap-4 grid-cols-[minmax(240px,0.25fr)_minmax(0,1fr)] max-[1380px]:grid-cols-1 max-[1380px]:items-stretch">
+        <div className="grid gap-4 content-start">
           {questionCard}
           {schemaCard}
         </div>
-        <div className="page-stack">
+        <div className="grid gap-4 min-w-0">
           <SummaryGrid
             lastUpdated={lastUpdated}
             selectedCount={selectedModels.length}
             statusLabel={statusLabel}
             summary={globalSummary}
           />
-          <section className="chart-grid">
-            <article className="panel wide-panel">
-              <div className="panel-heading">
-                <h2>Vote Distribution By Model</h2>
+          <section className="grid gap-4 grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] max-[1380px]:grid-cols-1">
+            <article className={`${PANEL_CLASSES} p-4 min-w-0`}>
+              <div className={PANEL_HEADING_CLASSES}>
+                <h2 className={PANEL_TITLE_CLASSES}>Vote Distribution By Model</h2>
               </div>
               <DistributionChart models={globalSummary.models} />
             </article>
-            <article className="panel">
-              <div className="panel-heading">
-                <h2>Overall Vote Distribution</h2>
+            <article className={`${PANEL_CLASSES} p-4`}>
+              <div className={PANEL_HEADING_CLASSES}>
+                <h2 className={PANEL_TITLE_CLASSES}>Overall Vote Distribution</h2>
               </div>
               <DonutChart summary={globalSummary} />
             </article>
@@ -1498,7 +1637,7 @@ function App() {
       </div>
     ),
     results: (
-      <div className="page-stack">
+      <div className="grid gap-4 min-w-0">
         <SummaryGrid
           lastUpdated={lastUpdated}
           selectedCount={selectedModels.length}
@@ -1509,35 +1648,35 @@ function App() {
       </div>
     ),
     runs: (
-      <div className="page-stack">
-        <article className="panel log-panel">
-          <div className="panel-heading">
-            <h2>Raw Runs</h2>
-            <span className="small-status">{globalResponses.length} rows</span>
+      <div className="grid gap-4 min-w-0">
+        <article className={`${PANEL_CLASSES} p-4 min-w-0`}>
+          <div className={PANEL_HEADING_CLASSES}>
+            <h2 className={PANEL_TITLE_CLASSES}>Raw Runs</h2>
+            <span className={SMALL_STATUS_CLASSES}>{globalResponses.length} rows</span>
           </div>
           <RunsTable page={runsPage} rows={globalSummary.latest} setPage={setRunsPage} />
         </article>
       </div>
     ),
     models: (
-      <div className="page-stack">
+      <div className="grid gap-4 min-w-0">
         <SummaryGrid
           lastUpdated={lastUpdated}
           selectedCount={selectedModels.length}
           statusLabel={statusLabel}
           summary={globalSummary}
         />
-        <article className="panel">
-          <div className="panel-heading">
-            <h2>Provider And Model Breakdown</h2>
-            <span className="small-status">{providerBreakdown.length} providers</span>
+        <article className={`${PANEL_CLASSES} p-4`}>
+          <div className={PANEL_HEADING_CLASSES}>
+            <h2 className={PANEL_TITLE_CLASSES}>Provider And Model Breakdown</h2>
+            <span className={SMALL_STATUS_CLASSES}>{providerBreakdown.length} providers</span>
           </div>
           <ProviderBreakdown providers={providerBreakdown} />
         </article>
       </div>
     ),
     'my-runs': (
-      <div className="page-stack">
+      <div className="grid gap-4 min-w-0">
         <SummaryGrid
           lastUpdated={localLastUpdated}
           selectedCount={selectedModels.length}
@@ -1545,37 +1684,40 @@ function App() {
           summary={localSummary}
         />
         {isRunning && (
-          <article className="panel">
-            <div className="panel-heading">
-              <h2>Current Run</h2>
-              <span className="small-status">Live</span>
+          <article className={`${PANEL_CLASSES} p-4`}>
+            <div className={PANEL_HEADING_CLASSES}>
+              <h2 className={PANEL_TITLE_CLASSES}>Current Run</h2>
+              <span className={SMALL_STATUS_CLASSES}>Live</span>
             </div>
-            <div className="run-progress" role="status">
-              <div>
+            <div className="grid gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3" role="status">
+              <div className="flex items-center justify-between text-sm text-slate-700">
                 <span>{runProgress.active}</span>
                 <strong>
                   {runProgress.completed}/{runProgress.total}
                 </strong>
               </div>
-              <div className="progress-track">
-                <span style={{ width: `${progressPercent}%` }}></span>
+              <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+                <span
+                  className="block h-full bg-gradient-to-r from-blue-500 to-brand transition-[width] duration-150"
+                  style={{ width: `${progressPercent}%` }}
+                />
               </div>
             </div>
           </article>
         )}
         <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={localSummary} />
-        <article className="panel log-panel">
-          <div className="panel-heading">
-            <h2>Raw Runs</h2>
-            <span className="small-status">{localResponses.length} rows</span>
+        <article className={`${PANEL_CLASSES} p-4 min-w-0`}>
+          <div className={PANEL_HEADING_CLASSES}>
+            <h2 className={PANEL_TITLE_CLASSES}>Raw Runs</h2>
+            <span className={SMALL_STATUS_CLASSES}>{localResponses.length} rows</span>
           </div>
           <RunsTable page={runsPage} rows={localSummary.latest} setPage={setRunsPage} />
         </article>
       </div>
     ),
     configuration: (
-      <div className="config-layout">
-        <section className="config-reference">
+      <div className="grid gap-4 grid-cols-[minmax(280px,0.95fr)_minmax(360px,1.05fr)] max-[1380px]:grid-cols-1">
+        <section className="grid gap-4 content-start">
           {questionCard}
           {schemaCard}
           <PrivacyNote />
@@ -1586,59 +1728,73 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="brand">
-          <div className="brand-mark">
+    <div className="min-h-svh grid grid-cols-[238px_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] max-[1080px]:grid-cols-1 bg-gradient-to-b from-[rgba(250,251,255,0.92)] to-[rgba(246,248,252,0.92)] bg-canvas text-ink">
+      <header className="col-span-full flex items-center justify-between gap-5 min-h-[82px] px-6 border-b border-slate-200 bg-white/90 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4">
+        <div className="flex items-center gap-4 min-w-0 max-sm:items-start">
+          <div className="grid place-items-center flex-none h-14 w-14 max-sm:h-12 max-sm:w-12 rounded-lg border border-indigo-100 text-brand bg-gradient-to-br from-indigo-100/70 to-blue-100/40">
             <Icon name="activity" size={32} />
           </div>
           <div>
-            <h1>ButtonArena</h1>
-            <p>Revealed preference via single-shot structured responses</p>
+            <h1 className="m-0 text-2xl max-sm:text-xl font-extrabold leading-tight text-slate-950">ButtonArena</h1>
+            <p className="mt-1.5 m-0 text-sm text-slate-500">Revealed preference via single-shot structured responses</p>
           </div>
         </div>
-        <div className="topbar-actions">
-          <span className="timestamp">{formatDateTime(lastUpdated)}</span>
-          <span className={`status-badge ${statusLabel.toLowerCase()}`}>{statusLabel}</span>
-          <button className="secondary-button" disabled={!localResponses.length} onClick={exportLocalResults} type="button">
+        <div className="flex items-center justify-end gap-3 max-[1080px]:flex-wrap max-[1080px]:justify-start">
+          <span className="text-sm text-slate-500 whitespace-nowrap">{formatDateTime(lastUpdated)}</span>
+          <span className={`inline-flex items-center rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>
+            {statusLabel}
+          </span>
+          <button
+            className={SECONDARY_BUTTON_CLASSES}
+            disabled={!localResponses.length}
+            onClick={exportLocalResults}
+            type="button"
+          >
             <Icon name="download" size={16} />
             Export
           </button>
         </div>
       </header>
 
-      <aside className="sidebar">
-        <nav aria-label="Benchmark sections">
-          {NAV_ITEMS.map((item) => (
-            <button
-              aria-current={activeSection === item.id ? 'page' : undefined}
-              className={activeSection === item.id ? 'active' : ''}
-              key={item.id}
-              onClick={() => changeSection(item.id)}
-              type="button"
-            >
-              <Icon name={item.icon} size={17} />
-              {item.label}
-            </button>
-          ))}
+      <aside className="flex flex-col justify-between gap-5 border-r border-slate-200 bg-white/70 px-3 py-6 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-2.5 max-[1080px]:px-4">
+        <nav aria-label="Benchmark sections" className="grid gap-2 max-[1080px]:flex max-[1080px]:overflow-x-auto">
+          {NAV_ITEMS.map((item) => {
+            const isActive = activeSection === item.id
+            return (
+              <button
+                aria-current={isActive ? 'page' : undefined}
+                className={`flex items-center gap-3 w-full max-[1080px]:w-auto max-[1080px]:flex-none rounded-lg px-4 py-3 text-sm font-bold uppercase ${
+                  isActive ? 'bg-brand-soft text-brand' : 'text-slate-500 hover:bg-brand-soft hover:text-brand'
+                }`}
+                key={item.id}
+                onClick={() => changeSection(item.id)}
+                type="button"
+              >
+                <Icon name={item.icon} size={17} />
+                {item.label}
+              </button>
+            )
+          })}
         </nav>
-        <div className="privacy-card">
-          <div className="privacy-card-header">
-            <div className="privacy-card-icon">
+        <div className="flex flex-col items-start gap-2 rounded-lg border border-slate-200 bg-slate-100 p-4 text-emerald-900 max-[1080px]:hidden">
+          <div className="flex items-center gap-2">
+            <div className="flex flex-shrink-0 items-center justify-center h-5 w-5 rounded-full bg-emerald-600 text-white">
               <Icon name="check" size={13} />
             </div>
-            <strong>Benchmark completed</strong>
+            <strong className="text-sm">Benchmark completed</strong>
           </div>
-          <span>{formatDateTime(lastUpdated)}</span>
-          <span className="privacy-card-meta">{globalSummary.models.length} models &bull; {globalSummary.total} runs</span>
+          <span className="text-xs text-emerald-800/70">{formatDateTime(lastUpdated)}</span>
+          <span className="text-[11px] text-emerald-800/70">
+            {globalSummary.models.length} models &bull; {globalSummary.total} runs
+          </span>
         </div>
       </aside>
 
-      <main className="dashboard">
-        <div className="page-header">
+      <main className="flex flex-col gap-4 min-w-0 p-5 max-sm:p-3">
+        <div className="grid items-center gap-4 grid-cols-[minmax(220px,0.4fr)_minmax(0,1fr)] max-[1080px]:grid-cols-1">
           <div>
-            <span className="eyebrow">{APP_TITLE}</span>
-            <h2>{activeNavItem.label}</h2>
+            <span className="block text-xs font-extrabold uppercase text-slate-500">{APP_TITLE}</span>
+            <h2 className="mt-1 m-0 text-2xl leading-tight text-slate-950">{activeNavItem.label}</h2>
           </div>
         </div>
         {pageContent[activeSection]}
