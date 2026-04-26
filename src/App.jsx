@@ -1693,7 +1693,6 @@ function App() {
 						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
-					<ThemeSwitcher onChange={setThemePreference} value={themePreference} />
 					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
 						<Icon name='download' size={16} />
 						Export
@@ -1726,7 +1725,10 @@ function App() {
 						<SidebarBenchmarkCard lastUpdated={lastUpdated} summary={globalSummary} />
 					</div>
 				</div>
-				<FeedbackCard />
+				<div className='grid gap-3'>
+					<FeedbackCard />
+					<ThemeSwitcher onChange={setThemePreference} value={themePreference} />
+				</div>
 			</aside>
 
 			<main className='flex min-w-0 flex-col gap-4 p-5 max-sm:p-3'>{pageContent[activeSection]}</main>
