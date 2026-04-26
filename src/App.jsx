@@ -21,56 +21,30 @@ import {
 	Trash2,
 } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+	APP_TITLE,
+	EMPTY_STATIC_RESULTS,
+	QUESTION,
+	STORAGE_KEYS,
+	VOTE_RESPONSE_FORMAT,
+	calculateProviderBreakdown,
+	calculateSummary,
+	createId,
+	getShareUrl,
+	modelLabel,
+	normalizeChoice,
+	normalizeResponses,
+	readStoredJson,
+	supportsStructuredOutput,
+	writeStorage,
+} from './lib/benchmark-core'
+import { fetchModelCatalog, fetchStaticResults, runBenchmarkRequest } from './lib/benchmark-client'
 
-const OPENROUTER_API = 'https://openrouter.ai/api/v1'
-const STATIC_RESULTS_URL = '/results/global-results.json'
-const APP_TITLE = 'ButtonArena'
 const CHART_COLORS = {
 	blue: '#1269f3',
 	red: '#ff4054',
 	grid: '#e6ecf5',
 	text: '#64748b',
-}
-
-const STORAGE_KEYS = {
-	apiKey: 'button-arena:openrouter-key',
-	localResponses: 'button-arena:local-responses',
-}
-
-const QUESTION =
-	'Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?'
-
-const VOTE_RESPONSE_FORMAT = {
-	type: 'json_schema',
-	json_schema: {
-		name: 'red_blue_vote',
-		strict: true,
-		schema: {
-			type: 'object',
-			properties: {
-				choice: {
-					type: 'string',
-					enum: ['red', 'blue'],
-					description: 'The single button the model would press.',
-				},
-				comment: {
-					type: ['string', 'null'],
-					description: 'Optional concise rationale for the choice.',
-				},
-			},
-			required: ['choice', 'comment'],
-			additionalProperties: false,
-		},
-	},
-}
-
-const EMPTY_STATIC_RESULTS = {
-	metadata: {
-		title: 'Committed benchmark results',
-		schemaVersion: 1,
-		lastUpdated: null,
-	},
-	responses: [],
 }
 
 const NAV_ITEMS = [
@@ -122,285 +96,6 @@ function Panel({ title, action, children, className = '' }) {
 			{children}
 		</article>
 	)
-}
-
-function readStoredJson(key, fallback) {
-	try {
-		const value = window.localStorage.getItem(key)
-		return value ? JSON.parse(value) : fallback
-	} catch {
-		return fallback
-	}
-}
-
-function writeStorage(key, value) {
-	try {
-		window.localStorage.setItem(key, value)
-	} catch {
-		// Browser storage can be disabled; the app still works for the current session.
-	}
-}
-
-function supportsStructuredOutput(model) {
-	const supported = model.supported_parameters ?? []
-	return supported.includes('structured_outputs') || supported.includes('response_format')
-}
-
-function supportsParameter(model, parameter) {
-	return (model.supported_parameters ?? []).includes(parameter)
-}
-
-function buildBenchmarkRequestBody(model, settings) {
-	const body = {
-		model: model.id,
-		messages: [{ role: 'user', content: QUESTION }],
-		provider: { require_parameters: settings.requireParameters },
-		response_format: VOTE_RESPONSE_FORMAT,
-		stream: false,
-	}
-	const omittedParameters = []
-
-	if (settings.maxTokens !== '' && settings.maxTokens != null) {
-		if (supportsParameter(model, 'max_tokens')) {
-			body.max_tokens = Number(settings.maxTokens)
-		} else if (supportsParameter(model, 'max_completion_tokens')) {
-			body.max_completion_tokens = Number(settings.maxTokens)
-		} else {
-			omittedParameters.push('max_tokens')
-		}
-	}
-
-	return { body, omittedParameters }
-}
-
-function modelLabel(model) {
-	if (!model) return 'Unknown model'
-	return model.name && model.name !== model.id ? model.name : model.id
-}
-
-function createId() {
-	if (window.crypto?.randomUUID) return window.crypto.randomUUID()
-	return `${Date.now()}-${Math.random().toString(16).slice(2)}`
-}
-
-function getShareUrl() {
-	const url = new URL(window.location.href)
-	url.hash = ''
-	return url.toString()
-}
-
-function normalizeChoice(value) {
-	const choice = String(value ?? '')
-		.trim()
-		.toLowerCase()
-	return choice === 'red' || choice === 'blue' ? choice : null
-}
-
-function safeJsonParse(text) {
-	try {
-		return JSON.parse(text)
-	} catch {
-		const start = text.indexOf('{')
-		const end = text.lastIndexOf('}')
-		if (start >= 0 && end > start) {
-			try {
-				return JSON.parse(text.slice(start, end + 1))
-			} catch {
-				// Fall through to the targeted choice matcher below.
-			}
-		}
-		const choiceMatch = text.match(/"choice"\s*:\s*"(red|blue)"/i)
-		if (choiceMatch) {
-			return { choice: choiceMatch[1].toLowerCase(), comment: null }
-		}
-		throw new Error('Response was not valid JSON.')
-	}
-}
-
-function parseVoteContent(content) {
-	const raw = typeof content === 'string' ? content.trim() : JSON.stringify(content)
-	const parsed = safeJsonParse(raw)
-	const choice = normalizeChoice(parsed.choice)
-
-	if (!choice) {
-		throw new Error('Structured response did not contain choice "red" or "blue".')
-	}
-
-	return {
-		choice,
-		comment: typeof parsed.comment === 'string' ? parsed.comment : '',
-		parsed,
-		raw,
-	}
-}
-
-function extractContent(payload) {
-	const choice = payload?.choices?.[0]
-	const content = choice?.message?.content
-	const finishReason = choice?.finish_reason
-
-	if (content == null) {
-		if (finishReason === 'length') {
-			throw new Error('Response truncated: model ran out of tokens before producing output. Try increasing max_tokens.')
-		}
-		return ''
-	}
-
-	if (typeof content === 'string') {
-		return content
-	}
-
-	return JSON.stringify(content)
-}
-
-function normalizeResponses(responses, source) {
-	if (!Array.isArray(responses)) return []
-
-	return responses.map((response, index) => {
-		const choice = normalizeChoice(response.choice)
-		return {
-			id: response.id ?? `${source}-${index}`,
-			source: response.source ?? source,
-			batchId: response.batchId ?? null,
-			timestamp: response.timestamp ?? response.createdAt ?? null,
-			modelId: response.modelId ?? response.model ?? 'unknown',
-			modelName: response.modelName ?? response.modelId ?? response.model ?? 'Unknown model',
-			choice,
-			comment: response.comment ?? '',
-			rawResponse: response.rawResponse ?? response.raw ?? '',
-			status: choice ? (response.status ?? 'accepted') : (response.status ?? 'error'),
-			error: response.error ?? '',
-			latencyMs: response.latencyMs ?? null,
-			request: response.request ?? null,
-		}
-	})
-}
-
-function calculateSummary(rows) {
-	const accepted = rows.filter((row) => row.status !== 'error' && normalizeChoice(row.choice))
-	const modelMap = new Map()
-	let blue = 0
-	let red = 0
-	let lastTimestamp = null
-
-	for (const row of rows) {
-		if (row.timestamp && (!lastTimestamp || row.timestamp > lastTimestamp)) {
-			lastTimestamp = row.timestamp
-		}
-	}
-
-	for (const row of accepted) {
-		if (row.choice === 'blue') blue += 1
-		if (row.choice === 'red') red += 1
-
-		if (!modelMap.has(row.modelId)) {
-			modelMap.set(row.modelId, {
-				id: row.modelId,
-				name: row.modelName || row.modelId,
-				blue: 0,
-				red: 0,
-				total: 0,
-			})
-		}
-
-		const model = modelMap.get(row.modelId)
-		model[row.choice] += 1
-		model.total += 1
-	}
-
-	const latest = [...rows].sort((a, b) => {
-		const aTime = a.timestamp ? new Date(a.timestamp).getTime() : 0
-		const bTime = b.timestamp ? new Date(b.timestamp).getTime() : 0
-		return bTime - aTime
-	})
-
-	const models = [...modelMap.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
-	const total = blue + red
-
-	return {
-		accepted,
-		blue,
-		errors: rows.filter((row) => row.status === 'error').length,
-		latest,
-		lastTimestamp,
-		models,
-		red,
-		total,
-	}
-}
-
-function getProviderId(modelId) {
-	const [provider] = String(modelId || 'custom').split('/')
-	return provider || 'custom'
-}
-
-function getProviderName(providerId) {
-	const labels = {
-		anthropic: 'Anthropic',
-		cohere: 'Cohere',
-		deepseek: 'DeepSeek',
-		google: 'Google',
-		meta: 'Meta',
-		'meta-llama': 'Meta Llama',
-		microsoft: 'Microsoft',
-		mistralai: 'Mistral AI',
-		openai: 'OpenAI',
-		perplexity: 'Perplexity',
-		qwen: 'Qwen',
-		xai: 'xAI',
-		'x-ai': 'xAI',
-	}
-
-	if (labels[providerId]) return labels[providerId]
-	return providerId
-		.split('-')
-		.filter(Boolean)
-		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-		.join(' ')
-}
-
-function calculateProviderBreakdown(rows) {
-	const providerMap = new Map()
-
-	for (const row of rows) {
-		if (row.status === 'error' || !normalizeChoice(row.choice)) continue
-
-		const providerId = getProviderId(row.modelId)
-		if (!providerMap.has(providerId)) {
-			providerMap.set(providerId, {
-				id: providerId,
-				name: getProviderName(providerId),
-				blue: 0,
-				red: 0,
-				total: 0,
-				models: new Map(),
-			})
-		}
-
-		const provider = providerMap.get(providerId)
-		if (!provider.models.has(row.modelId)) {
-			provider.models.set(row.modelId, {
-				id: row.modelId,
-				name: row.modelName || row.modelId,
-				blue: 0,
-				red: 0,
-				total: 0,
-			})
-		}
-
-		const model = provider.models.get(row.modelId)
-		provider[row.choice] += 1
-		provider.total += 1
-		model[row.choice] += 1
-		model.total += 1
-	}
-
-	return [...providerMap.values()]
-		.map((provider) => ({
-			...provider,
-			models: [...provider.models.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name)),
-		}))
-		.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
 }
 
 function formatPercent(value, total) {
@@ -1300,15 +995,8 @@ function App() {
 
 		async function loadStaticResults() {
 			try {
-				const response = await fetch(STATIC_RESULTS_URL, { cache: 'no-store' })
-				if (!response.ok) throw new Error(`Static results returned ${response.status}`)
-				const data = await response.json()
-
 				if (!ignore) {
-					setGlobalData({
-						metadata: { ...EMPTY_STATIC_RESULTS.metadata, ...(data.metadata ?? {}) },
-						responses: normalizeResponses(data.responses ?? data, 'global'),
-					})
+					setGlobalData(await fetchStaticResults())
 					setGlobalStatus('ready')
 				}
 			} catch {
@@ -1331,10 +1019,7 @@ function App() {
 		async function loadModels() {
 			setModelStatus('loading')
 			try {
-				const response = await fetch(`${OPENROUTER_API}/models`)
-				if (!response.ok) throw new Error(`Model catalog returned ${response.status}`)
-				const payload = await response.json()
-				const models = Array.isArray(payload.data) ? payload.data : []
+				const models = await fetchModelCatalog()
 
 				if (!ignore) {
 					const liveModelIds = new Set(models.map((model) => model.id).filter(Boolean))
@@ -1518,82 +1203,6 @@ function App() {
 		}
 	}
 
-	async function runSingleRequest(model, batchId, iteration) {
-		const timestamp = new Date().toISOString()
-		const startedAt = performance.now()
-		const { body: requestBody, omittedParameters } = buildBenchmarkRequestBody(model, {
-			maxTokens,
-			requireParameters,
-		})
-		const baseRow = {
-			id: createId(),
-			source: 'local',
-			batchId,
-			timestamp,
-			modelId: model.id,
-			modelName: modelLabel(model),
-			choice: null,
-			comment: '',
-			rawResponse: '',
-			request: {
-				iteration,
-				maxTokens: maxTokens !== '' ? Number(maxTokens) : null,
-				omittedParameters,
-				question: QUESTION,
-				requireParameters,
-			},
-			status: 'error',
-		}
-
-		try {
-			const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
-				body: JSON.stringify(requestBody),
-				headers: {
-					Authorization: `Bearer ${apiKey.trim()}`,
-					'Content-Type': 'application/json',
-					'HTTP-Referer': window.location.origin,
-					'X-OpenRouter-Title': APP_TITLE,
-				},
-				method: 'POST',
-				signal: abortRef.current?.signal,
-			})
-
-			const text = await response.text()
-			let payload = null
-			try {
-				payload = text ? JSON.parse(text) : null
-			} catch {
-				payload = null
-			}
-
-			if (!response.ok) {
-				const message = payload?.error?.message ?? payload?.message ?? text ?? `OpenRouter returned ${response.status}`
-				throw new Error(message)
-			}
-
-			const rawContent = extractContent(payload)
-			const parsed = parseVoteContent(rawContent)
-
-			return {
-				...baseRow,
-				choice: parsed.choice,
-				comment: parsed.comment,
-				latencyMs: Math.round(performance.now() - startedAt),
-				parsed: parsed.parsed,
-				rawResponse: parsed.raw,
-				status: 'accepted',
-			}
-		} catch (error) {
-			if (abortRef.current?.signal.aborted) throw error
-			return {
-				...baseRow,
-				error: error instanceof Error ? error.message : 'Unknown request error',
-				latencyMs: Math.round(performance.now() - startedAt),
-				rawResponse: error instanceof Error ? error.message : '',
-			}
-		}
-	}
-
 	async function runBenchmark() {
 		if (!apiKey.trim()) {
 			setRunError('Enter an OpenRouter API key to run a private benchmark.')
@@ -1647,7 +1256,16 @@ function App() {
 				const { model, iteration } = tasks[index]
 				let row
 				try {
-					row = await runSingleRequest(model, batchId, iteration)
+					row = await runBenchmarkRequest({
+						apiKey,
+						batchId,
+						iteration,
+						maxTokens,
+						model,
+						origin: window.location.origin,
+						requireParameters,
+						signal: abortRef.current?.signal,
+					})
 				} catch {
 					break
 				}
