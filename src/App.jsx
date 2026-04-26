@@ -1365,6 +1365,21 @@ function App() {
 							<DonutChart summary={globalSummary} />
 						</Panel>
 					</section>
+					<div className='rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] p-5 grid gap-3 leading-relaxed text-slate-600'>
+						<h2 className='m-0 text-sm font-extrabold uppercase text-slate-900'>The Button Dilemma</h2>
+						<p>
+							Pressing red is the safe, individually rational choice—it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous
+							gamble: while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a
+							potential death sentence. The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed
+							self-preservation grounded in game theory and basic survival logic.
+						</p>
+						<p>
+							This deceptively simple hypothetical has exploded across X, becoming one of the most polarizing and revealing thought experiments online. It forces
+							models (and humans) to confront questions of rationality, risk, coordination, morality, and ideological bias in real time. ButtonArena tests the world's
+							leading LLMs on this exact dilemma—exposing not just which button they press, but how deeply, consistently, and honestly they reason through the
+							trade-offs.
+						</p>
+					</div>
 				</div>
 			</div>
 		),
@@ -1480,9 +1495,7 @@ function App() {
 				</div>
 			</aside>
 
-			<main className='flex flex-col gap-4 min-w-0 p-5 max-sm:p-3'>
-				{pageContent[activeSection]}
-			</main>
+			<main className='flex flex-col gap-4 min-w-0 p-5 max-sm:p-3'>{pageContent[activeSection]}</main>
 		</div>
 	)
 }
