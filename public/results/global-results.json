@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "title": "Committed benchmark results",
+    "schemaVersion": 1,
+    "lastUpdated": null,
+    "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+    "note": "Replace this file with an exported local run to publish committed benchmark results."
+  },
+  "responses": []
+}
