@@ -183,6 +183,12 @@ function createId() {
 	return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+function getShareUrl() {
+	const url = new URL(window.location.href)
+	url.hash = ''
+	return url.toString()
+}
+
 function normalizeChoice(value) {
 	const choice = String(value ?? '')
 		.trim()
@@ -861,6 +867,71 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 	)
 }
 
+function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeShare, shareDescription, shareStatus, url }) {
+	if (!isOpen) return null
+
+	return (
+		<div className='fixed inset-0 z-50 grid place-items-center bg-[rgba(15,23,42,0.52)] px-4 backdrop-blur-[6px]' onClick={onClose}>
+			<div
+				aria-labelledby='share-benchmark-title'
+				aria-modal='true'
+				className='w-full max-w-xl rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.98)_100%)] p-5 text-slate-950 shadow-[0_28px_80px_rgba(15,23,42,0.22)]'
+				onClick={(event) => event.stopPropagation()}
+				role='dialog'>
+				<div className='flex items-start justify-between gap-4'>
+					<div className='space-y-2'>
+						<span className='inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-blue-700'>
+							<Icon name='share' size={13} />
+							Share Benchmark
+						</span>
+						<div>
+							<h3 className='m-0 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
+								Share ButtonArena
+							</h3>
+							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-slate-600'>{shareDescription}</p>
+						</div>
+					</div>
+					<button className='btn-secondary min-h-9 px-3' onClick={onClose} type='button'>
+						Close
+					</button>
+				</div>
+
+				<div className='mt-5 rounded-2xl border border-slate-200 bg-white/90 p-4'>
+					<p className='m-0 text-[11px] font-extrabold uppercase tracking-[0.08em] text-slate-500'>Benchmark Link</p>
+					<p className='mt-2 mb-0 break-all text-sm font-semibold leading-relaxed text-slate-900'>{url}</p>
+				</div>
+
+				<div className='mt-4 flex flex-wrap gap-3'>
+					<button className='btn-primary flex-1' onClick={onCopyLink} type='button'>
+						<Icon name='clipboard' size={16} />
+						Copy Link
+					</button>
+					{canUseNativeShare ? (
+						<button className='btn-secondary flex-1' onClick={onNativeShare} type='button'>
+							<Icon name='share' size={16} />
+							Open Share Sheet
+						</button>
+					) : null}
+				</div>
+
+				<div className='mt-3 min-h-6 text-sm'>
+					{shareStatus ? (
+						<span
+							className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 font-bold ${
+								shareStatus.tone === 'error' ? 'bg-red-50 text-red-700' : 'bg-emerald-50 text-emerald-700'
+							}`}>
+							<Icon name={shareStatus.tone === 'error' ? 'alert' : 'check'} size={14} />
+							{shareStatus.message}
+						</span>
+					) : (
+						<span className='text-sm text-slate-500'>This shares the main benchmark URL.</span>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}
+
 function ChoicePill({ choice }) {
 	if (!choice) {
 		return <span className='inline-flex items-center rounded-md bg-red-50 text-red-800 px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
@@ -1203,8 +1274,26 @@ function App() {
 	const [runError, setRunError] = useState('')
 	const [runProgress, setRunProgress] = useState({ active: '', completed: 0, total: 0 })
 	const [selectedModelIds, setSelectedModelIds] = useState([])
+	const [shareDialogOpen, setShareDialogOpen] = useState(false)
+	const [shareStatus, setShareStatus] = useState(null)
 	const [showStructuredOnly, setShowStructuredOnly] = useState(true)
 	const [isRunning, setIsRunning] = useState(false)
+
+	useEffect(() => {
+		if (!shareDialogOpen) return undefined
+
+		function handleKeyDown(event) {
+			if (event.key === 'Escape') {
+				setShareDialogOpen(false)
+				setShareStatus(null)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [shareDialogOpen])
 
 	useEffect(() => {
 		let ignore = false
@@ -1382,21 +1471,50 @@ function App() {
 		}
 	}
 
+	function openShareDialog() {
+		setShareDialogOpen(true)
+		setShareStatus(null)
+	}
+
+	function closeShareDialog() {
+		setShareDialogOpen(false)
+		setShareStatus(null)
+	}
+
+	async function copyShareLink() {
+		try {
+			await navigator.clipboard.writeText(getShareUrl())
+			setShareStatus({ message: 'Benchmark link copied to clipboard.', tone: 'success' })
+		} catch {
+			setShareStatus({ message: 'Clipboard access was blocked by the browser.', tone: 'error' })
+		}
+	}
+
 	async function shareBenchmark() {
 		const shareData = {
 			title: APP_TITLE,
-			text: 'ButtonArena benchmark results',
-			url: window.location.href,
+			text: globalSummary.total
+				? `Latest ButtonArena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
+				: 'See the latest ButtonArena benchmark results.',
+			url: getShareUrl(),
 		}
 
 		try {
-			if (navigator.share) {
-				await navigator.share(shareData)
+			if (!navigator.share) {
+				setShareStatus({ message: 'Native sharing is not available in this browser.', tone: 'error' })
 				return
 			}
-			await navigator.clipboard.writeText(window.location.href)
-		} catch {
-			setRunError('Sharing was blocked by the browser.')
+			if (navigator.canShare && !navigator.canShare(shareData)) {
+				setShareStatus({ message: 'This browser cannot share the current benchmark link.', tone: 'error' })
+				return
+			}
+			await navigator.share(shareData)
+			closeShareDialog()
+		} catch (error) {
+			if (error instanceof DOMException && error.name === 'AbortError') {
+				return
+			}
+			setShareStatus({ message: 'Sharing was blocked by the browser.', tone: 'error' })
 		}
 	}
 
@@ -1570,6 +1688,11 @@ function App() {
 
 	const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
+	const shareDescription = globalSummary.total
+		? `Latest ButtonArena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
+		: 'Copy the benchmark landing page or open your device share sheet.'
+	const shareUrl = getShareUrl()
+	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
 	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
 
@@ -1775,7 +1898,7 @@ function App() {
 							<OverviewSpotlight
 								lastUpdated={lastUpdated}
 								onRunPrivate={() => changeSection('configuration')}
-								onShareBenchmark={shareBenchmark}
+								onShareBenchmark={openShareDialog}
 								onViewResults={() => changeSection('results')}
 							/>
 							<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
@@ -1851,6 +1974,16 @@ function App() {
 
 	return (
 		<div className='min-h-svh grid grid-cols-[240px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
+			<ShareDialog
+				canUseNativeShare={canUseNativeShare}
+				isOpen={shareDialogOpen}
+				onClose={closeShareDialog}
+				onCopyLink={copyShareLink}
+				onNativeShare={shareBenchmark}
+				shareDescription={shareDescription}
+				shareStatus={shareStatus}
+				url={shareUrl}
+			/>
 			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<AppMark />
