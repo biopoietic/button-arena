@@ -1159,34 +1159,26 @@ function FeedbackCard() {
 	)
 }
 
-function ExplainerPanel({ onLearnMore }) {
+function ExplainerPanel() {
 	return (
-		<section className='grid grid-cols-[92px_minmax(0,1fr)] gap-5 rounded-lg border border-line bg-white p-6 shadow-[0_18px_45px_rgba(27,44,82,0.05)] max-sm:grid-cols-1'>
-			<div className='grid h-20 w-20 place-items-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#f3d7ff,#e9ddff_46%,#d7d8ff)] text-[#7d42f5]'>
-				<Icon name='brain' size={38} />
+		<article className='rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-5'>
+			<h2 className='mb-3.5 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>The Dilemma</h2>
+
+			<div className='grid gap-3 text-sm leading-relaxed text-slate-600'>
+				<p className='m-0'>
+					Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue introduces a dangerous gamble — it may enable
+					a superior collective outcome if enough people coordinate, but failure to reach that critical mass turns it into a potential death sentence.
+				</p>
+				<p className='m-0'>
+					The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed self-preservation grounded in game
+					theory and basic survival logic.
+				</p>
+				<p className='m-0'>
+					ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how consistently and honestly they reason
+					through the trade-offs.
+				</p>
 			</div>
-			<div className='min-w-0'>
-				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>The Button Dilemma</h2>
-				<div className='mt-4 grid gap-3 text-[15px] leading-relaxed text-slate-700'>
-					<p className='m-0'>
-						Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous gamble:
-						while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a potential death
-						sentence.
-					</p>
-					<p className='m-0'>
-						The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed self-preservation grounded in game
-						theory and basic survival logic.
-					</p>
-					<p className='m-0'>
-						ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how deeply, consistently, and honestly they
-						reason through the trade-offs.
-					</p>
-				</div>
-				<button className='btn-secondary mt-4 min-h-9 px-4 text-xs' onClick={onLearnMore} type='button'>
-					Learn more
-				</button>
-			</div>
-		</section>
+		</article>
 	)
 }
 
@@ -1580,7 +1572,7 @@ function App() {
 	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
 
 	const questionCard = (
-		<Panel title='Question' action={<span className='status-badge'>Fixed</span>}>
+		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
 			<p className='m-0 text-sm leading-relaxed text-slate-800'>{QUESTION}</p>
 		</Panel>
 	)
@@ -1770,30 +1762,31 @@ function App() {
 
 	const pageContent = {
 		overview: (
-			<div className='grid items-start gap-5 grid-cols-[minmax(280px,320px)_minmax(0,1fr)] max-[1180px]:grid-cols-1 max-[1180px]:items-stretch'>
-				<div className='grid gap-4 content-start'>
-					{questionCard}
-					{schemaCard}
-				</div>
-				<div className='grid gap-4 min-w-0'>
-					<section className='grid gap-4 grid-cols-[minmax(420px,1.1fr)_minmax(460px,0.9fr)] max-[1480px]:grid-cols-1'>
-						<OverviewSpotlight
-							lastUpdated={lastUpdated}
-							onRunPrivate={() => changeSection('configuration')}
-							onShareBenchmark={shareBenchmark}
-							onViewResults={() => changeSection('results')}
-						/>
-						<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
-					</section>
-					<section className='grid gap-4 grid-cols-[minmax(0,1.42fr)_minmax(360px,0.9fr)] max-[1380px]:grid-cols-1'>
-						<Panel className='min-w-0' title='Vote Distribution By Model'>
-							<DistributionChart models={globalSummary.models} />
-						</Panel>
-						<Panel title='Overall Vote Distribution'>
-							<DonutChart summary={globalSummary} />
-						</Panel>
-					</section>
-					<ExplainerPanel onLearnMore={() => changeSection('configuration')} />
+			<div className='grid gap-5'>
+				<div className='grid items-start gap-5 grid-cols-[minmax(280px,320px)_minmax(0,1fr)] max-[1180px]:grid-cols-1 max-[1180px]:items-stretch'>
+					<div className='grid gap-4 content-start'>
+						{questionCard}
+						<ExplainerPanel />
+					</div>
+					<div className='grid gap-4 min-w-0'>
+						<section className='grid gap-4 grid-cols-[minmax(420px,1.1fr)_minmax(460px,0.9fr)] max-[1480px]:grid-cols-1'>
+							<OverviewSpotlight
+								lastUpdated={lastUpdated}
+								onRunPrivate={() => changeSection('configuration')}
+								onShareBenchmark={shareBenchmark}
+								onViewResults={() => changeSection('results')}
+							/>
+							<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
+						</section>
+						<section className='grid gap-4 grid-cols-[minmax(0,1.42fr)_minmax(360px,0.9fr)] max-[1380px]:grid-cols-1'>
+							<Panel className='min-w-0' title='Vote Distribution By Model'>
+								<DistributionChart models={globalSummary.models} />
+							</Panel>
+							<Panel title='Overall Vote Distribution'>
+								<DonutChart summary={globalSummary} />
+							</Panel>
+						</section>
+					</div>
 				</div>
 			</div>
 		),
