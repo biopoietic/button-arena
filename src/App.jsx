@@ -1529,20 +1529,6 @@ function App() {
             </div>
           </article>
         )}
-        <section className="chart-grid">
-          <article className="panel wide-panel">
-            <div className="panel-heading">
-              <h2>Vote Distribution By Model</h2>
-            </div>
-            <DistributionChart models={localSummary.models} />
-          </article>
-          <article className="panel">
-            <div className="panel-heading">
-              <h2>Overall Vote Distribution</h2>
-            </div>
-            <DonutChart summary={localSummary} />
-          </article>
-        </section>
         <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={localSummary} />
         <article className="panel log-panel">
           <div className="panel-heading">
