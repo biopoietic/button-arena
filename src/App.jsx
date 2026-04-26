@@ -1481,12 +1481,6 @@ function App() {
 			</aside>
 
 			<main className='flex flex-col gap-4 min-w-0 p-5 max-sm:p-3'>
-				<div className='grid items-center gap-4 grid-cols-[minmax(220px,0.4fr)_minmax(0,1fr)] max-[1080px]:grid-cols-1'>
-					<div>
-						<span className='block text-xs font-extrabold uppercase text-slate-500'>{APP_TITLE}</span>
-						<h2 className='mt-1 m-0 text-2xl leading-tight text-slate-950'>{activeNavItem.label}</h2>
-					</div>
-				</div>
 				{pageContent[activeSection]}
 			</main>
 		</div>
