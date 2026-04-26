@@ -1468,31 +1468,33 @@ function App() {
 
   const pageContent = {
     overview: (
-      <div className="page-stack">
-        <section className="overview-layout">
+      <div className="overview-layout">
+        <div className="left-column">
           {questionCard}
           {schemaCard}
-        </section>
-        <SummaryGrid
-          lastUpdated={lastUpdated}
-          selectedCount={selectedModels.length}
-          statusLabel={statusLabel}
-          summary={globalSummary}
-        />
-        <section className="chart-grid">
-          <article className="panel wide-panel">
-            <div className="panel-heading">
-              <h2>Vote Distribution By Model</h2>
-            </div>
-            <DistributionChart models={globalSummary.models} />
-          </article>
-          <article className="panel">
-            <div className="panel-heading">
-              <h2>Overall Vote Distribution</h2>
-            </div>
-            <DonutChart summary={globalSummary} />
-          </article>
-        </section>
+        </div>
+        <div className="page-stack">
+          <SummaryGrid
+            lastUpdated={lastUpdated}
+            selectedCount={selectedModels.length}
+            statusLabel={statusLabel}
+            summary={globalSummary}
+          />
+          <section className="chart-grid">
+            <article className="panel wide-panel">
+              <div className="panel-heading">
+                <h2>Vote Distribution By Model</h2>
+              </div>
+              <DistributionChart models={globalSummary.models} />
+            </article>
+            <article className="panel">
+              <div className="panel-heading">
+                <h2>Overall Vote Distribution</h2>
+              </div>
+              <DonutChart summary={globalSummary} />
+            </article>
+          </section>
+        </div>
       </div>
     ),
     results: (

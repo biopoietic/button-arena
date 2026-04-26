@@ -225,7 +225,13 @@
   min-width: 0;
 }
 
-.overview-layout,
+.overview-layout {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(240px, 0.25fr) minmax(0, 1fr);
+}
+
 .config-layout {
   display: grid;
   gap: 16px;
@@ -302,7 +308,6 @@
   font-size: 12px;
   line-height: 1.55;
   margin: 0;
-  max-height: 300px;
   overflow: auto;
   padding: 14px;
   text-align: left;
@@ -1202,6 +1207,10 @@ th {
   .overview-layout,
   .config-layout {
     grid-template-columns: 1fr;
+  }
+
+  .overview-layout {
+    align-items: unset;
   }
 }
 
