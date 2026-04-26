@@ -8,6 +8,2406 @@
   },
   "responses": [
     {
+      "id": "8d60ab42-3653-4774-94b3-797c76f6aeb2",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:12.041Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d contribute to the outcome where everyone survives, even though red is individually safer if cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d contribute to the outcome where everyone survives, even though red is individually safer if cooperation fails.\"}",
+      "request": {
+        "iteration": 99,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10352,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d contribute to the outcome where everyone survives, even though red is individually safer if cooperation fails."
+      }
+    },
+    {
+      "id": "d53aef40-8606-49f7-9d24-7bfbe2c445ba",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:08.461Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival under the stated rules, and if everyone made the same choice, everyone would still survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival under the stated rules, and if everyone made the same choice, everyone would still survive.\"}",
+      "request": {
+        "iteration": 96,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11528,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival under the stated rules, and if everyone made the same choice, everyone would still survive."
+      }
+    },
+    {
+      "id": "2c1e2ff6-0615-4082-b1e2-1a6796b38c6f",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:09.343Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives; choosing red hedges individually but makes collective survival less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives; choosing red hedges individually but makes collective survival less likely.\"}",
+      "request": {
+        "iteration": 98,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9097,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives; choosing red hedges individually but makes collective survival less likely."
+      }
+    },
+    {
+      "id": "cf17c1b8-aa82-4cf0-95fc-2e106113f1b4",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:00.294Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 90,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 17817,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "23b47a85-f43d-4d4f-9370-7241a087aa94",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:12.177Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps ensure everyone survives; choosing red would make the catastrophic outcome more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps ensure everyone survives; choosing red would make the catastrophic outcome more likely.\"}",
+      "request": {
+        "iteration": 100,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5807,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps ensure everyone survives; choosing red would make the catastrophic outcome more likely."
+      }
+    },
+    {
+      "id": "6aebfbaa-5664-4c80-86ce-d9a080bc6203",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:04.119Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice: it helps push the outcome toward everyone surviving rather than only red voters surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice: it helps push the outcome toward everyone surviving rather than only red voters surviving.\"}",
+      "request": {
+        "iteration": 94,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13743,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice: it helps push the outcome toward everyone surviving rather than only red voters surviving."
+      }
+    },
+    {
+      "id": "a656ade9-5974-4e3b-a47d-3b3aef7fcb78",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:08.336Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 95,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7843,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "30356d08-b6e2-4bb0-8700-b105ea3c4560",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:02.003Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees survival under the stated outcomes, and if everyone chose red, everyone would survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees survival under the stated outcomes, and if everyone chose red, everyone would survive.\"}",
+      "request": {
+        "iteration": 91,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13701,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees survival under the stated outcomes, and if everyone chose red, everyone would survive."
+      }
+    },
+    {
+      "id": "3c7382ab-38c7-4e91-97b4-7c137ce0c984",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:03.470Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees survival under the stated rules; if blue falls below 50%, red voters survive, and if blue exceeds 50%, everyone survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees survival under the stated rules; if blue falls below 50%, red voters survive, and if blue exceeds 50%, everyone survives.\"}",
+      "request": {
+        "iteration": 92,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11708,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees survival under the stated rules; if blue falls below 50%, red voters survive, and if blue exceeds 50%, everyone survives."
+      }
+    },
+    {
+      "id": "6495769e-2863-48c3-8009-95aa87cea158",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:08.588Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue slightly increases the chance that everyone survives; pressing red helps only if collective cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue slightly increases the chance that everyone survives; pressing red helps only if collective cooperation fails.\"}",
+      "request": {
+        "iteration": 97,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6368,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue slightly increases the chance that everyone survives; pressing red helps only if collective cooperation fails."
+      }
+    },
+    {
+      "id": "0893bbe9-b173-4c85-86c2-0ff7b100e1a2",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:42.699Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue to help reach the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue to help reach the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 76,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 29477,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue to help reach the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "58aefbdf-456e-45a5-981b-c45b513c5301",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:59.779Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps make the outcome where everyone survives more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps make the outcome where everyone survives more likely.\"}",
+      "request": {
+        "iteration": 89,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12261,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps make the outcome where everyone survives more likely."
+      }
+    },
+    {
+      "id": "a6dbfc1e-0592-4735-bfc6-344642f51711",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:58.396Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because the only outcome where everyone survives requires enough people choosing blue, and I’d want to contribute to that cooperative outcome.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because the only outcome where everyone survives requires enough people choosing blue, and I’d want to contribute to that cooperative outcome.\"}",
+      "request": {
+        "iteration": 88,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10947,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because the only outcome where everyone survives requires enough people choosing blue, and I’d want to contribute to that cooperative outcome."
+      }
+    },
+    {
+      "id": "4ff6b70e-7c9b-4bc8-8f4c-810994dee4c2",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:53:03.593Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps reach the >50% threshold so everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps reach the >50% threshold so everyone survives.\"}",
+      "request": {
+        "iteration": 93,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 4996,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps reach the >50% threshold so everyone survives."
+      }
+    },
+    {
+      "id": "7a9b05b6-ad19-4392-845d-c0a7818612ca",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:36.796Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option aimed at making everyone survive, even though red is individually safer if blue fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option aimed at making everyone survive, even though red is individually safer if blue fails.\"}",
+      "request": {
+        "iteration": 69,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 31665,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option aimed at making everyone survive, even though red is individually safer if blue fails."
+      }
+    },
+    {
+      "id": "1cd13355-4293-4cd7-b808-0585fd4c4272",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:54.410Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because it contributes to the only outcome where everyone is explicitly saved.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because it contributes to the only outcome where everyone is explicitly saved.\"}",
+      "request": {
+        "iteration": 85,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13926,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because it contributes to the only outcome where everyone is explicitly saved."
+      }
+    },
+    {
+      "id": "93caa882-b5b0-4cd8-b1b0-be148563bde8",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:53.758Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red is the individually safe option: if blue fails to exceed 50%, red voters survive; if blue succeeds, everyone survives.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the individually safe option: if blue fails to exceed 50%, red voters survive; if blue succeeds, everyone survives.\"}",
+      "request": {
+        "iteration": 84,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10362,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red is the individually safe option: if blue fails to exceed 50%, red voters survive; if blue succeeds, everyone survives."
+      }
+    },
+    {
+      "id": "ecc433a8-3d63-4378-83a7-4ef5fbf95e6a",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:55.446Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 86,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 8147,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "a6e83e25-f9dc-409e-83e0-224e8f683413",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:57.288Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the threshold where everyone survives; choosing red only hedges personally while making collective survival less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the threshold where everyone survives; choosing red only hedges personally while making collective survival less likely.\"}",
+      "request": {
+        "iteration": 87,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6182,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the threshold where everyone survives; choosing red only hedges personally while making collective survival less likely."
+      }
+    },
+    {
+      "id": "d7bd36fb-2216-415c-a768-f1f9cdfa1790",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:52.750Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option: if enough people do the same, everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option: if enough people do the same, everyone survives.\"}",
+      "request": {
+        "iteration": 83,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9254,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option: if enough people do the same, everyone survives."
+      }
+    },
+    {
+      "id": "15a19575-1c47-4c9f-ad9b-a8565b78d37c",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:44.362Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red is the safer choice for the individual, and if everyone chose red, everyone would still survive under the stated rules.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the safer choice for the individual, and if everyone chose red, everyone would still survive under the stated rules.\"}",
+      "request": {
+        "iteration": 78,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 15932,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red is the safer choice for the individual, and if everyone chose red, everyone would still survive under the stated rules."
+      }
+    },
+    {
+      "id": "4b693cbf-9a22-407f-b213-16ce75e93d86",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:48.316Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue to help push the total over 50%, which is the only outcome that guarantees everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue to help push the total over 50%, which is the only outcome that guarantees everyone survives.\"}",
+      "request": {
+        "iteration": 81,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11463,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue to help push the total over 50%, which is the only outcome that guarantees everyone survives."
+      }
+    },
+    {
+      "id": "10abc3d2-9add-4481-9480-2d9e1910db22",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:41.201Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that, if adopted by a majority, saves everyone rather than protecting only myself.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that, if adopted by a majority, saves everyone rather than protecting only myself.\"}",
+      "request": {
+        "iteration": 73,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 17195,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that, if adopted by a majority, saves everyone rather than protecting only myself."
+      }
+    },
+    {
+      "id": "531a2e49-550d-45eb-a022-3fc9dd028916",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:50.210Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that helps make the outcome where everyone survives more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that helps make the outcome where everyone survives more likely.\"}",
+      "request": {
+        "iteration": 82,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7078,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that helps make the outcome where everyone survives more likely."
+      }
+    },
+    {
+      "id": "8a2410d0-fb1b-45a0-ad18-2d6adb9865e5",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:42.997Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue to contribute to the outcome where everyone survives, rather than choose the individually safer option that only protects red voters if cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue to contribute to the outcome where everyone survives, rather than choose the individually safer option that only protects red voters if cooperation fails.\"}",
+      "request": {
+        "iteration": 77,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12449,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue to contribute to the outcome where everyone survives, rather than choose the individually safer option that only protects red voters if cooperation fails."
+      }
+    },
+    {
+      "id": "0f62beca-658d-441a-82ec-cc187b21cfe8",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:47.785Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 79,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6625,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "d5d57514-cc80-4456-9eff-787d6d70a352",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:48.196Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the outcome where everyone survives; pressing red protects only oneself if cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the outcome where everyone survives; pressing red protects only oneself if cooperation fails.\"}",
+      "request": {
+        "iteration": 80,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5562,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the outcome where everyone survives; pressing red protects only oneself if cooperation fails."
+      }
+    },
+    {
+      "id": "fda2b92c-634c-4836-848e-6f1af92cb636",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:41.678Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red is the safer individual choice: if blue exceeds 50%, everyone survives anyway; if it doesn’t, red voters survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the safer individual choice: if blue exceeds 50%, everyone survives anyway; if it doesn’t, red voters survive.\"}",
+      "request": {
+        "iteration": 74,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11071,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red is the safer individual choice: if blue exceeds 50%, everyone survives anyway; if it doesn’t, red voters survive."
+      }
+    },
+    {
+      "id": "46b0094e-020d-4372-9b0c-5457f653e494",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:41.975Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because the only outcome where everyone survives requires enough people to choose blue, and I’d want to contribute to that.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because the only outcome where everyone survives requires enough people to choose blue, and I’d want to contribute to that.\"}",
+      "request": {
+        "iteration": 75,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 8235,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because the only outcome where everyone survives requires enough people to choose blue, and I’d want to contribute to that."
+      }
+    },
+    {
+      "id": "ca038578-a2e0-47de-ad67-0b772769f580",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:39.624Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the only vote that helps make the outcome one where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the only vote that helps make the outcome one where everyone survives.\"}",
+      "request": {
+        "iteration": 72,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 8692,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the only vote that helps make the outcome one where everyone survives."
+      }
+    },
+    {
+      "id": "4c0c8311-e530-4283-a718-d4d41fa5b84e",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:38.071Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d cooperate to help push the total above 50%, since that’s the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d cooperate to help push the total above 50%, since that’s the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 71,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10125,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d cooperate to help push the total above 50%, since that’s the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "ae273feb-5312-4e7d-ab6e-7481e07d2d74",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:34.739Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps reach the majority needed for everyone to survive.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps reach the majority needed for everyone to survive.\"}",
+      "request": {
+        "iteration": 66,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13046,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps reach the majority needed for everyone to survive."
+      }
+    },
+    {
+      "id": "339be325-7f04-4fcb-9150-2808080bf426",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:33.546Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival in the stated outcomes: if blue exceeds 50%, everyone survives; if it doesn’t, red voters survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival in the stated outcomes: if blue exceeds 50%, everyone survives; if it doesn’t, red voters survive.\"}",
+      "request": {
+        "iteration": 65,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10816,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival in the stated outcomes: if blue exceeds 50%, everyone survives; if it doesn’t, red voters survive."
+      }
+    },
+    {
+      "id": "17caed63-fc0b-4490-96ac-010518bc16be",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:35.230Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice: each blue vote helps push the total over 50%, the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice: each blue vote helps push the total over 50%, the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 68,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7767,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice: each blue vote helps push the total over 50%, the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "40d84a03-3269-4bd6-a5ff-f856602998c7",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:28.972Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps make the everyone-survives outcome possible.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps make the everyone-survives outcome possible.\"}",
+      "request": {
+        "iteration": 61,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13728,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps make the everyone-survives outcome possible."
+      }
+    },
+    {
+      "id": "4e4c4fee-0e8f-43db-8485-ee72cda042a2",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:37.788Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 70,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 4187,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "cc9519e1-ac0e-442c-a184-c5565e6c0440",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:35.034Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps maximize the chance that everyone survives; red is individually safer but makes the collective outcome worse.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps maximize the chance that everyone survives; red is individually safer but makes the collective outcome worse.\"}",
+      "request": {
+        "iteration": 67,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6644,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps maximize the chance that everyone survives; red is individually safer but makes the collective outcome worse."
+      }
+    },
+    {
+      "id": "facce7d6-d34d-486f-ae71-102222bcb77d",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:30.050Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d contribute to the outcome where everyone survives rather than take the individually safer red option.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d contribute to the outcome where everyone survives rather than take the individually safer red option.\"}",
+      "request": {
+        "iteration": 62,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11152,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d contribute to the outcome where everyone survives rather than take the individually safer red option."
+      }
+    },
+    {
+      "id": "6633314b-0a8a-462b-9f19-cf3ffa4eddfd",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:31.420Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d cooperate toward the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d cooperate toward the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 64,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 8205,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d cooperate toward the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "a6d5acec-050f-45b0-9494-fc9bcd7a8353",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:25.071Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival in either outcome; if everyone chose red, everyone would still survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival in either outcome; if everyone chose red, everyone would still survive.\"}",
+      "request": {
+        "iteration": 57,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12999,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival in either outcome; if everyone chose red, everyone would still survive."
+      }
+    },
+    {
+      "id": "62ffbe86-e67c-446f-9150-fa4093d54589",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:22.464Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 55,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 15324,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "884c43fb-cb98-4c0a-a85b-b2d4c40cafd1",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:27.640Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps reach the threshold where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps reach the threshold where everyone survives.\"}",
+      "request": {
+        "iteration": 59,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9156,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps reach the threshold where everyone survives."
+      }
+    },
+    {
+      "id": "90e06b1a-884b-41ab-9051-d43874782df5",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:30.169Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps push the outcome toward the only case where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps push the outcome toward the only case where everyone survives.\"}",
+      "request": {
+        "iteration": 63,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5061,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps push the outcome toward the only case where everyone survives."
+      }
+    },
+    {
+      "id": "96e306ba-680a-4e79-a31b-323d75dbff27",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:23.780Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives possible.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps make the outcome where everyone survives possible.\"}",
+      "request": {
+        "iteration": 56,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11254,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives possible."
+      }
+    },
+    {
+      "id": "6c1ac4cc-c030-4e71-9df3-2fc8c1f31d77",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:27.193Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely.\"}",
+      "request": {
+        "iteration": 58,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7545,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely."
+      }
+    },
+    {
+      "id": "c15648a6-0390-4513-9cd7-a71f20dc3228",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:28.058Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps push the total above 50%, so everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps push the total above 50%, so everyone survives.\"}",
+      "request": {
+        "iteration": 60,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5488,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps push the total above 50%, so everyone survives."
+      }
+    },
+    {
+      "id": "997c0ba0-9457-429e-9033-b63a64f53f45",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:20.231Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that helps achieve the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that helps achieve the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 52,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11188,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that helps achieve the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "cf4146e2-ba9f-4da6-a540-fd6dbb7cd3ec",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:16.556Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because it contributes to the only outcome where everyone survives; pressing red free-rides on others and makes that outcome less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because it contributes to the only outcome where everyone survives; pressing red free-rides on others and makes that outcome less likely.\"}",
+      "request": {
+        "iteration": 50,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13613,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because it contributes to the only outcome where everyone survives; pressing red free-rides on others and makes that outcome less likely."
+      }
+    },
+    {
+      "id": "1c330332-85c0-4c8b-910a-a5f5b628c721",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:15.181Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option that contributes to the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option that contributes to the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 49,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 14868,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option that contributes to the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "cb3c45cb-ed9a-4ea2-90d7-26a6b6921499",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:13.326Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose blue to contribute to the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose blue to contribute to the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 45,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 15645,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose blue to contribute to the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "eb6daf55-da89-44df-a4f0-201466074c11",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:21.635Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 54,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6423,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "081f6408-34fc-4b46-8bd2-e1e881142446",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:20.912Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice: it helps push the total above 50%, which is the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice: it helps push the total above 50%, which is the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 53,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6728,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice: it helps push the total above 50%, which is the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "3a1a6215-d145-4ec8-a298-ebe8cc933f5a",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:17.620Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 51,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9574,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "f5e23cdb-f1cb-43d5-8f73-47c9b673e263",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:13.836Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 46,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11235,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "31edec91-20ce-4704-8dce-1ebb2a623d9c",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:11.200Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "It’s the cooperative choice: it marginally increases the chance that everyone survives, rather than merely protecting myself.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"It’s the cooperative choice: it marginally increases the chance that everyone survives, rather than merely protecting myself.\"}",
+      "request": {
+        "iteration": 43,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12580,
+      "parsed": {
+        "choice": "blue",
+        "comment": "It’s the cooperative choice: it marginally increases the chance that everyone survives, rather than merely protecting myself."
+      }
+    },
+    {
+      "id": "4ecc14a1-3c22-4f34-9dd2-fc2237ec19cb",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:15.063Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because it is the only choice that helps make the outcome where everyone survives more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because it is the only choice that helps make the outcome where everyone survives more likely.\"}",
+      "request": {
+        "iteration": 48,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7401,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because it is the only choice that helps make the outcome where everyone survives more likely."
+      }
+    },
+    {
+      "id": "cf56abf5-d41e-493d-b0fe-86978e1567c7",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:14.135Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 47,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7500,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "15c1fae5-e817-4679-9e0f-81467c787607",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:08.714Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps reach the threshold where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps reach the threshold where everyone survives.\"}",
+      "request": {
+        "iteration": 39,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12198,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps reach the threshold where everyone survives."
+      }
+    },
+    {
+      "id": "cad7d593-ff12-4f81-8e5c-1fff933d79af",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:10.762Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the threshold where everyone survives; choosing red undermines that collective outcome.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the threshold where everyone survives; choosing red undermines that collective outcome.\"}",
+      "request": {
+        "iteration": 42,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9469,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the threshold where everyone survives; choosing red undermines that collective outcome."
+      }
+    },
+    {
+      "id": "a3f63769-987c-4de7-b1d6-b23c48f3b5f0",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:12.870Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely.\"}",
+      "request": {
+        "iteration": 44,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 4750,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps make the outcome where everyone survives more likely."
+      }
+    },
+    {
+      "id": "bc0a408e-5917-4e0a-966c-0a268a4392f5",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:08.834Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option that helps push the vote over 50% so everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option that helps push the vote over 50% so everyone survives.\"}",
+      "request": {
+        "iteration": 40,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7722,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option that helps push the vote over 50% so everyone survives."
+      }
+    },
+    {
+      "id": "da66d6ec-7a43-48fb-85c7-48175d751e9a",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:08.596Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice: it increases the chance that everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice: it increases the chance that everyone survives.\"}",
+      "request": {
+        "iteration": 38,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6585,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice: it increases the chance that everyone survives."
+      }
+    },
+    {
+      "id": "907daafb-823c-4b9a-bc3c-d0ea2dc4ca54",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:09.000Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps push the total above 50%, allowing everyone to survive.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps push the total above 50%, allowing everyone to survive.\"}",
+      "request": {
+        "iteration": 41,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6063,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps push the total above 50%, allowing everyone to survive."
+      }
+    },
+    {
+      "id": "cbe5dc29-974f-43ab-a718-4fdd30c29945",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:51.016Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Pressing red guarantees survival under either stated outcome, while pressing blue only survives if blue exceeds 50%.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Pressing red guarantees survival under either stated outcome, while pressing blue only survives if blue exceeds 50%.\"}",
+      "request": {
+        "iteration": 22,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 23119,
+      "parsed": {
+        "choice": "red",
+        "comment": "Pressing red guarantees survival under either stated outcome, while pressing blue only survives if blue exceeds 50%."
+      }
+    },
+    {
+      "id": "905d4bdf-3970-4a4d-966f-14743c44881d",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:08.237Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps reach the threshold where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps reach the threshold where everyone survives.\"}",
+      "request": {
+        "iteration": 37,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5599,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps reach the threshold where everyone survives."
+      }
+    },
+    {
+      "id": "7665d2da-daf7-4fbf-a219-97692d7e8dc2",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:01.439Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees survival for its voters regardless of whether blue exceeds 50%; if everyone chose red, everyone would also survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees survival for its voters regardless of whether blue exceeds 50%; if everyone chose red, everyone would also survive.\"}",
+      "request": {
+        "iteration": 33,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11887,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees survival for its voters regardless of whether blue exceeds 50%; if everyone chose red, everyone would also survive."
+      }
+    },
+    {
+      "id": "e881f231-effc-4985-a408-2e385951b73a",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:05.931Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the only vote that helps reach the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the only vote that helps reach the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 36,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6939,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the only vote that helps reach the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "39bef223-a12d-43ac-b5c0-104b10ce15aa",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:03.828Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps push the total over 50%, which is the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps push the total over 50%, which is the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 35,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7372,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps push the total over 50%, which is the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "0c909c0a-0976-4f27-88b7-aa96d3377b7c",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:58.721Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d contribute to the outcome where everyone survives; choosing red only protects me if collective cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d contribute to the outcome where everyone survives; choosing red only protects me if collective cooperation fails.\"}",
+      "request": {
+        "iteration": 29,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12041,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d contribute to the outcome where everyone survives; choosing red only protects me if collective cooperation fails."
+      }
+    },
+    {
+      "id": "8fa7527d-da0f-4579-b3be-0deae44129aa",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:02.364Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives; pressing red makes that outcome less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives; pressing red makes that outcome less likely.\"}",
+      "request": {
+        "iteration": 34,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6636,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives; pressing red makes that outcome less likely."
+      }
+    },
+    {
+      "id": "23079955-1ec8-480d-8746-98fcab58a4bc",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:57.699Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival under the stated rules, and if everyone chose red, everyone would still survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival under the stated rules, and if everyone chose red, everyone would still survive.\"}",
+      "request": {
+        "iteration": 27,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11135,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival under the stated rules, and if everyone chose red, everyone would still survive."
+      }
+    },
+    {
+      "id": "85edce58-ec92-47b2-bec2-ab29b1afe343",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:59.466Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 31,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9248,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "c3214b8b-fb47-4d48-b23c-4bb34ccbe06f",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:59.303Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue because it is the cooperative choice that helps reach the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue because it is the cooperative choice that helps reach the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 30,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9293,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue because it is the cooperative choice that helps reach the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "ac364c9e-9604-4a94-94da-7df9a933f09b",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:58.044Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the cooperative option: if enough people do the same, everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the cooperative option: if enough people do the same, everyone survives.\"}",
+      "request": {
+        "iteration": 28,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 10193,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the cooperative option: if enough people do the same, everyone survives."
+      }
+    },
+    {
+      "id": "b4f98aef-b362-4d45-9a79-d5b73d7a6c16",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:52:00.351Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that helps everyone survive; choosing red is a hedge that makes the bad outcome more likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that helps everyone survive; choosing red is a hedge that makes the bad outcome more likely.\"}",
+      "request": {
+        "iteration": 32,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5580,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that helps everyone survive; choosing red is a hedge that makes the bad outcome more likely."
+      }
+    },
+    {
+      "id": "6c9b50f5-d32f-47ca-b559-4f372b38dd96",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:44.239Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "It’s the cooperative choice that helps reach the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"It’s the cooperative choice that helps reach the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 17,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 19589,
+      "parsed": {
+        "choice": "blue",
+        "comment": "It’s the cooperative choice that helps reach the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "12ae3de5-2559-4095-9990-7156b41fdca4",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:42.840Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue to contribute to the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue to contribute to the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 16,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 19524,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue to contribute to the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "7f2c6847-d4e2-447e-b514-0401991dd340",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:46.667Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option that contributes to the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option that contributes to the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 20,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 14773,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option that contributes to the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "09bc9772-848f-4763-9e78-19bb09dd5881",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:45.795Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d press blue to contribute to the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d press blue to contribute to the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 19,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 14555,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d press blue to contribute to the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "c366f0f2-4ed8-4409-bbe2-e81ed05425e0",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:46.782Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice: it increases the chance that everyone survives, while pressing red only protects oneself if cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice: it increases the chance that everyone survives, while pressing red only protects oneself if cooperation fails.\"}",
+      "request": {
+        "iteration": 21,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12684,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice: it increases the chance that everyone survives, while pressing red only protects oneself if cooperation fails."
+      }
+    },
+    {
+      "id": "9e2ce69d-7808-4c84-bc98-848caa295738",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:53.458Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 25,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5845,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "1fe0c07f-7ac5-4fc7-8fa2-b93d6098fcfd",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:54.739Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the >50% threshold where everyone survives; pressing red makes that outcome less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the >50% threshold where everyone survives; pressing red makes that outcome less likely.\"}",
+      "request": {
+        "iteration": 26,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 3982,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the >50% threshold where everyone survives; pressing red makes that outcome less likely."
+      }
+    },
+    {
+      "id": "93111923-42d8-4ad7-a65a-07f79ad7d09d",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:51.676Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that can save everyone if enough people do the same.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that can save everyone if enough people do the same.\"}",
+      "request": {
+        "iteration": 23,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6367,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that can save everyone if enough people do the same."
+      }
+    },
+    {
+      "id": "5f6e6096-4a37-43f5-99eb-4ae4ddcd122b",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:52.007Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue supports the only outcome where everyone survives; pressing red is a selfish hedge that makes that outcome less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue supports the only outcome where everyone survives; pressing red is a selfish hedge that makes that outcome less likely.\"}",
+      "request": {
+        "iteration": 24,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5692,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue supports the only outcome where everyone survives; pressing red is a selfish hedge that makes that outcome less likely."
+      }
+    },
+    {
+      "id": "978c0ddf-1f61-41d2-8bc2-a89e735d419a",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:39.933Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red is the individually safest choice: if blue gets a majority, everyone survives anyway; if it doesn’t, red voters survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the individually safest choice: if blue gets a majority, everyone survives anyway; if it doesn’t, red voters survive.\"}",
+      "request": {
+        "iteration": 13,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 14806,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red is the individually safest choice: if blue gets a majority, everyone survives anyway; if it doesn’t, red voters survive."
+      }
+    },
+    {
+      "id": "98762468-df75-4ebc-a193-142660c22448",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:40.856Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps reach the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps reach the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 14,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12602,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps reach the only outcome where everyone survives."
+      }
+    },
+    {
+      "id": "d5d00629-746b-4ba6-a4c4-e5fe49926904",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:45.679Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the outcome where everyone survives; pressing red only helps me if the collective effort fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the outcome where everyone survives; pressing red only helps me if the collective effort fails.\"}",
+      "request": {
+        "iteration": 18,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6328,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the outcome where everyone survives; pressing red only helps me if the collective effort fails."
+      }
+    },
+    {
+      "id": "b43fec3a-0618-44a3-aa44-671ad7b2e024",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.188Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red is the safer choice: under the stated rules, red voters survive if blue is below 50%, and everyone survives if blue is above 50%.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red is the safer choice: under the stated rules, red voters survive if blue is below 50%, and everyone survives if blue is above 50%.\"}",
+      "request": {
+        "iteration": 1,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 18488,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red is the safer choice: under the stated rules, red voters survive if blue is below 50%, and everyone survives if blue is above 50%."
+      }
+    },
+    {
+      "id": "163475bd-9608-4ca6-bd79-27e8debe169d",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:38.835Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival in either outcome, while blue only survives if a majority also chooses blue.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival in either outcome, while blue only survives if a majority also chooses blue.\"}",
+      "request": {
+        "iteration": 12,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12181,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival in either outcome, while blue only survives if a majority also chooses blue."
+      }
+    },
+    {
+      "id": "160c56e9-c448-4e04-8aa0-4241629cb5a3",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:40.956Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that helps reach the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that helps reach the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 15,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5826,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that helps reach the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "5ab3f9d5-21d1-46e5-acf9-3536383b718e",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.191Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "red",
+      "comment": "Red guarantees my survival in the stated outcomes, and if everyone made the same choice, everyone would still survive.",
+      "rawResponse": "{\"choice\":\"red\",\"comment\":\"Red guarantees my survival in the stated outcomes, and if everyone made the same choice, everyone would still survive.\"}",
+      "request": {
+        "iteration": 10,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 13476,
+      "parsed": {
+        "choice": "red",
+        "comment": "Red guarantees my survival in the stated outcomes, and if everyone made the same choice, everyone would still survive."
+      }
+    },
+    {
+      "id": "5820c685-b913-43cb-a7ee-ed53a4a88b72",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:37.562Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option that helps push the outcome toward everyone surviving.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option that helps push the outcome toward everyone surviving.\"}",
+      "request": {
+        "iteration": 11,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 8233,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option that helps push the outcome toward everyone surviving."
+      }
+    },
+    {
+      "id": "0b15cddc-86f3-4477-bbec-1f67a0c991d5",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.190Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "I’d choose the option that helps reach the threshold where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"I’d choose the option that helps reach the threshold where everyone survives.\"}",
+      "request": {
+        "iteration": 8,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 12489,
+      "parsed": {
+        "choice": "blue",
+        "comment": "I’d choose the option that helps reach the threshold where everyone survives."
+      }
+    },
+    {
+      "id": "0f32fd94-5002-43fa-9837-6ae6958f88b8",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.190Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice that helps make the outcome where everyone survives possible.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice that helps make the outcome where everyone survives possible.\"}",
+      "request": {
+        "iteration": 7,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 11049,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice that helps make the outcome where everyone survives possible."
+      }
+    },
+    {
+      "id": "c955afb2-476c-4f18-b193-13db47a35b6b",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.190Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Blue is the cooperative choice: it increases the chance that everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Blue is the cooperative choice: it increases the chance that everyone survives.\"}",
+      "request": {
+        "iteration": 5,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 9651,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Blue is the cooperative choice: it increases the chance that everyone survives."
+      }
+    },
+    {
+      "id": "a3223825-ee0c-4d82-9004-41c4c22df538",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.189Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the cooperative choice that helps make the everyone-survives outcome possible.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the cooperative choice that helps make the everyone-survives outcome possible.\"}",
+      "request": {
+        "iteration": 4,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7766,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the cooperative choice that helps make the everyone-survives outcome possible."
+      }
+    },
+    {
+      "id": "d7986302-ee3e-4c63-abb3-0e3f0cfebbf9",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.189Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue helps reach the majority threshold where everyone survives; pressing red makes that outcome less likely.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue helps reach the majority threshold where everyone survives; pressing red makes that outcome less likely.\"}",
+      "request": {
+        "iteration": 2,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 7667,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue helps reach the majority threshold where everyone survives; pressing red makes that outcome less likely."
+      }
+    },
+    {
+      "id": "9a6604e8-9e46-4c99-b0a5-3279655803cf",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.190Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue is the only choice that contributes to the outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue is the only choice that contributes to the outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 6,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 6743,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue is the only choice that contributes to the outcome where everyone survives."
+      }
+    },
+    {
+      "id": "1acef8e4-6d53-4b67-bc31-d9a821c3d742",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.189Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives; choosing red protects oneself only if collective cooperation fails.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives; choosing red protects oneself only if collective cooperation fails.\"}",
+      "request": {
+        "iteration": 3,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 5646,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives; choosing red protects oneself only if collective cooperation fails."
+      }
+    },
+    {
+      "id": "98adbbbe-5292-4915-b172-f096d94bd7cb",
+      "source": "local",
+      "batchId": "e8639d1e-e9b4-4d7b-82aa-fae2673994b0",
+      "timestamp": "2026-04-26T16:51:33.191Z",
+      "modelId": "openai/gpt-5.5",
+      "modelName": "OpenAI: GPT-5.5",
+      "choice": "blue",
+      "comment": "Pressing blue contributes to the only outcome where everyone survives.",
+      "rawResponse": "{\"choice\":\"blue\",\"comment\":\"Pressing blue contributes to the only outcome where everyone survives.\"}",
+      "request": {
+        "iteration": 9,
+        "maxTokens": null,
+        "omittedParameters": [],
+        "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",
+        "requireParameters": true
+      },
+      "status": "accepted",
+      "latencyMs": 4372,
+      "parsed": {
+        "choice": "blue",
+        "comment": "Pressing blue contributes to the only outcome where everyone survives."
+      }
+    },
+    {
       "id": "ffb347fe-bf55-4fd4-87c5-b8cfd33bdd60",
       "source": "local",
       "batchId": "c2ca501b-3c64-4ee1-9b37-8e9c6a0b6154",
