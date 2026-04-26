@@ -547,7 +547,11 @@ function DistributionChart({ models }) {
           <i className="dot red"></i>Red (survive if &le;50%)
         </span>
       </div>
-      {models.map((model) => {
+      {[...models].sort((a, b) => {
+        const redA = a.total ? a.red / a.total : 0
+        const redB = b.total ? b.red / b.total : 0
+        return redB - redA
+      }).map((model) => {
         const bluePercent = model.total ? (model.blue / model.total) * 100 : 0
         const redPercent = 100 - bluePercent
 
