@@ -455,7 +455,7 @@ function DistributionChart({ models }) {
 				</span>
 				<span>
 					<Dot tone='red' />
-					Red (survive if &le;50%)
+					Red (always survive)
 				</span>
 			</div>
 			{[...models]
