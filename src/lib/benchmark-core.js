@@ -1,4 +1,4 @@
-export const APP_TITLE = 'ButtonArena'
+export const APP_TITLE = 'Button Arena'
 
 export const STORAGE_KEYS = {
 	apiKey: 'button-arena:openrouter-key',

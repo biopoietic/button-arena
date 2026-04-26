@@ -645,7 +645,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 						</span>
 						<div>
 							<h3 className='m-0 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
-								Share ButtonArena
+								Share Button Arena
 							</h3>
 							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-slate-600'>{shareDescription}</p>
 						</div>
@@ -994,7 +994,7 @@ function ExplainerPanel() {
 					theory and basic survival logic.
 				</p>
 				<p className='m-0'>
-					ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how consistently and honestly they reason
+					Button Arena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how consistently and honestly they reason
 					through the trade-offs.
 				</p>
 			</div>
@@ -1256,8 +1256,8 @@ function App() {
 		const shareData = {
 			title: APP_TITLE,
 			text: globalSummary.total
-				? `Latest ButtonArena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
-				: 'See the latest ButtonArena benchmark results.',
+				? `Latest Button Arena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
+				: 'See the latest Button Arena benchmark results.',
 			url: getShareUrl(),
 		}
 
@@ -1384,7 +1384,7 @@ function App() {
 	const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
 	const shareDescription = globalSummary.total
-		? `Latest ButtonArena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
+		? `Latest Button Arena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
 		: 'Copy the benchmark landing page or open your device share sheet.'
 	const shareUrl = getShareUrl()
 	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
@@ -1683,7 +1683,7 @@ function App() {
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<Logo aria-hidden='true' className='brand-mark' />
 					<div>
-						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-slate-950'>ButtonArena</h1>
+						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-slate-950'>Button Arena</h1>
 						<p className='mt-1 m-0 text-sm text-slate-600'>A live benchmark of red/blue choices from single-shot structured responses</p>
 					</div>
 				</div>
