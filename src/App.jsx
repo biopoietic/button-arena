@@ -37,29 +37,6 @@ const VOTE_RESPONSE_FORMAT = {
   },
 }
 
-const FALLBACK_MODELS = [
-  {
-    id: 'openai/gpt-4o-mini',
-    name: 'GPT-4o mini',
-    supported_parameters: ['temperature', 'max_tokens', 'structured_outputs'],
-  },
-  {
-    id: 'anthropic/claude-3.5-sonnet',
-    name: 'Claude 3.5 Sonnet',
-    supported_parameters: ['temperature', 'max_tokens', 'structured_outputs'],
-  },
-  {
-    id: 'google/gemini-flash-1.5',
-    name: 'Gemini Flash 1.5',
-    supported_parameters: ['temperature', 'max_tokens', 'structured_outputs'],
-  },
-  {
-    id: 'mistralai/mistral-large',
-    name: 'Mistral Large',
-    supported_parameters: ['temperature', 'max_tokens', 'structured_outputs'],
-  },
-]
-
 const EMPTY_STATIC_RESULTS = {
   metadata: {
     title: 'Committed benchmark results',
@@ -68,6 +45,16 @@ const EMPTY_STATIC_RESULTS = {
   },
   responses: [],
 }
+
+const NAV_ITEMS = [
+  { id: 'overview', label: 'Overview', icon: 'home' },
+  { id: 'results', label: 'Results', icon: 'activity' },
+  { id: 'runs', label: 'Runs', icon: 'list' },
+  { id: 'models', label: 'Models', icon: 'box' },
+  { id: 'configuration', label: 'Configuration', icon: 'settings' },
+]
+
+const RUNS_PAGE_SIZE = 12
 
 function Icon({ name, size = 18 }) {
   const paths = {
@@ -355,6 +342,80 @@ function calculateSummary(rows) {
   }
 }
 
+function getProviderId(modelId) {
+  const [provider] = String(modelId || 'custom').split('/')
+  return provider || 'custom'
+}
+
+function getProviderName(providerId) {
+  const labels = {
+    anthropic: 'Anthropic',
+    cohere: 'Cohere',
+    deepseek: 'DeepSeek',
+    google: 'Google',
+    meta: 'Meta',
+    'meta-llama': 'Meta Llama',
+    microsoft: 'Microsoft',
+    mistralai: 'Mistral AI',
+    openai: 'OpenAI',
+    perplexity: 'Perplexity',
+    qwen: 'Qwen',
+    xai: 'xAI',
+    'x-ai': 'xAI',
+  }
+
+  if (labels[providerId]) return labels[providerId]
+  return providerId
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+function calculateProviderBreakdown(rows) {
+  const providerMap = new Map()
+
+  for (const row of rows) {
+    if (row.status === 'error' || !normalizeChoice(row.choice)) continue
+
+    const providerId = getProviderId(row.modelId)
+    if (!providerMap.has(providerId)) {
+      providerMap.set(providerId, {
+        id: providerId,
+        name: getProviderName(providerId),
+        blue: 0,
+        red: 0,
+        total: 0,
+        models: new Map(),
+      })
+    }
+
+    const provider = providerMap.get(providerId)
+    if (!provider.models.has(row.modelId)) {
+      provider.models.set(row.modelId, {
+        id: row.modelId,
+        name: row.modelName || row.modelId,
+        blue: 0,
+        red: 0,
+        total: 0,
+      })
+    }
+
+    const model = provider.models.get(row.modelId)
+    provider[row.choice] += 1
+    provider.total += 1
+    model[row.choice] += 1
+    model.total += 1
+  }
+
+  return [...providerMap.values()]
+    .map((provider) => ({
+      ...provider,
+      models: [...provider.models.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name)),
+    }))
+    .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
+}
+
 function formatPercent(value, total) {
   if (!total) return '0%'
   const percentage = (value / total) * 100
@@ -559,8 +620,270 @@ function ResponseTable({ rows, limit }) {
   )
 }
 
+function DataSourceFilter({
+  combinedSummary,
+  displayMode,
+  globalSummary,
+  hasLocalRuns,
+  localSummary,
+  setDisplayMode,
+}) {
+  const options = [
+    { id: 'global', label: 'Public', detail: 'committed', total: globalSummary.total },
+    ...(hasLocalRuns
+      ? [
+          { id: 'local', label: 'Local', detail: 'private', total: localSummary.total },
+          { id: 'combined', label: 'Combined', detail: 'public + local', total: combinedSummary.total },
+        ]
+      : []),
+  ]
+
+  return (
+    <div className="source-filter">
+      <div className="source-filter-label">
+        <span>Data source</span>
+        <small>{hasLocalRuns ? 'Local runs are private to this browser.' : 'Run locally to compare private results.'}</small>
+      </div>
+      <div className="source-filter-controls" role="tablist">
+        {options.map((option) => (
+          <button
+            aria-selected={displayMode === option.id}
+            className={displayMode === option.id ? 'active' : ''}
+            key={option.id}
+            onClick={() => setDisplayMode(option.id)}
+            role="tab"
+            type="button"
+          >
+            <span>
+              {option.label}
+              <small>{option.detail}</small>
+            </span>
+            <strong>{option.total}</strong>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SummaryGrid({ lastUpdated, selectedCount, statusLabel, summary }) {
+  return (
+    <section className="summary-grid">
+      <SummaryCard detail={`${selectedCount} selected for next local run`} icon="activity" label="Total Runs" value={summary.total} />
+      <SummaryCard
+        detail={formatPercent(summary.blue, summary.total)}
+        icon="check"
+        label="Blue Votes"
+        tone="blue"
+        value={summary.blue}
+      />
+      <SummaryCard
+        detail={formatPercent(summary.red, summary.total)}
+        icon="alert"
+        label="Red Votes"
+        tone="red"
+        value={summary.red}
+      />
+      <SummaryCard
+        detail={`${summary.errors} rejected or failed`}
+        icon="box"
+        label="Models"
+        tone="purple"
+        value={summary.models.length}
+      />
+      <SummaryCard detail={formatDateTime(lastUpdated)} icon="check" label="Status" tone="green" value={statusLabel} />
+    </section>
+  )
+}
+
+function ResultsPanels({ logLimit, setLogLimit, summary }) {
+  return (
+    <>
+      <section className="chart-grid">
+        <article className="panel wide-panel">
+          <div className="panel-heading">
+            <h2>Vote Distribution By Model</h2>
+          </div>
+          <DistributionChart models={summary.models} />
+        </article>
+        <article className="panel">
+          <div className="panel-heading">
+            <h2>Overall Vote Distribution</h2>
+          </div>
+          <DonutChart summary={summary} />
+        </article>
+      </section>
+
+      <article className="panel log-panel">
+        <div className="panel-heading">
+          <h2>Response Log {logLimit === 10 ? '(Latest 10)' : '(All)'}</h2>
+          <button
+            className="secondary-button small"
+            disabled={!summary.latest.length}
+            onClick={() => setLogLimit((current) => (current === 10 ? summary.latest.length : 10))}
+            type="button"
+          >
+            {logLimit === 10 ? 'View all logs' : 'Latest 10'}
+          </button>
+        </div>
+        <ResponseTable limit={logLimit} rows={summary.latest} />
+        <div className="log-footer">
+          <span>Only responses validated as red or blue are included in aggregates.</span>
+          <span>
+            {Math.min(logLimit, summary.latest.length) || 0} of {summary.latest.length}
+          </span>
+        </div>
+      </article>
+    </>
+  )
+}
+
+function RunsTable({ page, rows, setPage }) {
+  const totalPages = Math.max(1, Math.ceil(rows.length / RUNS_PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const pageStart = (safePage - 1) * RUNS_PAGE_SIZE
+  const visibleRows = rows.slice(pageStart, pageStart + RUNS_PAGE_SIZE)
+
+  if (!rows.length) {
+    return (
+      <EmptyState
+        detail="Raw benchmark requests will appear here after a local run or after committed results are added."
+        title="No raw runs yet"
+      />
+    )
+  }
+
+  return (
+    <>
+      <div className="table-scroll">
+        <table className="runs-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Source</th>
+              <th>Batch</th>
+              <th>Iteration</th>
+              <th>Model</th>
+              <th>Status</th>
+              <th>Choice</th>
+              <th>Latency</th>
+              <th>Raw Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visibleRows.map((row) => (
+              <tr className={row.status === 'error' ? 'error-row' : ''} key={row.id}>
+                <td>{formatDateTime(row.timestamp)}</td>
+                <td>
+                  <span className={`source-pill ${row.source}`}>{row.source}</span>
+                </td>
+                <td title={row.batchId ?? ''}>{row.batchId ? row.batchId.slice(0, 8) : '-'}</td>
+                <td>{row.request?.iteration ?? '-'}</td>
+                <td title={row.modelId}>{row.modelName}</td>
+                <td>{row.status}</td>
+                <td>
+                  {row.choice ? (
+                    <span className={`choice-pill ${row.choice}`}>
+                      <i className={`dot ${row.choice}`}></i>
+                      {row.choice}
+                    </span>
+                  ) : (
+                    <span className="choice-pill invalid">invalid</span>
+                  )}
+                </td>
+                <td>{row.latencyMs == null ? '-' : `${row.latencyMs} ms`}</td>
+                <td title={row.rawResponse || row.error}>{trimText(row.rawResponse || row.error, 180)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="pager">
+        <span>
+          {pageStart + 1}-{Math.min(pageStart + RUNS_PAGE_SIZE, rows.length)} of {rows.length}
+        </span>
+        <div>
+          <button disabled={safePage <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))} type="button">
+            Previous
+          </button>
+          <strong>
+            Page {safePage} of {totalPages}
+          </strong>
+          <button
+            disabled={safePage >= totalPages}
+            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            type="button"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function ProviderBreakdown({ providers }) {
+  if (!providers.length) {
+    return (
+      <EmptyState
+        detail="Accepted structured responses will be grouped by provider and model here."
+        title="No model breakdown yet"
+      />
+    )
+  }
+
+  return (
+    <div className="provider-grid">
+      {providers.map((provider) => (
+        <article className="provider-card" key={provider.id}>
+          <div className="provider-header">
+            <div>
+              <h3>{provider.name}</h3>
+              <span>{provider.id}</span>
+            </div>
+            <strong>{provider.total}</strong>
+          </div>
+          <div className="provider-meter">
+            <div className="mini-stacked-bar">
+              <span className="blue" style={{ width: formatPercent(provider.blue, provider.total) }}></span>
+              <span className="red" style={{ width: formatPercent(provider.red, provider.total) }}></span>
+            </div>
+            <div className="provider-stats">
+              <span>
+                <i className="dot blue"></i>
+                {provider.blue} blue ({formatPercent(provider.blue, provider.total)})
+              </span>
+              <span>
+                <i className="dot red"></i>
+                {provider.red} red ({formatPercent(provider.red, provider.total)})
+              </span>
+            </div>
+          </div>
+          <div className="model-breakdown-list">
+            {provider.models.map((model) => (
+              <div className="model-breakdown-row" key={model.id}>
+                <div>
+                  <strong>{model.name}</strong>
+                  <span>{model.id}</span>
+                </div>
+                <div className="model-counts">
+                  <span>{model.total}</span>
+                  <small>
+                    {model.blue}B / {model.red}R
+                  </small>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}
+
 function App() {
   const abortRef = useRef(null)
+  const [activeSection, setActiveSection] = useState('overview')
   const [apiKey, setApiKey] = useState(() => window.localStorage.getItem(STORAGE_KEYS.apiKey) ?? '')
   const [availableModels, setAvailableModels] = useState([])
   const [displayMode, setDisplayMode] = useState('global')
@@ -575,9 +898,10 @@ function App() {
   const [modelSearch, setModelSearch] = useState('')
   const [modelStatus, setModelStatus] = useState('loading')
   const [requireParameters, setRequireParameters] = useState(true)
+  const [runsPage, setRunsPage] = useState(1)
   const [runError, setRunError] = useState('')
   const [runProgress, setRunProgress] = useState({ active: '', completed: 0, total: 0 })
-  const [selectedModelIds, setSelectedModelIds] = useState(FALLBACK_MODELS.map((model) => model.id))
+  const [selectedModelIds, setSelectedModelIds] = useState([])
   const [showStructuredOnly, setShowStructuredOnly] = useState(false)
   const [temperature, setTemperature] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
@@ -618,19 +942,21 @@ function App() {
     async function loadModels() {
       setModelStatus('loading')
       try {
-        const response = await fetch(`${OPENROUTER_API}/models?output_modalities=text`)
+        const response = await fetch(`${OPENROUTER_API}/models`)
         if (!response.ok) throw new Error(`Model catalog returned ${response.status}`)
         const payload = await response.json()
         const models = Array.isArray(payload.data) ? payload.data : []
 
         if (!ignore) {
+          const liveModelIds = new Set(models.map((model) => model.id).filter(Boolean))
           setAvailableModels(models)
-          setModelStatus(models.length ? 'ready' : 'fallback')
+          setSelectedModelIds((current) => current.filter((modelId) => liveModelIds.has(modelId)))
+          setModelStatus(models.length ? 'ready' : 'error')
         }
       } catch {
         if (!ignore) {
           setAvailableModels([])
-          setModelStatus('fallback')
+          setModelStatus('error')
         }
       }
     }
@@ -662,12 +988,17 @@ function App() {
   )
   const combinedSummary = useMemo(() => calculateSummary(allResponses), [allResponses])
 
+  const hasLocalRuns = localResponses.length > 0
+  const effectiveDisplayMode = hasLocalRuns ? displayMode : 'global'
+  const activeRows =
+    effectiveDisplayMode === 'global' ? globalResponses : effectiveDisplayMode === 'local' ? localResponses : allResponses
   const activeSummary =
-    displayMode === 'global' ? globalSummary : displayMode === 'local' ? localSummary : combinedSummary
+    effectiveDisplayMode === 'global' ? globalSummary : effectiveDisplayMode === 'local' ? localSummary : combinedSummary
+  const providerBreakdown = useMemo(() => calculateProviderBreakdown(activeRows), [activeRows])
 
   const modelOptions = useMemo(() => {
     const merged = new Map()
-    for (const model of [...FALLBACK_MODELS, ...availableModels]) {
+    for (const model of availableModels) {
       if (model?.id) {
         merged.set(model.id, {
           id: model.id,
@@ -722,8 +1053,13 @@ function App() {
   function addModel(modelId) {
     const id = modelId.trim()
     if (!id || selectedModelIds.includes(id)) return
+    if (modelStatus === 'ready' && !modelsById.has(id)) {
+      setRunError('That model ID is not in the live OpenRouter catalog.')
+      return
+    }
     setSelectedModelIds((current) => [...current, id])
     setModelSearch('')
+    setRunError('')
   }
 
   function removeModel(modelId) {
@@ -850,6 +1186,14 @@ function App() {
       return
     }
 
+    if (modelStatus === 'ready') {
+      const invalidModelIds = selectedModelIds.filter((modelId) => !modelsById.has(modelId))
+      if (invalidModelIds.length) {
+        setRunError(`Remove unavailable model IDs before running: ${invalidModelIds.join(', ')}`)
+        return
+      }
+    }
+
     const safeIterations = Math.max(1, Math.min(1000, Number(iterations) || 1))
     const totalRequests = selectedModels.length * safeIterations
     const batchId = createId()
@@ -898,11 +1242,326 @@ function App() {
   function clearLocalResults() {
     if (isRunning) return
     setLocalResponses([])
+    setDisplayMode('global')
     setRunError('')
+  }
+
+  function changeSection(section) {
+    setActiveSection(section)
+    setRunsPage(1)
+  }
+
+  function changeDisplayMode(mode) {
+    setDisplayMode(mode)
+    setRunsPage(1)
   }
 
   const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
   const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
+  const activeNavItem = NAV_ITEMS.find((item) => item.id === activeSection) ?? NAV_ITEMS[0]
+
+  const dataSourceFilter = (
+    <DataSourceFilter
+      combinedSummary={combinedSummary}
+      displayMode={effectiveDisplayMode}
+      globalSummary={globalSummary}
+      hasLocalRuns={hasLocalRuns}
+      localSummary={localSummary}
+      setDisplayMode={changeDisplayMode}
+    />
+  )
+
+  const questionCard = (
+    <article className="panel question-panel">
+      <div className="panel-heading">
+        <h2>Question</h2>
+        <span className="fixed-label">Fixed</span>
+      </div>
+      <p>{QUESTION}</p>
+    </article>
+  )
+
+  const schemaCard = (
+    <article className="panel">
+      <div className="panel-heading">
+        <h2>Response Format</h2>
+        <button className="icon-button" onClick={copySchema} title="Copy schema" type="button">
+          <Icon name="clipboard" size={17} />
+        </button>
+      </div>
+      <pre className="schema-block">{schemaText}</pre>
+    </article>
+  )
+
+  const runSettingsCard = (
+    <article className="panel settings-panel">
+      <div className="panel-heading">
+        <h2>Run Settings</h2>
+        <span className="small-status">
+          {modelStatus === 'ready' ? `${modelOptions.length} live models` : modelStatus === 'loading' ? 'Loading models' : 'Catalog unavailable'}
+        </span>
+      </div>
+
+      <label className="field">
+        <span>OpenRouter API key</span>
+        <div className="input-with-icon">
+          <Icon name="key" size={16} />
+          <input
+            autoComplete="off"
+            onChange={(event) => setApiKey(event.target.value)}
+            placeholder="sk-or-..."
+            type="password"
+            value={apiKey}
+          />
+        </div>
+        <small>Stored in localStorage on this device only.</small>
+      </label>
+
+      <div className="field">
+        <span>Models</span>
+        {modelStatus === 'error' && (
+          <div className="inline-alert">
+            <Icon name="alert" size={16} />
+            Could not load the OpenRouter model catalog. Check the network connection and reload.
+          </div>
+        )}
+        <div className="model-search">
+          <Icon name="search" size={16} />
+          <input
+            onChange={(event) => setModelSearch(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') addModel(modelSearch)
+            }}
+            placeholder="Search or paste any model id"
+            type="text"
+            value={modelSearch}
+          />
+          <button onClick={() => addModel(modelSearch)} type="button">
+            Add
+          </button>
+        </div>
+        <label className="toggle-line">
+          <input
+            checked={showStructuredOnly}
+            onChange={(event) => setShowStructuredOnly(event.target.checked)}
+            type="checkbox"
+          />
+          Only show structured-output capable models
+        </label>
+        <div className="model-results">
+          {filteredModels.length ? (
+            filteredModels.map((model) => (
+              <button
+                className={selectedModelIds.includes(model.id) ? 'selected' : ''}
+                key={model.id}
+                onClick={() => addModel(model.id)}
+                type="button"
+              >
+                <span>
+                  <strong>{modelLabel(model)}</strong>
+                  <small>{model.id}</small>
+                </span>
+                {supportsStructuredOutput(model) && <em>structured</em>}
+              </button>
+            ))
+          ) : (
+            <div className="model-results-empty">
+              {modelStatus === 'loading' ? 'Loading OpenRouter models...' : 'No matching live models.'}
+            </div>
+          )}
+        </div>
+        <div className="selected-models">
+          {selectedModels.map((model) => (
+            <span className="model-chip" key={model.id}>
+              {modelLabel(model)}
+              <button aria-label={`Remove ${modelLabel(model)}`} onClick={() => removeModel(model.id)} type="button">
+                x
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="settings-grid">
+        <label className="field compact-field">
+          <span>Iterations per model</span>
+          <input
+            max="1000"
+            min="1"
+            onChange={(event) => setIterations(event.target.value)}
+            type="number"
+            value={iterations}
+          />
+        </label>
+        <label className="field compact-field">
+          <span>Temperature</span>
+          <input
+            max="2"
+            min="0"
+            onChange={(event) => setTemperature(event.target.value)}
+            step="0.1"
+            type="number"
+            value={temperature}
+          />
+        </label>
+        <label className="field compact-field">
+          <span>Max tokens</span>
+          <input max="512" min="16" onChange={(event) => setMaxTokens(event.target.value)} type="number" value={maxTokens} />
+        </label>
+      </div>
+
+      <label className="toggle-line">
+        <input
+          checked={requireParameters}
+          onChange={(event) => setRequireParameters(event.target.checked)}
+          type="checkbox"
+        />
+        Require providers that support structured output parameters
+      </label>
+
+      {runError && (
+        <div className="inline-alert">
+          <Icon name="alert" size={16} />
+          {runError}
+        </div>
+      )}
+
+      {isRunning && (
+        <div className="run-progress" role="status">
+          <div>
+            <span>{runProgress.active}</span>
+            <strong>
+              {runProgress.completed}/{runProgress.total}
+            </strong>
+          </div>
+          <div className="progress-track">
+            <span style={{ width: `${progressPercent}%` }}></span>
+          </div>
+        </div>
+      )}
+
+      <div className="run-actions">
+        {isRunning ? (
+          <button className="danger-button" onClick={stopRun} type="button">
+            <Icon name="stop" size={16} />
+            Stop Run
+          </button>
+        ) : (
+          <button className="primary-button" onClick={runBenchmark} type="button">
+            <Icon name="play" size={16} />
+            Run Benchmark
+          </button>
+        )}
+        <button className="secondary-button" disabled={isRunning || !localResponses.length} onClick={clearLocalResults} type="button">
+          <Icon name="trash" size={16} />
+          Clear Local
+        </button>
+      </div>
+      <p className="fine-print">Each request is one-shot with no conversation history.</p>
+    </article>
+  )
+
+  const pageContent = {
+    overview: (
+      <div className="page-stack">
+        <section className="overview-layout">
+          {questionCard}
+          {schemaCard}
+        </section>
+        {dataSourceFilter}
+        <SummaryGrid
+          lastUpdated={lastUpdated}
+          selectedCount={selectedModels.length}
+          statusLabel={statusLabel}
+          summary={activeSummary}
+        />
+        <section className="chart-grid">
+          <article className="panel wide-panel">
+            <div className="panel-heading">
+              <h2>Vote Distribution By Model</h2>
+            </div>
+            <DistributionChart models={activeSummary.models} />
+          </article>
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Overall Vote Distribution</h2>
+            </div>
+            <DonutChart summary={activeSummary} />
+          </article>
+        </section>
+      </div>
+    ),
+    results: (
+      <div className="page-stack">
+        {dataSourceFilter}
+        <SummaryGrid
+          lastUpdated={lastUpdated}
+          selectedCount={selectedModels.length}
+          statusLabel={statusLabel}
+          summary={activeSummary}
+        />
+        <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={activeSummary} />
+      </div>
+    ),
+    runs: (
+      <div className="page-stack">
+        {dataSourceFilter}
+        {isRunning && (
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Current Run</h2>
+              <span className="small-status">Live</span>
+            </div>
+            <div className="run-progress" role="status">
+              <div>
+                <span>{runProgress.active}</span>
+                <strong>
+                  {runProgress.completed}/{runProgress.total}
+                </strong>
+              </div>
+              <div className="progress-track">
+                <span style={{ width: `${progressPercent}%` }}></span>
+              </div>
+            </div>
+          </article>
+        )}
+        <article className="panel log-panel">
+          <div className="panel-heading">
+            <h2>Raw Runs</h2>
+            <span className="small-status">{activeRows.length} rows</span>
+          </div>
+          <RunsTable page={runsPage} rows={activeSummary.latest} setPage={setRunsPage} />
+        </article>
+      </div>
+    ),
+    models: (
+      <div className="page-stack">
+        {dataSourceFilter}
+        <SummaryGrid
+          lastUpdated={lastUpdated}
+          selectedCount={selectedModels.length}
+          statusLabel={statusLabel}
+          summary={activeSummary}
+        />
+        <article className="panel">
+          <div className="panel-heading">
+            <h2>Provider And Model Breakdown</h2>
+            <span className="small-status">{providerBreakdown.length} providers</span>
+          </div>
+          <ProviderBreakdown providers={providerBreakdown} />
+        </article>
+      </div>
+    ),
+    configuration: (
+      <div className="config-layout">
+        <section className="config-reference">
+          {questionCard}
+          {schemaCard}
+        </section>
+        {runSettingsCard}
+      </div>
+    ),
+  }
 
   return (
     <div className="app-shell">
@@ -928,26 +1587,18 @@ function App() {
 
       <aside className="sidebar">
         <nav aria-label="Benchmark sections">
-          <a className="active" href="#overview">
-            <Icon name="home" size={17} />
-            Overview
-          </a>
-          <a href="#results">
-            <Icon name="activity" size={17} />
-            Results
-          </a>
-          <a href="#run">
-            <Icon name="play" size={17} />
-            Runs
-          </a>
-          <a href="#models">
-            <Icon name="box" size={17} />
-            Models
-          </a>
-          <a href="#configuration">
-            <Icon name="settings" size={17} />
-            Configuration
-          </a>
+          {NAV_ITEMS.map((item) => (
+            <button
+              aria-current={activeSection === item.id ? 'page' : undefined}
+              className={activeSection === item.id ? 'active' : ''}
+              key={item.id}
+              onClick={() => changeSection(item.id)}
+              type="button"
+            >
+              <Icon name={item.icon} size={17} />
+              {item.label}
+            </button>
+          ))}
         </nav>
         <div className="privacy-card">
           <Icon name="check" size={17} />
@@ -956,286 +1607,14 @@ function App() {
         </div>
       </aside>
 
-      <main className="dashboard" id="overview">
-        <section className="left-column">
-          <article className="panel question-panel">
-            <div className="panel-heading">
-              <h2>Question</h2>
-              <span className="fixed-label">Fixed</span>
-            </div>
-            <p>{QUESTION}</p>
-          </article>
-
-          <article className="panel">
-            <div className="panel-heading">
-              <h2>Response Format</h2>
-              <button className="icon-button" onClick={copySchema} title="Copy schema" type="button">
-                <Icon name="clipboard" size={17} />
-              </button>
-            </div>
-            <pre className="schema-block">{schemaText}</pre>
-          </article>
-
-          <article className="panel settings-panel" id="run">
-            <div className="panel-heading">
-              <h2>Run Settings</h2>
-              <span className="small-status">{modelStatus === 'ready' ? 'Live catalog' : 'Fallback catalog'}</span>
-            </div>
-
-            <label className="field">
-              <span>OpenRouter API key</span>
-              <div className="input-with-icon">
-                <Icon name="key" size={16} />
-                <input
-                  autoComplete="off"
-                  onChange={(event) => setApiKey(event.target.value)}
-                  placeholder="sk-or-..."
-                  type="password"
-                  value={apiKey}
-                />
-              </div>
-              <small>Stored in localStorage on this device only.</small>
-            </label>
-
-            <div className="field" id="models">
-              <span>Models</span>
-              <div className="model-search">
-                <Icon name="search" size={16} />
-                <input
-                  onChange={(event) => setModelSearch(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') addModel(modelSearch)
-                  }}
-                  placeholder="Search or paste any model id"
-                  type="text"
-                  value={modelSearch}
-                />
-                <button onClick={() => addModel(modelSearch)} type="button">
-                  Add
-                </button>
-              </div>
-              <label className="toggle-line">
-                <input
-                  checked={showStructuredOnly}
-                  onChange={(event) => setShowStructuredOnly(event.target.checked)}
-                  type="checkbox"
-                />
-                Only show structured-output capable models
-              </label>
-              <div className="model-results">
-                {filteredModels.map((model) => (
-                  <button
-                    className={selectedModelIds.includes(model.id) ? 'selected' : ''}
-                    key={model.id}
-                    onClick={() => addModel(model.id)}
-                    type="button"
-                  >
-                    <span>
-                      <strong>{modelLabel(model)}</strong>
-                      <small>{model.id}</small>
-                    </span>
-                    {supportsStructuredOutput(model) && <em>structured</em>}
-                  </button>
-                ))}
-              </div>
-              <div className="selected-models">
-                {selectedModels.map((model) => (
-                  <span className="model-chip" key={model.id}>
-                    {modelLabel(model)}
-                    <button aria-label={`Remove ${modelLabel(model)}`} onClick={() => removeModel(model.id)} type="button">
-                      x
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="settings-grid">
-              <label className="field compact-field">
-                <span>Iterations per model</span>
-                <input
-                  max="1000"
-                  min="1"
-                  onChange={(event) => setIterations(event.target.value)}
-                  type="number"
-                  value={iterations}
-                />
-              </label>
-              <label className="field compact-field">
-                <span>Temperature</span>
-                <input
-                  max="2"
-                  min="0"
-                  onChange={(event) => setTemperature(event.target.value)}
-                  step="0.1"
-                  type="number"
-                  value={temperature}
-                />
-              </label>
-              <label className="field compact-field">
-                <span>Max tokens</span>
-                <input
-                  max="512"
-                  min="16"
-                  onChange={(event) => setMaxTokens(event.target.value)}
-                  type="number"
-                  value={maxTokens}
-                />
-              </label>
-            </div>
-
-            <label className="toggle-line" id="configuration">
-              <input
-                checked={requireParameters}
-                onChange={(event) => setRequireParameters(event.target.checked)}
-                type="checkbox"
-              />
-              Require providers that support structured output parameters
-            </label>
-
-            {runError && (
-              <div className="inline-alert">
-                <Icon name="alert" size={16} />
-                {runError}
-              </div>
-            )}
-
-            {isRunning && (
-              <div className="run-progress" role="status">
-                <div>
-                  <span>{runProgress.active}</span>
-                  <strong>
-                    {runProgress.completed}/{runProgress.total}
-                  </strong>
-                </div>
-                <div className="progress-track">
-                  <span style={{ width: `${progressPercent}%` }}></span>
-                </div>
-              </div>
-            )}
-
-            <div className="run-actions">
-              {isRunning ? (
-                <button className="danger-button" onClick={stopRun} type="button">
-                  <Icon name="stop" size={16} />
-                  Stop Run
-                </button>
-              ) : (
-                <button className="primary-button" onClick={runBenchmark} type="button">
-                  <Icon name="play" size={16} />
-                  Run Benchmark
-                </button>
-              )}
-              <button className="secondary-button" disabled={isRunning || !localResponses.length} onClick={clearLocalResults} type="button">
-                <Icon name="trash" size={16} />
-                Clear Local
-              </button>
-            </div>
-            <p className="fine-print">Each request is one-shot with no conversation history.</p>
-          </article>
-        </section>
-
-        <section className="content-column" id="results">
-          <div className="mode-tabs" role="tablist">
-            <button
-              aria-selected={displayMode === 'global'}
-              className={displayMode === 'global' ? 'active' : ''}
-              onClick={() => setDisplayMode('global')}
-              role="tab"
-              type="button"
-            >
-              Public committed
-              <span>{globalSummary.total}</span>
-            </button>
-            <button
-              aria-selected={displayMode === 'local'}
-              className={displayMode === 'local' ? 'active' : ''}
-              onClick={() => setDisplayMode('local')}
-              role="tab"
-              type="button"
-            >
-              Local private
-              <span>{localSummary.total}</span>
-            </button>
-            <button
-              aria-selected={displayMode === 'combined'}
-              className={displayMode === 'combined' ? 'active' : ''}
-              onClick={() => setDisplayMode('combined')}
-              role="tab"
-              type="button"
-            >
-              Combined view
-              <span>{combinedSummary.total}</span>
-            </button>
+      <main className="dashboard">
+        <div className="page-header">
+          <div>
+            <span className="eyebrow">{APP_TITLE}</span>
+            <h2>{activeNavItem.label}</h2>
           </div>
-
-          <section className="summary-grid">
-            <SummaryCard
-              detail={`${selectedModels.length || 0} selected for next local run`}
-              icon="activity"
-              label="Total Runs"
-              value={activeSummary.total}
-            />
-            <SummaryCard
-              detail={formatPercent(activeSummary.blue, activeSummary.total)}
-              icon="check"
-              label="Blue Votes"
-              tone="blue"
-              value={activeSummary.blue}
-            />
-            <SummaryCard
-              detail={formatPercent(activeSummary.red, activeSummary.total)}
-              icon="alert"
-              label="Red Votes"
-              tone="red"
-              value={activeSummary.red}
-            />
-            <SummaryCard
-              detail={`${activeSummary.errors} rejected or failed`}
-              icon="box"
-              label="Models"
-              tone="purple"
-              value={activeSummary.models.length}
-            />
-            <SummaryCard detail={formatDateTime(lastUpdated)} icon="check" label="Status" tone="green" value={statusLabel} />
-          </section>
-
-          <section className="chart-grid">
-            <article className="panel wide-panel">
-              <div className="panel-heading">
-                <h2>Vote Distribution By Model</h2>
-              </div>
-              <DistributionChart models={activeSummary.models} />
-            </article>
-            <article className="panel">
-              <div className="panel-heading">
-                <h2>Overall Vote Distribution</h2>
-              </div>
-              <DonutChart summary={activeSummary} />
-            </article>
-          </section>
-
-          <article className="panel log-panel">
-            <div className="panel-heading">
-              <h2>Response Log {logLimit === 10 ? '(Latest 10)' : '(All)'}</h2>
-              <button
-                className="secondary-button small"
-                disabled={!activeSummary.latest.length}
-                onClick={() => setLogLimit((current) => (current === 10 ? activeSummary.latest.length : 10))}
-                type="button"
-              >
-                {logLimit === 10 ? 'View all logs' : 'Latest 10'}
-              </button>
-            </div>
-            <ResponseTable limit={logLimit} rows={activeSummary.latest} />
-            <div className="log-footer">
-              <span>Only responses validated as red or blue are included in aggregates.</span>
-              <span>
-                {Math.min(logLimit, activeSummary.latest.length) || 0} of {activeSummary.latest.length}
-              </span>
-            </div>
-          </article>
-        </section>
+        </div>
+        {pageContent[activeSection]}
       </main>
     </div>
   )
