@@ -51,6 +51,7 @@ const NAV_ITEMS = [
   { id: 'results', label: 'Results', icon: 'activity' },
   { id: 'runs', label: 'Runs', icon: 'list' },
   { id: 'models', label: 'Models', icon: 'box' },
+  { id: 'my-runs', label: 'My Runs', icon: 'play' },
   { id: 'configuration', label: 'Configuration', icon: 'settings' },
 ]
 
@@ -645,52 +646,6 @@ function ResponseTable({ rows, limit }) {
   )
 }
 
-function DataSourceFilter({
-  combinedSummary,
-  displayMode,
-  globalSummary,
-  hasLocalRuns,
-  localSummary,
-  setDisplayMode,
-}) {
-  const options = [
-    { id: 'global', label: 'Public', detail: 'committed', total: globalSummary.total },
-    ...(hasLocalRuns
-      ? [
-          { id: 'local', label: 'Local', detail: 'private', total: localSummary.total },
-          { id: 'combined', label: 'Combined', detail: 'public + local', total: combinedSummary.total },
-        ]
-      : []),
-  ]
-
-  return (
-    <div className="source-filter">
-      <div className="source-filter-label">
-        <span>Data source</span>
-        <small>{hasLocalRuns ? 'Local runs are private to this browser.' : 'Run locally to compare private results.'}</small>
-      </div>
-      <div className="source-filter-controls" role="tablist">
-        {options.map((option) => (
-          <button
-            aria-selected={displayMode === option.id}
-            className={displayMode === option.id ? 'active' : ''}
-            key={option.id}
-            onClick={() => setDisplayMode(option.id)}
-            role="tab"
-            type="button"
-          >
-            <span>
-              {option.label}
-              <small>{option.detail}</small>
-            </span>
-            <strong>{option.total}</strong>
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function SummaryGrid({ lastUpdated, selectedCount, statusLabel, summary }) {
   return (
     <section className="summary-grid">
@@ -911,7 +866,6 @@ function App() {
   const [activeSection, setActiveSection] = useState('overview')
   const [apiKey, setApiKey] = useState(() => window.localStorage.getItem(STORAGE_KEYS.apiKey) ?? '')
   const [availableModels, setAvailableModels] = useState([])
-  const [displayMode, setDisplayMode] = useState('global')
   const [globalData, setGlobalData] = useState(EMPTY_STATIC_RESULTS)
   const [globalStatus, setGlobalStatus] = useState('loading')
   const [iterations, setIterations] = useState(100)
@@ -1006,19 +960,7 @@ function App() {
   const globalSummary = useMemo(() => calculateSummary(globalResponses), [globalResponses])
   const localSummary = useMemo(() => calculateSummary(localResponses), [localResponses])
 
-  const allResponses = useMemo(
-    () => [...localResponses, ...globalResponses],
-    [globalResponses, localResponses],
-  )
-  const combinedSummary = useMemo(() => calculateSummary(allResponses), [allResponses])
-
-  const hasLocalRuns = localResponses.length > 0
-  const effectiveDisplayMode = hasLocalRuns ? displayMode : 'global'
-  const activeRows =
-    effectiveDisplayMode === 'global' ? globalResponses : effectiveDisplayMode === 'local' ? localResponses : allResponses
-  const activeSummary =
-    effectiveDisplayMode === 'global' ? globalSummary : effectiveDisplayMode === 'local' ? localSummary : combinedSummary
-  const providerBreakdown = useMemo(() => calculateProviderBreakdown(activeRows), [activeRows])
+  const providerBreakdown = useMemo(() => calculateProviderBreakdown(globalResponses), [globalResponses])
 
   const modelOptions = useMemo(() => {
     const merged = new Map()
@@ -1065,14 +1007,18 @@ function App() {
 
   const statusLabel = isRunning
     ? 'Running'
-    : activeSummary.total
+    : globalSummary.total
       ? 'Completed'
       : globalStatus === 'loading'
         ? 'Loading'
         : 'Ready'
 
+  const localStatusLabel = isRunning ? 'Running' : localSummary.total ? 'Completed' : 'Ready'
+
   const lastUpdated =
-    activeSummary.lastTimestamp ?? globalData.metadata?.lastUpdated ?? globalData.metadata?.exportedAt ?? null
+    globalSummary.lastTimestamp ?? globalData.metadata?.lastUpdated ?? globalData.metadata?.exportedAt ?? null
+
+  const localLastUpdated = localSummary.lastTimestamp ?? null
 
   function addModel(modelId) {
     const id = modelId.trim()
@@ -1230,7 +1176,7 @@ function App() {
     const totalRequests = selectedModels.length * safeIterations
     const batchId = createId()
 
-    setDisplayMode('local')
+    setActiveSection('my-runs')
     setIsRunning(true)
     setRunError('')
     setRunProgress({ active: 'Starting run', completed: 0, total: totalRequests })
@@ -1274,7 +1220,6 @@ function App() {
   function clearLocalResults() {
     if (isRunning) return
     setLocalResponses([])
-    setDisplayMode('global')
     setRunError('')
   }
 
@@ -1283,25 +1228,9 @@ function App() {
     setRunsPage(1)
   }
 
-  function changeDisplayMode(mode) {
-    setDisplayMode(mode)
-    setRunsPage(1)
-  }
-
   const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
   const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
   const activeNavItem = NAV_ITEMS.find((item) => item.id === activeSection) ?? NAV_ITEMS[0]
-
-  const dataSourceFilter = (
-    <DataSourceFilter
-      combinedSummary={combinedSummary}
-      displayMode={effectiveDisplayMode}
-      globalSummary={globalSummary}
-      hasLocalRuns={hasLocalRuns}
-      localSummary={localSummary}
-      setDisplayMode={changeDisplayMode}
-    />
-  )
 
   const questionCard = (
     <article className="panel question-panel">
@@ -1489,44 +1418,75 @@ function App() {
           {questionCard}
           {schemaCard}
         </section>
-        {dataSourceFilter}
         <SummaryGrid
           lastUpdated={lastUpdated}
           selectedCount={selectedModels.length}
           statusLabel={statusLabel}
-          summary={activeSummary}
+          summary={globalSummary}
         />
         <section className="chart-grid">
           <article className="panel wide-panel">
             <div className="panel-heading">
               <h2>Vote Distribution By Model</h2>
             </div>
-            <DistributionChart models={activeSummary.models} />
+            <DistributionChart models={globalSummary.models} />
           </article>
           <article className="panel">
             <div className="panel-heading">
               <h2>Overall Vote Distribution</h2>
             </div>
-            <DonutChart summary={activeSummary} />
+            <DonutChart summary={globalSummary} />
           </article>
         </section>
       </div>
     ),
     results: (
       <div className="page-stack">
-        {dataSourceFilter}
         <SummaryGrid
           lastUpdated={lastUpdated}
           selectedCount={selectedModels.length}
           statusLabel={statusLabel}
-          summary={activeSummary}
+          summary={globalSummary}
         />
-        <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={activeSummary} />
+        <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={globalSummary} />
       </div>
     ),
     runs: (
       <div className="page-stack">
-        {dataSourceFilter}
+        <article className="panel log-panel">
+          <div className="panel-heading">
+            <h2>Raw Runs</h2>
+            <span className="small-status">{globalResponses.length} rows</span>
+          </div>
+          <RunsTable page={runsPage} rows={globalSummary.latest} setPage={setRunsPage} />
+        </article>
+      </div>
+    ),
+    models: (
+      <div className="page-stack">
+        <SummaryGrid
+          lastUpdated={lastUpdated}
+          selectedCount={selectedModels.length}
+          statusLabel={statusLabel}
+          summary={globalSummary}
+        />
+        <article className="panel">
+          <div className="panel-heading">
+            <h2>Provider And Model Breakdown</h2>
+            <span className="small-status">{providerBreakdown.length} providers</span>
+          </div>
+          <ProviderBreakdown providers={providerBreakdown} />
+        </article>
+      </div>
+    ),
+    'my-runs': (
+      <div className="page-stack">
+        <SummaryGrid
+          lastUpdated={localLastUpdated}
+          selectedCount={selectedModels.length}
+          statusLabel={localStatusLabel}
+          summary={localSummary}
+        />
         {isRunning && (
           <article className="panel">
             <div className="panel-heading">
@@ -1546,30 +1506,27 @@ function App() {
             </div>
           </article>
         )}
+        <section className="chart-grid">
+          <article className="panel wide-panel">
+            <div className="panel-heading">
+              <h2>Vote Distribution By Model</h2>
+            </div>
+            <DistributionChart models={localSummary.models} />
+          </article>
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Overall Vote Distribution</h2>
+            </div>
+            <DonutChart summary={localSummary} />
+          </article>
+        </section>
+        <ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={localSummary} />
         <article className="panel log-panel">
           <div className="panel-heading">
             <h2>Raw Runs</h2>
-            <span className="small-status">{activeRows.length} rows</span>
+            <span className="small-status">{localResponses.length} rows</span>
           </div>
-          <RunsTable page={runsPage} rows={activeSummary.latest} setPage={setRunsPage} />
-        </article>
-      </div>
-    ),
-    models: (
-      <div className="page-stack">
-        {dataSourceFilter}
-        <SummaryGrid
-          lastUpdated={lastUpdated}
-          selectedCount={selectedModels.length}
-          statusLabel={statusLabel}
-          summary={activeSummary}
-        />
-        <article className="panel">
-          <div className="panel-heading">
-            <h2>Provider And Model Breakdown</h2>
-            <span className="small-status">{providerBreakdown.length} providers</span>
-          </div>
-          <ProviderBreakdown providers={providerBreakdown} />
+          <RunsTable page={runsPage} rows={localSummary.latest} setPage={setRunsPage} />
         </article>
       </div>
     ),
