@@ -45,11 +45,11 @@ import { fetchModelCatalog, fetchStaticResults, runBenchmarkRequest } from './li
 import Logo from './assets/logo.svg?react'
 
 const CHART_COLORS = {
-	blue: 'var(--chart-blue)',
-	red: 'var(--chart-red)',
-	grid: 'var(--chart-grid)',
-	text: 'var(--chart-text)',
-	textStrong: 'var(--chart-text-strong)',
+	blue: 'var(--color-chart-blue)',
+	red: 'var(--color-chart-red)',
+	grid: 'var(--color-chart-grid)',
+	text: 'var(--color-chart-text)',
+	textStrong: 'var(--color-chart-text-strong)',
 }
 
 const NAV_ITEMS = [
@@ -130,13 +130,18 @@ function getInitialThemePreference() {
 
 function ThemeSwitcher({ onChange, value }) {
 	return (
-		<div aria-label='Color theme' className='theme-switcher' role='group'>
+		<div
+			aria-label='Color theme'
+			className='inline-grid grid-cols-3 items-center min-h-10 rounded-lg border border-line bg-surface-muted p-0.75 shadow-control max-md:hidden'
+			role='group'>
 			{THEME_OPTIONS.map((option) => {
 				const isActive = value === option.id
 				return (
 					<button
 						aria-pressed={isActive}
-						className={`theme-switcher__button${isActive ? ' theme-switcher__button--active' : ''}`}
+						className={`grid min-w-8.5 min-h-8 cursor-pointer place-items-center rounded-md border-0 bg-transparent ${
+							isActive ? 'bg-surface text-ink shadow-control' : 'text-ink-muted hover:text-ink'
+						}`}
 						key={option.id}
 						onClick={() => onChange(option.id)}
 						title={option.label}
@@ -152,9 +157,9 @@ function ThemeSwitcher({ onChange, value }) {
 
 function Panel({ title, action, children, className = '' }) {
 	return (
-		<article className={`rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-4${className ? ` ${className}` : ''}`}>
+		<article className={`rounded-lg border border-line bg-surface shadow-soft p-4${className ? ` ${className}` : ''}`}>
 			<div className='flex items-center justify-between gap-3 mb-3.5'>
-				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>{title}</h2>
+				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>{title}</h2>
 				{action}
 			</div>
 			{children}
@@ -224,29 +229,29 @@ function formatNumber(value) {
 }
 
 function Dot({ tone }) {
-	const color = tone === 'blue' ? 'bg-blue-500' : 'bg-red-500'
+	const color = tone === 'blue' ? 'bg-tone-blue-bg' : 'bg-tone-red-bg'
 	return <i className={`inline-block h-2.5 w-2.5 rounded-full mr-2 align-[1px] ${color}`} />
 }
 
 function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const toneStyles = {
-		neutral: { card: '', icon: 'bg-blue-50 text-blue-600' },
-		blue: { card: 'summary-card--blue', icon: 'bg-blue-50 text-blue-600' },
-		red: { card: 'summary-card--red', icon: 'bg-red-50 text-red-500' },
-		purple: { card: '', icon: 'bg-blue-50 text-brand' },
-		green: { card: 'summary-card--green', icon: 'bg-emerald-50 text-emerald-600' },
+		neutral: { card: 'bg-surface', icon: 'bg-tone-blue-bg text-tone-blue-text' },
+		blue: { card: 'bg-linear-to-br from-surface to-tone-blue-bg', icon: 'bg-tone-blue-bg text-tone-blue-text' },
+		red: { card: 'bg-linear-to-br from-surface to-tone-red-bg', icon: 'bg-tone-red-bg text-tone-red-text' },
+		purple: { card: 'bg-surface', icon: 'bg-tone-blue-bg text-brand' },
+		green: { card: 'bg-linear-to-br from-surface to-tone-green-bg', icon: 'bg-tone-green-bg text-tone-green-text' },
 	}
 	const tones = toneStyles[tone] ?? toneStyles.neutral
 
 	return (
-		<article className={`flex min-h-26 items-start gap-3 rounded-lg border border-line bg-white p-4 shadow-[0_18px_45px_rgba(27,44,82,0.05)] ${tones.card}`}>
+		<article className={`flex min-h-26 items-start gap-3 rounded-lg border border-line p-4 shadow-soft ${tones.card}`}>
 			<div className={`grid h-9 w-9 flex-none place-items-center rounded-md ${tones.icon}`}>
 				<Icon name={icon} size={19} />
 			</div>
 			<div className='min-w-0'>
-				<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
-				<strong className='my-2 block text-[26px] leading-none text-slate-950'>{value}</strong>
-				<small className='block text-xs leading-snug text-slate-500'>{detail}</small>
+				<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-ink-muted'>{label}</span>
+				<strong className='my-2 block text-[26px] leading-none text-ink'>{value}</strong>
+				<small className='block text-xs leading-snug text-ink-muted'>{detail}</small>
 			</div>
 		</article>
 	)
@@ -272,13 +277,13 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 		<div className={`grid min-h-26 content-center border-line p-4 ${className}`}>
 			<div className='flex items-start justify-between gap-3'>
 				<div className='min-w-0'>
-					<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
-					<strong className='mt-2 block text-[27px] leading-none text-slate-950'>{value}</strong>
-					{detail && <span className='mt-2 block text-sm text-slate-500'>{detail}</span>}
-					{status && <span className='mt-2 block text-sm font-bold text-emerald-600'>{status}</span>}
+					<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-ink-muted'>{label}</span>
+					<strong className='mt-2 block text-[27px] leading-none text-ink'>{value}</strong>
+					{detail && <span className='mt-2 block text-sm text-ink-muted'>{detail}</span>}
+					{status && <span className='mt-2 block text-sm font-bold text-tone-green-text'>{status}</span>}
 				</div>
 				{icon && (
-					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-line bg-white text-slate-500 shadow-[0_8px_24px_rgba(27,44,82,0.05)]'>
+					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-line bg-surface text-ink-muted shadow-control'>
 						<Icon name={icon} size={20} />
 					</div>
 				)}
@@ -290,8 +295,8 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 function ShareMetricTile({ detail, label, tone, value, values }) {
 	return (
 		<div className='grid min-h-29 min-w-0 content-center border-r border-line p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
-			<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
-			<strong className='mt-2 block text-[28px] leading-none text-slate-950'>{value}</strong>
+			<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-ink-muted'>{label}</span>
+			<strong className='mt-2 block text-[28px] leading-none text-ink'>{value}</strong>
 			<div className='mt-3 min-w-0'>
 				<Sparkline tone={tone} values={values} />
 			</div>
@@ -307,7 +312,7 @@ function OverviewMetrics({ lastUpdated, stateLabel, summary }) {
 	const redTrend = [56, 52, 50, 46, 47, 42, 39, 36, redPercent]
 
 	return (
-		<section className='grid overflow-hidden rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)]'>
+		<section className='grid overflow-hidden rounded-lg border border-line bg-surface shadow-soft'>
 			<div className='grid grid-cols-3 border-b border-line max-sm:grid-cols-1'>
 				<ShareMetricTile detail={`${summary.blue} blue votes`} label='Blue Share' tone='blue' value={formatPercent(summary.blue, summary.total)} values={blueTrend} />
 				<ShareMetricTile detail={`${summary.red} red votes`} label='Red Share' tone='red' value={formatPercent(summary.red, summary.total)} values={redTrend} />
@@ -327,7 +332,7 @@ function EmptyState({ title, detail }) {
 	return (
 		<div className='empty-state'>
 			<Icon name='shield' size={22} />
-			<strong className='text-slate-800'>{title}</strong>
+			<strong className='text-ink'>{title}</strong>
 			<span className='text-sm leading-normal max-w-sm'>{detail}</span>
 		</div>
 	)
@@ -337,16 +342,16 @@ function ChartTooltipBox({ active, label, payload }) {
 	if (!active || !payload?.length) return null
 
 	return (
-		<div className='rounded-lg border border-line bg-white px-3 py-2 text-xs shadow-[0_14px_32px_rgba(27,44,82,0.12)]'>
-			{label && <strong className='mb-1.5 block max-w-60 truncate text-slate-800'>{label}</strong>}
+		<div className='rounded-lg border border-line bg-surface px-3 py-2 text-xs shadow-soft'>
+			{label && <strong className='mb-1.5 block max-w-60 truncate text-ink'>{label}</strong>}
 			<div className='grid gap-1'>
 				{payload.map((entry) => (
-					<span className='flex items-center justify-between gap-5 text-slate-600' key={`${entry.dataKey}-${entry.name}`}>
+					<span className='flex items-center justify-between gap-5 text-ink-muted' key={`${entry.dataKey}-${entry.name}`}>
 						<span className='inline-flex items-center gap-1.5'>
 							<i className='h-2 w-2 rounded-full' style={{ backgroundColor: entry.color }} />
 							{entry.name}
 						</span>
-						<strong className='font-extrabold text-slate-900'>
+						<strong className='font-extrabold text-ink'>
 							{typeof entry.value === 'number' ? (entry.unit === '%' ? formatPercent(entry.value, 100) : formatNumber(entry.value)) : entry.value}
 						</strong>
 					</span>
@@ -385,7 +390,7 @@ function DistributionChart({ models }) {
 
 	return (
 		<div className='grid gap-4 pt-1'>
-			<div className='flex items-center justify-center gap-7 text-sm text-slate-600'>
+			<div className='flex items-center justify-center gap-7 text-sm text-ink-muted'>
 				<span>
 					<Dot tone='blue' />
 					Blue (survive if &gt;50%)
@@ -443,7 +448,7 @@ function TrendChart({ summary }) {
 
 	return (
 		<div className='mt-4'>
-			<div className='mb-1 text-sm font-medium text-slate-700'>Trend over time</div>
+			<div className='mb-1 text-sm font-medium text-ink'>Trend over time</div>
 			<div className='h-23 min-w-0 w-full'>
 				<ResponsiveContainer height='100%' initialDimension={{ height: 92, width: 480 }} minWidth={0} width='100%'>
 					<LineChart accessibilityLayer data={data} margin={{ bottom: 2, left: 0, right: 0, top: 5 }}>
@@ -522,26 +527,26 @@ function DonutChart({ summary }) {
 							</PieChart>
 						</ResponsiveContainer>
 					</div>
-					<div className='pointer-events-none absolute inset-0 z-0 grid place-items-center text-center text-slate-900'>
-						<span className='absolute h-[50%] w-[50%] rounded-full bg-white' />
+					<div className='pointer-events-none absolute inset-0 z-0 grid place-items-center text-center text-ink'>
+						<span className='absolute h-[50%] w-[50%] rounded-full bg-surface' />
 						<div className='relative z-10 grid'>
 							<strong className='text-3xl leading-none'>{summary.total}</strong>
-							<span className='text-sm text-slate-600 mt-2'>Total</span>
+							<span className='text-sm text-ink-muted mt-2'>Total</span>
 						</div>
 					</div>
 				</div>
 				<div className='grid gap-6'>
 					<div className='grid grid-cols-[auto_1fr] items-start'>
 						<Dot tone='blue' />
-						<span className='text-base text-slate-800'>Blue</span>
-						<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
+						<span className='text-base text-ink'>Blue</span>
+						<strong className='col-start-2 mt-1.5 text-sm font-normal text-ink-muted'>
 							{summary.blue} ({formatPercent(summary.blue, summary.total)})
 						</strong>
 					</div>
 					<div className='grid grid-cols-[auto_1fr] items-start'>
 						<Dot tone='red' />
-						<span className='text-base text-slate-800'>Red</span>
-						<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
+						<span className='text-base text-ink'>Red</span>
+						<strong className='col-start-2 mt-1.5 text-sm font-normal text-ink-muted'>
 							{summary.red} ({formatPercent(summary.red, summary.total)})
 						</strong>
 					</div>
@@ -588,7 +593,7 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 		<section className='relative min-h-63 overflow-hidden rounded-lg border border-[#2c7cf6] bg-[linear-gradient(135deg,#0f6ff5_0%,#2d7df6_36%,#c9d9ff_72%,#ffe9ef_100%)] p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
 			<HeroPattern />
 			<div className='relative z-10 grid h-full max-w-160 content-center gap-5'>
-				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-white/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
+				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-surface/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
 					<Icon name='refresh' size={14} />
 					Ongoing Benchmark
 				</span>
@@ -600,21 +605,21 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 				</div>
 				<div className='flex flex-wrap gap-3'>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-[#0755ca]'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-brand-deep'
 						onClick={onViewResults}
 						type='button'>
 						<Icon name='chevron' size={16} />
 						View Results
 					</button>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-tone-blue-bg'
 						onClick={onRunPrivate}
 						type='button'>
 						<Icon name='play' size={16} />
 						Run Privately
 					</button>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-tone-blue-bg'
 						onClick={onShareBenchmark}
 						type='button'>
 						<Icon name='share' size={16} />
@@ -634,12 +639,12 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 			<div
 				aria-labelledby='share-benchmark-title'
 				aria-modal='true'
-				className='share-dialog w-full max-w-xl rounded-lg border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.98)_100%)] p-5 text-slate-950 shadow-[0_28px_80px_rgba(15,23,42,0.22)]'
+				className='w-full max-w-xl rounded-lg border border-line bg-linear-to-b from-surface/95 to-surface-muted/95 p-5 text-ink shadow-soft'
 				onClick={(event) => event.stopPropagation()}
 				role='dialog'>
 				<div className='flex items-start justify-between gap-4'>
 					<div className='space-y-2'>
-						<span className='inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-blue-700'>
+						<span className='inline-flex items-center gap-2 rounded-full bg-tone-blue-bg px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-tone-blue-text'>
 							<Icon name='share' size={13} />
 							Share Benchmark
 						</span>
@@ -647,7 +652,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 							<h3 className='m-0 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
 								Share Button Arena
 							</h3>
-							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-slate-600'>{shareDescription}</p>
+							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-ink-muted'>{shareDescription}</p>
 						</div>
 					</div>
 					<button className='btn-secondary min-h-9 px-3' onClick={onClose} type='button'>
@@ -655,9 +660,9 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 					</button>
 				</div>
 
-				<div className='mt-5 rounded-2xl border border-slate-200 bg-white/90 p-4'>
-					<p className='m-0 text-[11px] font-extrabold uppercase tracking-[0.08em] text-slate-500'>Benchmark Link</p>
-					<p className='mt-2 mb-0 break-all text-sm font-semibold leading-relaxed text-slate-900'>{url}</p>
+				<div className='mt-5 rounded-2xl border border-line bg-surface p-4'>
+					<p className='m-0 text-[11px] font-extrabold uppercase tracking-[0.08em] text-ink-muted'>Benchmark Link</p>
+					<p className='mt-2 mb-0 break-all text-sm font-semibold leading-relaxed text-ink'>{url}</p>
 				</div>
 
 				<div className='mt-4 flex flex-wrap gap-3'>
@@ -677,13 +682,13 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 					{shareStatus ? (
 						<span
 							className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 font-bold ${
-								shareStatus.tone === 'error' ? 'bg-red-50 text-red-700' : 'bg-emerald-50 text-emerald-700'
+								shareStatus.tone === 'error' ? 'bg-tone-red-bg text-tone-red-text' : 'bg-tone-green-bg text-tone-green-text'
 							}`}>
 							<Icon name={shareStatus.tone === 'error' ? 'alert' : 'check'} size={14} />
 							{shareStatus.message}
 						</span>
 					) : (
-						<span className='text-sm text-slate-500'>This shares the main benchmark URL.</span>
+						<span className='text-sm text-ink-muted'>This shares the main benchmark URL.</span>
 					)}
 				</div>
 			</div>
@@ -693,10 +698,10 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 
 function ChoicePill({ choice }) {
 	if (!choice) {
-		return <span className='inline-flex items-center rounded-md bg-red-50 text-red-800 px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
+		return <span className='inline-flex items-center rounded-md bg-tone-red-bg text-tone-red-text px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
 	}
 	return (
-		<span className='inline-flex items-center text-xs font-bold lowercase text-slate-800'>
+		<span className='inline-flex items-center text-xs font-bold lowercase text-ink'>
 			<Dot tone={choice} />
 			{choice}
 		</span>
@@ -715,11 +720,11 @@ function ResponseTable({ rows, limit }) {
 			<table className='w-full min-w-220 border-collapse'>
 				<thead>
 					<tr>
-						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Time</th>
-						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Model</th>
-						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Choice</th>
-						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Comment</th>
-						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Raw Response</th>
+						<th className='table-cell bg-surface-muted font-bold text-ink-muted'>Time</th>
+						<th className='table-cell bg-surface-muted font-bold text-ink-muted'>Model</th>
+						<th className='table-cell bg-surface-muted font-bold text-ink-muted'>Choice</th>
+						<th className='table-cell bg-surface-muted font-bold text-ink-muted'>Comment</th>
+						<th className='table-cell bg-surface-muted font-bold text-ink-muted'>Raw Response</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -769,7 +774,7 @@ function ResultsPanels({ logLimit, setLogLimit, summary }) {
 					</button>
 				}>
 				<ResponseTable limit={logLimit} rows={summary.latest} />
-				<div className='flex justify-between text-xs text-slate-500 pt-4 max-sm:flex-col max-sm:gap-2'>
+				<div className='flex justify-between text-xs text-ink-muted pt-4 max-sm:flex-col max-sm:gap-2'>
 					<span>Only responses validated as red or blue are included in aggregates.</span>
 					<span>
 						{Math.min(logLimit, summary.latest.length) || 0} of {summary.latest.length}
@@ -790,7 +795,7 @@ function RunsTable({ page, rows, setPage }) {
 		return <EmptyState detail='Raw benchmark requests will appear here after a local run or after committed results are added.' title='No raw runs yet' />
 	}
 
-	const headerCell = 'table-cell bg-slate-50 font-bold text-slate-600 whitespace-nowrap'
+	const headerCell = 'table-cell bg-surface-muted font-bold text-ink-muted whitespace-nowrap'
 	const bodyCell = 'table-cell whitespace-nowrap'
 
 	return (
@@ -812,7 +817,7 @@ function RunsTable({ page, rows, setPage }) {
 					</thead>
 					<tbody>
 						{visibleRows.map((row) => {
-							const sourceClasses = row.source === 'global' ? 'bg-indigo-50 text-indigo-700' : 'bg-emerald-50 text-emerald-700'
+							const sourceClasses = row.source === 'global' ? 'bg-tone-blue-bg text-tone-blue-text' : 'bg-tone-green-bg text-tone-green-text'
 							return (
 								<tr className={row.status === 'error' ? 'error-row' : ''} key={row.id}>
 									<td className={bodyCell}>{formatDateTime(row.timestamp)}</td>
@@ -840,7 +845,7 @@ function RunsTable({ page, rows, setPage }) {
 					</tbody>
 				</table>
 			</div>
-			<div className='flex items-center justify-between gap-4 pt-4 text-sm text-slate-500 max-sm:flex-col max-sm:items-stretch'>
+			<div className='flex items-center justify-between gap-4 pt-4 text-sm text-ink-muted max-sm:flex-col max-sm:items-stretch'>
 				<span>
 					{pageStart + 1}-{Math.min(pageStart + RUNS_PAGE_SIZE, rows.length)} of {rows.length}
 				</span>
@@ -872,20 +877,20 @@ function ProviderBreakdown({ providers }) {
 	return (
 		<div className='grid gap-3.5 grid-cols-2 max-sm:grid-cols-1'>
 			{providers.map((provider) => (
-				<article className='grid gap-4 rounded-lg border border-slate-200 bg-slate-50/60 p-4' key={provider.id}>
+				<article className='grid gap-4 rounded-lg border border-line bg-surface-muted/60 p-4' key={provider.id}>
 					<div className='flex justify-between gap-3.5 items-start'>
 						<div>
-							<h3 className='m-0 text-lg leading-tight text-slate-900'>{provider.name}</h3>
-							<span className='block text-xs text-slate-500 mt-1 wrap-break-word'>{provider.id}</span>
+							<h3 className='m-0 text-lg leading-tight text-ink'>{provider.name}</h3>
+							<span className='block text-xs text-ink-muted mt-1 wrap-break-word'>{provider.id}</span>
 						</div>
-						<strong className='text-2xl leading-none text-slate-900'>{provider.total}</strong>
+						<strong className='text-2xl leading-none text-ink'>{provider.total}</strong>
 					</div>
 					<div className='grid gap-2.5'>
-						<div className='flex h-2.5 overflow-hidden rounded-full bg-slate-100'>
-							<span className='block h-full bg-blue-500' style={{ width: formatPercent(provider.blue, provider.total) }} />
-							<span className='block h-full bg-red-500' style={{ width: formatPercent(provider.red, provider.total) }} />
+						<div className='flex h-2.5 overflow-hidden rounded-full bg-surface-muted'>
+							<span className='block h-full bg-tone-blue-bg' style={{ width: formatPercent(provider.blue, provider.total) }} />
+							<span className='block h-full bg-tone-red-bg' style={{ width: formatPercent(provider.red, provider.total) }} />
 						</div>
-						<div className='flex flex-wrap gap-3 text-xs text-slate-600'>
+						<div className='flex flex-wrap gap-3 text-xs text-ink-muted'>
 							<span>
 								<Dot tone='blue' />
 								{provider.blue} blue ({formatPercent(provider.blue, provider.total)})
@@ -896,16 +901,16 @@ function ProviderBreakdown({ providers }) {
 							</span>
 						</div>
 					</div>
-					<div className='grid border-t border-slate-200'>
+					<div className='grid border-t border-line'>
 						{provider.models.map((model) => (
-							<div className='grid items-center gap-3 grid-cols-[minmax(0,1fr)_auto] border-b border-slate-200 py-3 last:border-b-0 last:pb-0' key={model.id}>
+							<div className='grid items-center gap-3 grid-cols-[minmax(0,1fr)_auto] border-b border-line py-3 last:border-b-0 last:pb-0' key={model.id}>
 								<div>
-									<strong className='text-sm text-slate-700'>{model.name}</strong>
-									<span className='block text-xs text-slate-500 mt-1 wrap-break-word'>{model.id}</span>
+									<strong className='text-sm text-ink'>{model.name}</strong>
+									<span className='block text-xs text-ink-muted mt-1 wrap-break-word'>{model.id}</span>
 								</div>
 								<div className='text-right'>
-									<span className='block text-lg font-extrabold text-slate-900'>{model.total}</span>
-									<small className='block text-xs text-slate-500 mt-1'>
+									<span className='block text-lg font-extrabold text-ink'>{model.total}</span>
+									<small className='block text-xs text-ink-muted mt-1'>
 										{model.blue}B / {model.red}R
 									</small>
 								</div>
@@ -920,12 +925,12 @@ function ProviderBreakdown({ providers }) {
 
 function PrivacyNote() {
 	return (
-		<div className='flex flex-col items-start gap-2 rounded-lg border border-line bg-white p-4 text-emerald-900 shadow-[0_18px_45px_rgba(27,44,82,0.05)]'>
+		<div className='flex flex-col items-start gap-2 rounded-lg border border-line bg-surface p-4 text-tone-green-text shadow-soft'>
 			<div className='flex items-center gap-2'>
 				<Icon name='check' size={17} />
 				<strong className='text-sm'>Local runs are private</strong>
 			</div>
-			<span className='text-xs leading-snug text-emerald-800/70'>User-generated responses stay in this browser unless exported and committed.</span>
+			<span className='text-xs leading-snug text-tone-green-text'>User-generated responses stay in this browser unless exported and committed.</span>
 		</div>
 	)
 }
@@ -934,26 +939,26 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 	const progress = summary.total ? Math.round((summary.blue / summary.total) * 100) : 0
 
 	return (
-		<div className='rounded-lg border border-line bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)]'>
+		<div className='rounded-lg border border-line bg-surface p-4 shadow-soft'>
 			<div className='flex items-center justify-between gap-2'>
-				<strong className='text-xs font-extrabold uppercase tracking-[0.02em] text-slate-700'>Ongoing Benchmark</strong>
+				<strong className='text-xs font-extrabold uppercase tracking-[0.02em] text-ink'>Ongoing Benchmark</strong>
 			</div>
 			<div className='mt-5 grid gap-4'>
-				<div className='flex items-center justify-between gap-2 text-xs text-slate-600'>
+				<div className='flex items-center justify-between gap-2 text-xs text-ink-muted'>
 					<span>{formatRunMoment(lastUpdated)}</span>
-					<span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-extrabold text-emerald-700'>
-						<i className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
+					<span className='inline-flex items-center gap-1.5 rounded-full bg-tone-green-bg px-2 py-1 text-[11px] font-extrabold text-tone-green-text'>
+						<i className='h-1.5 w-1.5 rounded-full bg-tone-green-bg' />
 						Live
 					</span>
 				</div>
-				<span className='text-xs font-medium text-slate-500'>
+				<span className='text-xs font-medium text-ink-muted'>
 					{summary.models.length} models &bull; {formatNumber(summary.total)} runs
 				</span>
 				<div className='grid gap-2'>
-					<div className='h-2 overflow-hidden rounded-full bg-slate-100'>
+					<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
 						<span className='block h-full rounded-full bg-[linear-gradient(90deg,#17b981,#12a16f)]' style={{ width: `${progress}%` }} />
 					</div>
-					<div className='flex items-center justify-between text-xs font-bold text-slate-700'>
+					<div className='flex items-center justify-between text-xs font-bold text-ink'>
 						<span>Blue share</span>
 						<span>{progress}%</span>
 					</div>
@@ -965,11 +970,11 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 
 function FeedbackCard() {
 	return (
-		<div className='rounded-lg border border-line bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)] max-[1080px]:hidden'>
-			<strong className='text-sm text-slate-800'>Contribute</strong>
-			<p className='mt-2 mb-4 text-xs leading-relaxed text-slate-500'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
+		<div className='rounded-lg border border-line bg-surface p-4 shadow-soft max-2xl:hidden'>
+			<strong className='text-sm text-ink'>Contribute</strong>
+			<p className='mt-2 mb-4 text-xs leading-relaxed text-ink-muted'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
 			<a
-				className='inline-flex min-h-10 items-center justify-center rounded-md bg-brand px-4 text-sm font-extrabold text-white hover:bg-[#0755ca]'
+				className='inline-flex min-h-10 items-center justify-center rounded-md bg-brand px-4 text-sm font-extrabold text-white hover:bg-brand-deep'
 				href='https://github.com/biopoietic/button-arena'
 				target='_blank'
 				rel='noreferrer'>
@@ -981,10 +986,10 @@ function FeedbackCard() {
 
 function ExplainerPanel() {
 	return (
-		<article className='rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-5'>
-			<h2 className='mb-3.5 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>The Dilemma</h2>
+		<article className='rounded-lg border border-line bg-surface shadow-soft p-5'>
+			<h2 className='mb-3.5 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>The Dilemma</h2>
 
-			<div className='grid gap-3 text-sm leading-relaxed text-slate-600'>
+			<div className='grid gap-3 text-sm leading-relaxed text-ink-muted'>
 				<p className='m-0'>
 					Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue introduces a dangerous gamble — it may enable
 					a superior collective outcome if enough people coordinate, but failure to reach that critical mass turns it into a potential death sentence.
@@ -1389,11 +1394,16 @@ function App() {
 	const shareUrl = getShareUrl()
 	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
-	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
+	const statusBadgeStyles =
+		statusLabel === 'Ongoing'
+			? 'bg-tone-green-bg text-tone-green-text'
+			: statusLabel === 'Ready'
+				? 'bg-tone-green-bg text-tone-green-text'
+				: 'bg-tone-blue-bg text-tone-blue-text'
 
 	const questionCard = (
 		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
-			<p className='m-0 text-sm leading-relaxed text-slate-800'>{QUESTION}</p>
+			<p className='m-0 text-sm leading-relaxed text-ink'>{QUESTION}</p>
 		</Panel>
 	)
 
@@ -1405,7 +1415,7 @@ function App() {
 					<Icon name='clipboard' size={17} />
 				</button>
 			}>
-			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-[#f8fbff] p-3.5 text-left font-mono text-xs leading-snug text-[#255481] whitespace-pre-wrap'>
+			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-surface-muted p-3.5 text-left font-mono text-xs leading-snug text-tone-blue-text whitespace-pre-wrap'>
 				{schemaText}
 			</pre>
 			<a
@@ -1430,32 +1440,32 @@ function App() {
 			}>
 			<label className='grid gap-2'>
 				<span className='field-label'>OpenRouter API key</span>
-				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-10'>
+				<div className='flex items-center gap-2 rounded-md border border-line bg-surface px-2.5 min-h-10'>
 					<Icon name='key' size={16} />
 					<input
 						autoComplete='off'
-						className='flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-slate-900'
+						className='flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-ink'
 						onChange={(event) => setApiKey(event.target.value)}
 						placeholder='sk-or-...'
 						type='password'
 						value={apiKey}
 					/>
 				</div>
-				<small className='text-xs text-slate-500'>Stored in localStorage on this device only.</small>
+				<small className='text-xs text-ink-muted'>Stored in localStorage on this device only.</small>
 			</label>
 
 			<div className='grid gap-2'>
 				<span className='field-label'>Models</span>
 				{modelStatus === 'error' && (
-					<div className='flex items-center gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800'>
+					<div className='flex items-center gap-2.5 rounded-lg border border-line bg-tone-red-bg px-3 py-2.5 text-sm text-tone-red-text'>
 						<Icon name='alert' size={16} />
 						Could not load the OpenRouter model catalog. Check the network connection and reload.
 					</div>
 				)}
-				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-10'>
+				<div className='flex items-center gap-2 rounded-md border border-line bg-surface px-2.5 min-h-10'>
 					<Icon name='search' size={16} />
 					<input
-						className='flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-slate-900'
+						className='flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-ink'
 						onChange={(event) => setModelSearch(event.target.value)}
 						onKeyDown={(event) => {
 							if (event.key === 'Enter') addModel(modelSearch)
@@ -1468,7 +1478,7 @@ function App() {
 						Add
 					</button>
 				</div>
-				<label className='flex items-center gap-2 text-sm font-bold text-slate-700'>
+				<label className='flex items-center gap-2 text-sm font-bold text-ink'>
 					<input checked={showStructuredOnly} className='accent-brand' onChange={(event) => setShowStructuredOnly(event.target.checked)} type='checkbox' />
 					Only show structured-output capable models (recommended)
 				</label>
@@ -1478,24 +1488,26 @@ function App() {
 							const isSelected = selectedModelIds.includes(model.id)
 							return (
 								<button
-									className={`flex items-center justify-between gap-2.5 rounded-lg border bg-slate-50 p-2.5 text-left text-slate-800 ${
-										isSelected ? 'border-brand' : 'border-slate-200'
+									className={`flex items-center justify-between gap-2.5 rounded-lg border bg-surface-muted p-2.5 text-left text-ink ${
+										isSelected ? 'border-brand' : 'border-line'
 									}`}
 									key={model.id}
 									onClick={() => addModel(model.id)}
 									type='button'>
 									<span>
 										<strong className='block text-sm'>{modelLabel(model)}</strong>
-										<small className='block text-xs text-slate-500 mt-1 wrap-break-word'>{model.id}</small>
+										<small className='block text-xs text-ink-muted mt-1 wrap-break-word'>{model.id}</small>
 									</span>
 									{supportsStructuredOutput(model) && (
-										<em className='inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 px-2 py-1.5 text-xs font-bold not-italic'>structured</em>
+										<em className='inline-flex items-center rounded-md bg-tone-green-bg text-tone-green-text px-2 py-1.5 text-xs font-bold not-italic'>
+											structured
+										</em>
 									)}
 								</button>
 							)
 						})
 					) : (
-						<div className='rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 text-center text-xs text-slate-500'>
+						<div className='rounded-lg border border-dashed border-line bg-surface-muted p-3 text-center text-xs text-ink-muted'>
 							{modelStatus === 'loading' ? 'Loading OpenRouter models...' : 'No matching live models.'}
 						</div>
 					)}
@@ -1503,12 +1515,12 @@ function App() {
 				<div className='flex flex-wrap gap-2'>
 					{selectedModels.map((model) => (
 						<span
-							className='inline-flex items-center gap-2 max-w-full rounded-md border border-slate-200 bg-slate-100 pl-2.5 pr-2 py-1.5 text-xs font-bold text-slate-700'
+							className='inline-flex items-center gap-2 max-w-full rounded-md border border-line bg-surface-muted pl-2.5 pr-2 py-1.5 text-xs font-bold text-ink'
 							key={model.id}>
 							{modelLabel(model)}
 							<button
 								aria-label={`Remove ${modelLabel(model)}`}
-								className='bg-transparent border-0 p-0 text-slate-500 font-black'
+								className='bg-transparent border-0 p-0 text-ink-muted font-black'
 								onClick={() => removeModel(model.id)}
 								type='button'>
 								x
@@ -1533,27 +1545,27 @@ function App() {
 				</label>
 			</div>
 
-			<label className='flex items-center gap-2 text-sm font-bold text-slate-700'>
+			<label className='flex items-center gap-2 text-sm font-bold text-ink'>
 				<input checked={requireParameters} className='accent-brand' onChange={(event) => setRequireParameters(event.target.checked)} type='checkbox' />
 				Require providers that support structured output parameters
 			</label>
 
 			{runError && (
-				<div className='flex items-center gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-800'>
+				<div className='flex items-center gap-2.5 rounded-lg border border-line bg-tone-red-bg px-3 py-2.5 text-sm text-tone-red-text'>
 					<Icon name='alert' size={16} />
 					{runError}
 				</div>
 			)}
 
 			{isRunning && (
-				<div className='grid gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3' role='status'>
-					<div className='flex items-center justify-between text-sm text-slate-700'>
+				<div className='grid gap-2.5 rounded-lg border border-line bg-surface-muted p-3' role='status'>
+					<div className='flex items-center justify-between text-sm text-ink'>
 						<span>{runProgress.active}</span>
 						<strong>
 							{runProgress.completed}/{runProgress.total}
 						</strong>
 					</div>
-					<div className='h-2 overflow-hidden rounded-full bg-slate-200'>
+					<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
 						<span className='block h-full bg-linear-to-r from-blue-500 to-brand transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
 					</div>
 				</div>
@@ -1576,7 +1588,7 @@ function App() {
 					Clear Local
 				</button>
 			</div>
-			<p className='-mt-1 m-0 text-xs text-slate-500'>Each request is one-shot with no conversation history.</p>
+			<p className='-mt-1 m-0 text-xs text-ink-muted'>Each request is one-shot with no conversation history.</p>
 		</Panel>
 	)
 
@@ -1636,14 +1648,14 @@ function App() {
 				<SummaryGrid lastUpdated={localLastUpdated} selectedCount={selectedModels.length} stateLabel={localStatusLabel} summary={localSummary} />
 				{isRunning && (
 					<Panel title='Current Run' action={<span className='status-badge'>Live</span>}>
-						<div className='grid gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3' role='status'>
-							<div className='flex items-center justify-between text-sm text-slate-700'>
+						<div className='grid gap-2.5 rounded-lg border border-line bg-surface-muted p-3' role='status'>
+							<div className='flex items-center justify-between text-sm text-ink'>
 								<span>{runProgress.active}</span>
 								<strong>
 									{runProgress.completed}/{runProgress.total}
 								</strong>
 							</div>
-							<div className='h-2 overflow-hidden rounded-full bg-slate-200'>
+							<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
 								<span className='block h-full bg-linear-to-r from-blue-500 to-brand transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
 							</div>
 						</div>
@@ -1668,7 +1680,7 @@ function App() {
 	}
 
 	return (
-		<div className='min-h-svh grid grid-cols-[240px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
+		<div className='min-h-svh grid grid-cols-[240px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-2xl:grid-cols-1 max-2xl:grid-rows-[auto_auto_minmax(0,1fr)]'>
 			<ShareDialog
 				canUseNativeShare={canUseNativeShare}
 				isOpen={shareDialogOpen}
@@ -1679,18 +1691,18 @@ function App() {
 				shareStatus={shareStatus}
 				url={shareUrl}
 			/>
-			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
+			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-surface px-6 max-2xl:flex-col max-2xl:items-start max-2xl:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
-					<Logo aria-hidden='true' className='brand-mark' />
+					<Logo aria-hidden='true' className='h-12 w-19 flex-none overflow-visible' />
 					<div>
-						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-slate-950'>Button Arena</h1>
-						<p className='mt-1 m-0 text-sm text-slate-600'>A live benchmark of red/blue choices from single-shot structured responses</p>
+						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-ink'>Button Arena</h1>
+						<p className='mt-1 m-0 text-sm text-ink-muted'>A live benchmark of red/blue choices from single-shot structured responses</p>
 					</div>
 				</div>
-				<div className='flex items-center justify-end gap-3 max-[1080px]:flex-wrap max-[1080px]:justify-start'>
-					<span className='text-sm text-slate-500 whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
+				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
+					<span className='text-sm text-ink-muted whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
 					<span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>
-						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-tone-green-bg' : 'bg-tone-blue-bg'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
 					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
@@ -1700,17 +1712,17 @@ function App() {
 				</div>
 			</header>
 
-			<aside className='flex flex-col justify-between gap-5 border-r border-line bg-white/80 px-4 py-5 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-3'>
+			<aside className='flex flex-col justify-between gap-5 border-r border-line bg-surface/80 px-4 py-5 max-2xl:border-r-0 max-2xl:border-b max-2xl:py-3'>
 				<div>
-					<nav aria-label='Benchmark sections' className='grid gap-2 max-[1080px]:flex max-[1080px]:overflow-x-auto'>
+					<nav aria-label='Benchmark sections' className='grid gap-2 max-2xl:flex max-2xl:overflow-x-auto'>
 						{NAV_ITEMS.map((item) => {
 							const isActive = activeSection === item.id
 							return (
 								<button
 									aria-current={isActive ? 'page' : undefined}
 									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-extrabold ${
-										isActive ? 'bg-brand-soft text-brand' : 'text-slate-600 hover:bg-[#f4f8ff] hover:text-brand'
-									} w-full max-[1080px]:w-auto max-[1080px]:flex-none`}
+										isActive ? 'bg-brand-soft text-brand' : 'text-ink-muted hover:bg-surface-muted hover:text-brand'
+									} w-full max-2xl:w-auto max-2xl:flex-none`}
 									key={item.id}
 									onClick={() => changeSection(item.id)}
 									type='button'>
@@ -1720,8 +1732,8 @@ function App() {
 							)
 						})}
 					</nav>
-					<div className='my-5 h-px bg-line max-[1080px]:hidden' />
-					<div className='max-[1080px]:hidden'>
+					<div className='my-5 h-px bg-line max-2xl:hidden' />
+					<div className='max-2xl:hidden'>
 						<SidebarBenchmarkCard lastUpdated={lastUpdated} summary={globalSummary} />
 					</div>
 				</div>
