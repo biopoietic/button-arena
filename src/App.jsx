@@ -27,11 +27,11 @@ const VOTE_RESPONSE_FORMAT = {
           description: 'The single button the model would press.',
         },
         comment: {
-          type: 'string',
+          type: ['string', 'null'],
           description: 'Optional concise rationale for the choice.',
         },
       },
-      required: ['choice'],
+      required: ['choice', 'comment'],
       additionalProperties: false,
     },
   },
