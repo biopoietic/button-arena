@@ -1,4 +1,4 @@
-# LLM Vote Benchmark
+# ButtonArena
 
 A client-side React + Tailwind v4 app for running a revealed-preference benchmark through OpenRouter.
 

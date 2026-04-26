@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "Red/Blue LLM Vote Benchmark",
+    "title": "ButtonArena",
     "schemaVersion": 1,
     "exportedAt": "2026-04-26T07:31:38.050Z",
     "question": "Everyone in the world has to take a private vote by pressing a red or blue button. If more than 50% of people press the blue button, everyone survives. If less than 50% of people press the blue button, only people who pressed the red button survive. Which button would you press?",

@@ -3,11 +3,11 @@ import './App.css'
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1'
 const STATIC_RESULTS_URL = '/results/global-results.json'
-const APP_TITLE = 'LLM Vote Benchmark'
+const APP_TITLE = 'ButtonArena'
 
 const STORAGE_KEYS = {
-  apiKey: 'red-blue-benchmark:openrouter-key',
-  localResponses: 'red-blue-benchmark:local-responses',
+  apiKey: 'button-arena:openrouter-key',
+  localResponses: 'button-arena:local-responses',
 }
 
 const QUESTION =
@@ -1051,7 +1051,7 @@ function App() {
   function exportLocalResults() {
     const payload = {
       metadata: {
-        title: 'Red/Blue LLM Vote Benchmark',
+        title: 'ButtonArena',
         schemaVersion: 1,
         exportedAt: new Date().toISOString(),
         question: QUESTION,
@@ -1558,7 +1558,7 @@ function App() {
             <Icon name="activity" size={32} />
           </div>
           <div>
-            <h1>LLM Vote Benchmark</h1>
+            <h1>ButtonArena</h1>
             <p>Revealed preference via single-shot structured responses</p>
           </div>
         </div>
