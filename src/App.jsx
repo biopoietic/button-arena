@@ -45,11 +45,11 @@ import { fetchModelCatalog, fetchStaticResults, runBenchmarkRequest } from './li
 import Logo from './assets/logo.svg?react'
 
 const CHART_COLORS = {
-	blue: 'var(--color-chart-blue)',
-	red: 'var(--color-chart-red)',
-	grid: 'var(--color-chart-grid)',
-	text: 'var(--color-chart-text)',
-	textStrong: 'var(--color-chart-text-strong)',
+	blue: 'var(--color-blue)',
+	red: 'var(--color-red)',
+	grid: 'var(--color-line)',
+	text: 'var(--color-ink-muted)',
+	textStrong: 'var(--color-ink)',
 }
 
 const NAV_ITEMS = [
@@ -229,17 +229,17 @@ function formatNumber(value) {
 }
 
 function Dot({ tone }) {
-	const color = tone === 'blue' ? 'bg-tone-blue-bg' : 'bg-tone-red-bg'
+	const color = tone === 'blue' ? 'bg-blue-soft' : 'bg-red-soft'
 	return <i className={`inline-block h-2.5 w-2.5 rounded-full mr-2 align-[1px] ${color}`} />
 }
 
 function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const toneStyles = {
-		neutral: { card: 'bg-surface', icon: 'bg-tone-blue-bg text-tone-blue-text' },
-		blue: { card: 'bg-linear-to-br from-surface to-tone-blue-bg', icon: 'bg-tone-blue-bg text-tone-blue-text' },
-		red: { card: 'bg-linear-to-br from-surface to-tone-red-bg', icon: 'bg-tone-red-bg text-tone-red-text' },
-		purple: { card: 'bg-surface', icon: 'bg-tone-blue-bg text-brand' },
-		green: { card: 'bg-linear-to-br from-surface to-tone-green-bg', icon: 'bg-tone-green-bg text-tone-green-text' },
+		neutral: { card: 'bg-surface', icon: 'bg-blue-soft text-blue-deep' },
+		blue: { card: 'bg-linear-to-br from-surface to-blue-soft', icon: 'bg-blue-soft text-blue-deep' },
+		red: { card: 'bg-linear-to-br from-surface to-red-soft', icon: 'bg-red-soft text-red-deep' },
+		purple: { card: 'bg-surface', icon: 'bg-blue-soft text-blue' },
+		green: { card: 'bg-linear-to-br from-surface to-success-soft', icon: 'bg-success-soft text-success' },
 	}
 	const tones = toneStyles[tone] ?? toneStyles.neutral
 
@@ -280,7 +280,7 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 					<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-ink-muted'>{label}</span>
 					<strong className='mt-2 block text-[27px] leading-none text-ink'>{value}</strong>
 					{detail && <span className='mt-2 block text-sm text-ink-muted'>{detail}</span>}
-					{status && <span className='mt-2 block text-sm font-bold text-tone-green-text'>{status}</span>}
+					{status && <span className='mt-2 block text-sm font-bold text-success'>{status}</span>}
 				</div>
 				{icon && (
 					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-line bg-surface text-ink-muted shadow-control'>
@@ -605,21 +605,21 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 				</div>
 				<div className='flex flex-wrap gap-3'>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-brand-deep'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-blue-deep'
 						onClick={onViewResults}
 						type='button'>
 						<Icon name='chevron' size={16} />
 						View Results
 					</button>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-tone-blue-bg'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-soft'
 						onClick={onRunPrivate}
 						type='button'>
 						<Icon name='play' size={16} />
 						Run Privately
 					</button>
 					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-tone-blue-bg'
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-soft'
 						onClick={onShareBenchmark}
 						type='button'>
 						<Icon name='share' size={16} />
@@ -644,7 +644,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 				role='dialog'>
 				<div className='flex items-start justify-between gap-4'>
 					<div className='space-y-2'>
-						<span className='inline-flex items-center gap-2 rounded-full bg-tone-blue-bg px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-tone-blue-text'>
+						<span className='inline-flex items-center gap-2 rounded-full bg-blue-soft px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-blue-deep'>
 							<Icon name='share' size={13} />
 							Share Benchmark
 						</span>
@@ -682,7 +682,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 					{shareStatus ? (
 						<span
 							className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 font-bold ${
-								shareStatus.tone === 'error' ? 'bg-tone-red-bg text-tone-red-text' : 'bg-tone-green-bg text-tone-green-text'
+								shareStatus.tone === 'error' ? 'bg-red-soft text-red-deep' : 'bg-success-soft text-success'
 							}`}>
 							<Icon name={shareStatus.tone === 'error' ? 'alert' : 'check'} size={14} />
 							{shareStatus.message}
@@ -698,7 +698,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 
 function ChoicePill({ choice }) {
 	if (!choice) {
-		return <span className='inline-flex items-center rounded-md bg-tone-red-bg text-tone-red-text px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
+		return <span className='inline-flex items-center rounded-md bg-red-soft text-red-deep px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
 	}
 	return (
 		<span className='inline-flex items-center text-xs font-bold lowercase text-ink'>
@@ -817,7 +817,7 @@ function RunsTable({ page, rows, setPage }) {
 					</thead>
 					<tbody>
 						{visibleRows.map((row) => {
-							const sourceClasses = row.source === 'global' ? 'bg-tone-blue-bg text-tone-blue-text' : 'bg-tone-green-bg text-tone-green-text'
+							const sourceClasses = row.source === 'global' ? 'bg-blue-soft text-blue-deep' : 'bg-success-soft text-success'
 							return (
 								<tr className={row.status === 'error' ? 'error-row' : ''} key={row.id}>
 									<td className={bodyCell}>{formatDateTime(row.timestamp)}</td>
@@ -887,8 +887,8 @@ function ProviderBreakdown({ providers }) {
 					</div>
 					<div className='grid gap-2.5'>
 						<div className='flex h-2.5 overflow-hidden rounded-full bg-surface-muted'>
-							<span className='block h-full bg-tone-blue-bg' style={{ width: formatPercent(provider.blue, provider.total) }} />
-							<span className='block h-full bg-tone-red-bg' style={{ width: formatPercent(provider.red, provider.total) }} />
+							<span className='block h-full bg-blue-soft' style={{ width: formatPercent(provider.blue, provider.total) }} />
+							<span className='block h-full bg-red-soft' style={{ width: formatPercent(provider.red, provider.total) }} />
 						</div>
 						<div className='flex flex-wrap gap-3 text-xs text-ink-muted'>
 							<span>
@@ -925,12 +925,12 @@ function ProviderBreakdown({ providers }) {
 
 function PrivacyNote() {
 	return (
-		<div className='flex flex-col items-start gap-2 rounded-lg border border-line bg-surface p-4 text-tone-green-text shadow-soft'>
+		<div className='flex flex-col items-start gap-2 rounded-lg border border-line bg-surface p-4 text-success shadow-soft'>
 			<div className='flex items-center gap-2'>
 				<Icon name='check' size={17} />
 				<strong className='text-sm'>Local runs are private</strong>
 			</div>
-			<span className='text-xs leading-snug text-tone-green-text'>User-generated responses stay in this browser unless exported and committed.</span>
+			<span className='text-xs leading-snug text-success'>User-generated responses stay in this browser unless exported and committed.</span>
 		</div>
 	)
 }
@@ -946,8 +946,8 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 			<div className='mt-5 grid gap-4'>
 				<div className='flex items-center justify-between gap-2 text-xs text-ink-muted'>
 					<span>{formatRunMoment(lastUpdated)}</span>
-					<span className='inline-flex items-center gap-1.5 rounded-full bg-tone-green-bg px-2 py-1 text-[11px] font-extrabold text-tone-green-text'>
-						<i className='h-1.5 w-1.5 rounded-full bg-tone-green-bg' />
+					<span className='inline-flex items-center gap-1.5 rounded-full bg-success-soft px-2 py-1 text-[11px] font-extrabold text-success'>
+						<i className='h-1.5 w-1.5 rounded-full bg-success-soft' />
 						Live
 					</span>
 				</div>
@@ -974,7 +974,7 @@ function FeedbackCard() {
 			<strong className='text-sm text-ink'>Contribute</strong>
 			<p className='mt-2 mb-4 text-xs leading-relaxed text-ink-muted'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
 			<a
-				className='inline-flex min-h-10 items-center justify-center rounded-md bg-brand px-4 text-sm font-extrabold text-white hover:bg-brand-deep'
+				className='inline-flex min-h-10 items-center justify-center rounded-md bg-blue px-4 text-sm font-extrabold text-white hover:bg-blue-deep'
 				href='https://github.com/biopoietic/button-arena'
 				target='_blank'
 				rel='noreferrer'>
@@ -1396,10 +1396,10 @@ function App() {
 
 	const statusBadgeStyles =
 		statusLabel === 'Ongoing'
-			? 'bg-tone-green-bg text-tone-green-text'
+			? 'bg-success-soft text-success'
 			: statusLabel === 'Ready'
-				? 'bg-tone-green-bg text-tone-green-text'
-				: 'bg-tone-blue-bg text-tone-blue-text'
+				? 'bg-success-soft text-success'
+				: 'bg-blue-soft text-blue-deep'
 
 	const questionCard = (
 		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
@@ -1415,7 +1415,7 @@ function App() {
 					<Icon name='clipboard' size={17} />
 				</button>
 			}>
-			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-surface-muted p-3.5 text-left font-mono text-xs leading-snug text-tone-blue-text whitespace-pre-wrap'>
+			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-surface-muted p-3.5 text-left font-mono text-xs leading-snug text-blue-deep whitespace-pre-wrap'>
 				{schemaText}
 			</pre>
 			<a
@@ -1457,7 +1457,7 @@ function App() {
 			<div className='grid gap-2'>
 				<span className='field-label'>Models</span>
 				{modelStatus === 'error' && (
-					<div className='flex items-center gap-2.5 rounded-lg border border-line bg-tone-red-bg px-3 py-2.5 text-sm text-tone-red-text'>
+					<div className='flex items-center gap-2.5 rounded-lg border border-line bg-red-soft px-3 py-2.5 text-sm text-red-deep'>
 						<Icon name='alert' size={16} />
 						Could not load the OpenRouter model catalog. Check the network connection and reload.
 					</div>
@@ -1479,7 +1479,7 @@ function App() {
 					</button>
 				</div>
 				<label className='flex items-center gap-2 text-sm font-bold text-ink'>
-					<input checked={showStructuredOnly} className='accent-brand' onChange={(event) => setShowStructuredOnly(event.target.checked)} type='checkbox' />
+					<input checked={showStructuredOnly} className='accent-blue' onChange={(event) => setShowStructuredOnly(event.target.checked)} type='checkbox' />
 					Only show structured-output capable models (recommended)
 				</label>
 				<div className='grid gap-1.5 max-h-57.5 overflow-auto'>
@@ -1489,7 +1489,7 @@ function App() {
 							return (
 								<button
 									className={`flex items-center justify-between gap-2.5 rounded-lg border bg-surface-muted p-2.5 text-left text-ink ${
-										isSelected ? 'border-brand' : 'border-line'
+										isSelected ? 'border-blue' : 'border-line'
 									}`}
 									key={model.id}
 									onClick={() => addModel(model.id)}
@@ -1499,7 +1499,7 @@ function App() {
 										<small className='block text-xs text-ink-muted mt-1 wrap-break-word'>{model.id}</small>
 									</span>
 									{supportsStructuredOutput(model) && (
-										<em className='inline-flex items-center rounded-md bg-tone-green-bg text-tone-green-text px-2 py-1.5 text-xs font-bold not-italic'>
+										<em className='inline-flex items-center rounded-md bg-success-soft text-success px-2 py-1.5 text-xs font-bold not-italic'>
 											structured
 										</em>
 									)}
@@ -1546,12 +1546,12 @@ function App() {
 			</div>
 
 			<label className='flex items-center gap-2 text-sm font-bold text-ink'>
-				<input checked={requireParameters} className='accent-brand' onChange={(event) => setRequireParameters(event.target.checked)} type='checkbox' />
+				<input checked={requireParameters} className='accent-blue' onChange={(event) => setRequireParameters(event.target.checked)} type='checkbox' />
 				Require providers that support structured output parameters
 			</label>
 
 			{runError && (
-				<div className='flex items-center gap-2.5 rounded-lg border border-line bg-tone-red-bg px-3 py-2.5 text-sm text-tone-red-text'>
+				<div className='flex items-center gap-2.5 rounded-lg border border-line bg-red-soft px-3 py-2.5 text-sm text-red-deep'>
 					<Icon name='alert' size={16} />
 					{runError}
 				</div>
@@ -1566,7 +1566,7 @@ function App() {
 						</strong>
 					</div>
 					<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
-						<span className='block h-full bg-linear-to-r from-blue-500 to-brand transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
+						<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
 					</div>
 				</div>
 			)}
@@ -1656,7 +1656,7 @@ function App() {
 								</strong>
 							</div>
 							<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
-								<span className='block h-full bg-linear-to-r from-blue-500 to-brand transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
+								<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
 							</div>
 						</div>
 					</Panel>
@@ -1702,7 +1702,7 @@ function App() {
 				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
 					<span className='text-sm text-ink-muted whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
 					<span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>
-						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-tone-green-bg' : 'bg-tone-blue-bg'}`} />
+						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-success-soft' : 'bg-blue-soft'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
 					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
@@ -1721,7 +1721,7 @@ function App() {
 								<button
 									aria-current={isActive ? 'page' : undefined}
 									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-extrabold ${
-										isActive ? 'bg-brand-soft text-brand' : 'text-ink-muted hover:bg-surface-muted hover:text-brand'
+										isActive ? 'bg-blue-soft text-blue' : 'text-ink-muted hover:bg-surface-muted hover:text-blue'
 									} w-full max-2xl:w-auto max-2xl:flex-none`}
 									key={item.id}
 									onClick={() => changeSection(item.id)}

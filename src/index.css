@@ -4,10 +4,16 @@
 classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 `shadow-*`. Dark mode swaps the same tokens below — no per-class overrides. */
 @theme {
-	--color-brand: #2d6bff;
-	--color-brand-deep: #0b4fd5;
-	--color-brand-soft: #e9f1ff;
-	--color-red-brand: #ff3b30;
+	--color-blue: #2d6bff;
+	--color-blue-deep: #0b4fd5;
+	--color-blue-soft: rgba(45, 107, 255, 0.11);
+
+	--color-red: #ff3b30;
+	--color-red-deep: #cf171c;
+	--color-red-soft: rgba(255, 59, 48, 0.1);
+
+	--color-success: #047857;
+	--color-success-soft: rgba(16, 185, 129, 0.12);
 
 	--color-canvas: #f5f7fa;
 	--color-surface: #ffffff;
@@ -17,22 +23,9 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 	--color-ink: #0d1b2a;
 	--color-ink-muted: #64748b;
 
-	--color-tone-blue-bg: rgba(45, 107, 255, 0.11);
-	--color-tone-blue-text: #0b4fd5;
-	--color-tone-red-bg: rgba(255, 59, 48, 0.1);
-	--color-tone-red-text: #cf171c;
-	--color-tone-green-bg: rgba(16, 185, 129, 0.12);
-	--color-tone-green-text: #047857;
-
-	--color-chart-blue: #2d6bff;
-	--color-chart-red: #ff3b30;
-	--color-chart-grid: #e1e8f3;
-	--color-chart-text: #64748b;
-	--color-chart-text-strong: #334155;
-
 	--shadow-soft: 0 18px 45px rgba(13, 27, 42, 0.06);
 	--shadow-control: 0 8px 20px rgba(13, 27, 42, 0.06);
-	--shadow-brand: 0 12px 24px rgba(45, 107, 255, 0.2);
+	--shadow-blue: 0 12px 24px rgba(45, 107, 255, 0.2);
 
 	--font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -49,10 +42,16 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 	}
 
 	:root[data-theme='dark'] {
-		--color-brand: #4c85ff;
-		--color-brand-deep: #2d6bff;
-		--color-brand-soft: rgba(76, 133, 255, 0.16);
-		--color-red-brand: #ff4f45;
+		--color-blue: #4c85ff;
+		--color-blue-deep: #2d6bff;
+		--color-blue-soft: rgba(76, 133, 255, 0.18);
+
+		--color-red: #ff4f45;
+		--color-red-deep: #ff948e;
+		--color-red-soft: rgba(255, 79, 69, 0.17);
+
+		--color-success: #6ee7b7;
+		--color-success-soft: rgba(16, 185, 129, 0.16);
 
 		--color-canvas: #07111f;
 		--color-surface: #0d1b2a;
@@ -61,19 +60,6 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 
 		--color-ink: #edf4ff;
 		--color-ink-muted: #a7b3c6;
-
-		--color-tone-blue-bg: rgba(76, 133, 255, 0.18);
-		--color-tone-blue-text: #8bb0ff;
-		--color-tone-red-bg: rgba(255, 79, 69, 0.17);
-		--color-tone-red-text: #ff948e;
-		--color-tone-green-bg: rgba(16, 185, 129, 0.16);
-		--color-tone-green-text: #6ee7b7;
-
-		--color-chart-blue: #4c85ff;
-		--color-chart-red: #ff4f45;
-		--color-chart-grid: #243653;
-		--color-chart-text: #96a6be;
-		--color-chart-text-strong: #d9e6f8;
 
 		--shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.32);
 		--shadow-control: 0 8px 20px rgba(0, 0, 0, 0.22);
@@ -108,7 +94,7 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 referencing the semantic theme tokens above so dark mode is automatic. */
 @layer components {
 	.status-badge {
-		@apply inline-flex items-center rounded-md bg-tone-blue-bg px-2.5 py-2 text-xs font-bold leading-none text-tone-blue-text;
+		@apply inline-flex items-center rounded-md bg-blue-soft px-2.5 py-2 text-xs font-bold leading-none text-blue-deep;
 	}
 
 	.field-label {
@@ -116,11 +102,11 @@ referencing the semantic theme tokens above so dark mode is automatic. */
 	}
 
 	.btn-primary {
-		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-brand to-brand-deep px-5 text-sm font-extrabold text-white shadow-brand disabled:cursor-not-allowed disabled:opacity-55;
+		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-blue to-blue-deep px-5 text-sm font-extrabold text-white shadow-blue disabled:cursor-not-allowed disabled:opacity-55;
 	}
 
 	.btn-danger {
-		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-red-brand to-red-700 px-5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-55;
+		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-red to-red-deep px-5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-55;
 	}
 
 	.btn-secondary {
@@ -132,7 +118,7 @@ referencing the semantic theme tokens above so dark mode is automatic. */
 	}
 
 	.input {
-		@apply w-full min-h-11 rounded-md border border-line bg-surface px-3 text-base text-ink outline-none focus:border-brand;
+		@apply w-full min-h-11 rounded-md border border-line bg-surface px-3 text-base text-ink outline-none focus:border-blue;
 	}
 
 	.empty-state {
@@ -144,6 +130,6 @@ referencing the semantic theme tokens above so dark mode is automatic. */
 	}
 
 	.error-row {
-		@apply bg-tone-red-bg;
+		@apply bg-red-soft;
 	}
 }
