@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #7048e8;
-  --color-brand-deep: #5d36d9;
-  --color-brand-soft: #f0efff;
+  --color-brand: #0b63e6;
+  --color-brand-deep: #074fc0;
+  --color-brand-soft: #eaf2ff;
   --color-ink: #17223b;
   --color-ink-deep: #07152f;
-  --color-muted: #69758f;
-  --color-line: #e4e8f0;
-  --color-canvas: #f7f8fc;
+  --color-muted: #66738a;
+  --color-line: #dfe7f3;
+  --color-canvas: #f6f9fe;
 
   --font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -36,16 +36,18 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  background:
+    linear-gradient(180deg, #fbfdff 0%, #f6f9fe 38%, #f4f8fe 100%);
 }
 
 #root {
   min-height: 100svh;
 }
 
-/* ── Shared component classes ──────────────────────────────────── */
+/* Shared component classes */
 
 .status-badge {
-  @apply inline-flex items-center rounded-md bg-slate-100 px-2.5 py-2 text-xs font-bold leading-none text-slate-500;
+  @apply inline-flex items-center rounded-md bg-blue-50 px-2.5 py-2 text-xs font-bold leading-none text-blue-700;
 }
 
 .field-label {
@@ -53,31 +55,31 @@ body {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-[#7257e8] to-brand-deep shadow-[0_12px_24px_rgba(105,75,224,0.2)] disabled:cursor-not-allowed disabled:opacity-55;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-[#0d73f2] to-brand-deep px-5 text-sm font-extrabold text-white shadow-[0_12px_24px_rgba(15,100,230,0.18)] disabled:cursor-not-allowed disabled:opacity-55;
 }
 
 .btn-danger {
-  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-red-500 to-red-700 disabled:cursor-not-allowed disabled:opacity-55;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-red-500 to-red-700 px-5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-55;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-slate-50 px-3 text-sm font-bold text-slate-700 min-h-12 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-55;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-[#dfe7f3] bg-white px-3 text-sm font-extrabold text-slate-700 shadow-[0_8px_20px_rgba(27,44,82,0.04)] hover:bg-[#f8fbff] disabled:cursor-not-allowed disabled:opacity-55;
 }
 
 .btn-icon {
-  @apply inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-50 text-slate-700 min-h-12 min-w-12 hover:bg-slate-100;
+  @apply inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border border-[#dfe7f3] bg-white text-slate-700 shadow-[0_8px_20px_rgba(27,44,82,0.04)] hover:bg-[#f8fbff];
 }
 
 .input {
-  @apply w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 text-base text-slate-900 outline-none focus:border-brand;
+  @apply w-full min-h-11 rounded-md border border-[#dfe7f3] bg-white px-3 text-base text-slate-900 outline-none focus:border-brand;
 }
 
 .empty-state {
-  @apply grid place-items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 min-h-45 p-7 text-center text-slate-600;
+  @apply grid min-h-45 place-items-center gap-2 rounded-lg border border-dashed border-[#dfe7f3] bg-[#f8fbff] p-7 text-center text-slate-600;
 }
 
 .table-cell {
-  @apply border-b border-r border-slate-200 px-3 py-2.5 text-xs text-slate-700 align-top text-left last:border-r-0;
+  @apply border-b border-r border-[#e6edf6] px-3 py-2.5 text-left align-top text-xs text-slate-700 last:border-r-0;
 }
 
 .error-row {

@@ -1,9 +1,50 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, BarChart2, Box, Check, ChevronRight, Copy, Download, Home, Key, List, Play, RefreshCw, Search, Settings, Shield, Square, Trash2 } from 'lucide-react'
+import {
+	AlertTriangle,
+	BarChart2,
+	Box,
+	BrainCircuit,
+	Check,
+	ChevronRight,
+	Copy,
+	Download,
+	Home,
+	Key,
+	List,
+	Play,
+	RefreshCw,
+	Search,
+	Settings,
+	Share2,
+	Shield,
+	Square,
+	Trash2,
+} from 'lucide-react'
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	LabelList,
+	Line,
+	LineChart,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts'
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1'
 const STATIC_RESULTS_URL = '/results/global-results.json'
 const APP_TITLE = 'ButtonArena'
+const CHART_COLORS = {
+	blue: '#1269f3',
+	red: '#ff4054',
+	grid: '#e6ecf5',
+	text: '#64748b',
+}
 
 const STORAGE_KEYS = {
 	apiKey: 'button-arena:openrouter-key',
@@ -61,6 +102,7 @@ const ICON_MAP = {
 	activity: BarChart2,
 	alert: AlertTriangle,
 	box: Box,
+	brain: BrainCircuit,
 	check: Check,
 	chevron: ChevronRight,
 	clipboard: Copy,
@@ -72,6 +114,7 @@ const ICON_MAP = {
 	refresh: RefreshCw,
 	search: Search,
 	settings: Settings,
+	share: Share2,
 	shield: Shield,
 	stop: Square,
 	trash: Trash2,
@@ -85,9 +128,9 @@ function Icon({ name, size = 18 }) {
 
 function Panel({ title, action, children, className = '' }) {
 	return (
-		<article className={`rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] p-4${className ? ` ${className}` : ''}`}>
+		<article className={`rounded-lg border border-[#dfe7f3] bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-4${className ? ` ${className}` : ''}`}>
 			<div className='flex items-center justify-between gap-3 mb-3.5'>
-				<h2 className='m-0 text-sm font-extrabold uppercase text-slate-900'>{title}</h2>
+				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>{title}</h2>
 				{action}
 			</div>
 			{children}
@@ -170,7 +213,9 @@ function safeJsonParse(text) {
 		if (start >= 0 && end > start) {
 			try {
 				return JSON.parse(text.slice(start, end + 1))
-			} catch {}
+			} catch {
+				// Fall through to the targeted choice matcher below.
+			}
 		}
 		const choiceMatch = text.match(/"choice"\s*:\s*"(red|blue)"/i)
 		if (choiceMatch) {
@@ -385,6 +430,28 @@ function formatDateTime(value) {
 	}).format(date)
 }
 
+function formatDateShort(value) {
+	if (!value) return 'No runs'
+	const date = new Date(value)
+	if (Number.isNaN(date.getTime())) return value
+	return new Intl.DateTimeFormat(undefined, {
+		month: 'short',
+		day: 'numeric',
+	}).format(date)
+}
+
+function formatRunMoment(value) {
+	if (!value) return 'No runs'
+	const date = new Date(value)
+	if (Number.isNaN(date.getTime())) return value
+	return new Intl.DateTimeFormat(undefined, {
+		month: 'short',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: '2-digit',
+	}).format(date)
+}
+
 function formatTime(value) {
 	if (!value) return 'Pending'
 	const date = new Date(value)
@@ -401,33 +468,107 @@ function trimText(value, maxLength = 130) {
 	return text.length > maxLength ? `${text.slice(0, maxLength - 1)}...` : text
 }
 
+function formatNumber(value) {
+	return new Intl.NumberFormat(undefined).format(value ?? 0)
+}
+
 function Dot({ tone }) {
 	const color = tone === 'blue' ? 'bg-blue-500' : 'bg-red-500'
-	return <i className={`inline-block h-3 w-3 rounded-full mr-2 align-[-1px] ${color}`} />
+	return <i className={`inline-block h-2.5 w-2.5 rounded-full mr-2 align-[1px] ${color}`} />
 }
 
 function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const toneStyles = {
 		neutral: { card: '', icon: 'bg-blue-50 text-blue-600' },
-		blue: { card: 'bg-linear-to-br from-white to-blue-50/60', icon: 'bg-blue-100 text-blue-600' },
-		red: { card: 'bg-linear-to-br from-white to-red-50/50', icon: 'bg-red-100 text-red-500' },
-		purple: { card: '', icon: 'bg-brand-soft text-brand' },
-		green: { card: 'bg-linear-to-br from-white to-emerald-50/60', icon: 'bg-emerald-100 text-emerald-600' },
+		blue: { card: 'bg-linear-to-br from-white to-blue-50/70', icon: 'bg-blue-50 text-blue-600' },
+		red: { card: 'bg-linear-to-br from-white to-red-50/60', icon: 'bg-red-50 text-red-500' },
+		purple: { card: '', icon: 'bg-blue-50 text-brand' },
+		green: { card: 'bg-linear-to-br from-white to-emerald-50/70', icon: 'bg-emerald-50 text-emerald-600' },
 	}
 	const tones = toneStyles[tone] ?? toneStyles.neutral
-	const valueClass = tone === 'green' ? 'text-2xl' : 'text-3xl'
 
 	return (
-		<article className={`flex items-start gap-4 rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] min-h-32 p-5 ${tones.card}`}>
-			<div className={`grid place-items-center rounded-md h-8 w-8 flex-none ${tones.icon}`}>
-				<Icon name={icon} size={22} />
+		<article className={`flex min-h-[104px] items-start gap-3 rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_18px_45px_rgba(27,44,82,0.05)] ${tones.card}`}>
+			<div className={`grid h-9 w-9 flex-none place-items-center rounded-md ${tones.icon}`}>
+				<Icon name={icon} size={19} />
 			</div>
-			<div>
-				<span className='block text-sm text-slate-600'>{label}</span>
-				<strong className={`block ${valueClass} leading-tight my-3 text-slate-900`}>{value}</strong>
-				<small className='block text-sm text-slate-600'>{detail}</small>
+			<div className='min-w-0'>
+				<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
+				<strong className='my-2 block text-[26px] leading-none text-slate-950'>{value}</strong>
+				<small className='block text-xs leading-snug text-slate-500'>{detail}</small>
 			</div>
 		</article>
+	)
+}
+
+function Sparkline({ tone = 'blue', values }) {
+	const color = tone === 'blue' ? CHART_COLORS.blue : CHART_COLORS.red
+	const data = values.map((value, index) => ({ index, value }))
+
+	return (
+		<div aria-hidden='true' className='h-8 w-full'>
+			<ResponsiveContainer height='100%' width='100%'>
+				<LineChart data={data} margin={{ bottom: 3, left: 0, right: 0, top: 3 }}>
+					<Line dataKey='value' dot={false} isAnimationActive={false} stroke={color} strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.4} type='monotone' />
+				</LineChart>
+			</ResponsiveContainer>
+		</div>
+	)
+}
+
+function MetricTile({ className = '', detail, icon, label, status, value }) {
+	return (
+		<div className={`grid min-h-[104px] content-center border-[#dfe7f3] p-4 ${className}`}>
+			<div className='flex items-start justify-between gap-3'>
+				<div className='min-w-0'>
+					<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
+					<strong className='mt-2 block text-[27px] leading-none text-slate-950'>{value}</strong>
+					{detail && <span className='mt-2 block text-sm text-slate-500'>{detail}</span>}
+					{status && <span className='mt-2 block text-sm font-bold text-emerald-600'>{status}</span>}
+				</div>
+				{icon && (
+					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-[#dfe7f3] bg-white text-slate-500 shadow-[0_8px_24px_rgba(27,44,82,0.05)]'>
+						<Icon name={icon} size={20} />
+					</div>
+				)}
+			</div>
+		</div>
+	)
+}
+
+function ShareMetricTile({ detail, label, tone, value, values }) {
+	return (
+		<div className='grid min-h-[116px] content-center border-r border-[#dfe7f3] p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
+			<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
+			<strong className='mt-2 block text-[28px] leading-none text-slate-950'>{value}</strong>
+			<div className='mt-3'>
+				<Sparkline tone={tone} values={values} />
+			</div>
+			{detail && <span className='sr-only'>{detail}</span>}
+		</div>
+	)
+}
+
+function OverviewMetrics({ lastUpdated, stateLabel, summary }) {
+	const bluePercent = summary.total ? (summary.blue / summary.total) * 100 : 0
+	const redPercent = 100 - bluePercent
+	const blueTrend = [44, 48, 50, 54, 53, 58, 61, 64, bluePercent]
+	const redTrend = [56, 52, 50, 46, 47, 42, 39, 36, redPercent]
+
+	return (
+		<section className='grid overflow-hidden rounded-lg border border-[#dfe7f3] bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)]'>
+			<div className='grid grid-cols-3 border-b border-[#dfe7f3] max-sm:grid-cols-1'>
+				<ShareMetricTile detail={`${summary.blue} blue votes`} label='Blue Share' tone='blue' value={formatPercent(summary.blue, summary.total)} values={blueTrend} />
+				<ShareMetricTile detail={`${summary.red} red votes`} label='Red Share' tone='red' value={formatPercent(summary.red, summary.total)} values={redTrend} />
+				<MetricTile className='min-h-[116px]' icon='box' label='Models' value={summary.models.length} />
+			</div>
+			<div className='grid grid-cols-4 max-[1220px]:grid-cols-2 max-sm:grid-cols-1'>
+				<MetricTile className='border-r max-[1220px]:border-b max-sm:border-r-0' label='Total Runs' value={formatNumber(summary.total)} />
+				<MetricTile className='border-r max-[1220px]:border-r-0 max-[1220px]:border-b' label='Blue Votes' value={formatNumber(summary.blue)} />
+				<MetricTile className='border-r max-sm:border-r-0 max-sm:border-b' label='Red Votes' value={formatNumber(summary.red)} />
+				<MetricTile label='Last Run' status={stateLabel} value={formatRunMoment(lastUpdated)} />
+			</div>
+		</section>
 	)
 }
 
@@ -441,14 +582,59 @@ function EmptyState({ title, detail }) {
 	)
 }
 
+function ChartTooltipBox({ active, label, payload }) {
+	if (!active || !payload?.length) return null
+
+	return (
+		<div className='rounded-lg border border-[#dfe7f3] bg-white px-3 py-2 text-xs shadow-[0_14px_32px_rgba(27,44,82,0.12)]'>
+			{label && <strong className='mb-1.5 block max-w-60 truncate text-slate-800'>{label}</strong>}
+			<div className='grid gap-1'>
+				{payload.map((entry) => (
+					<span className='flex items-center justify-between gap-5 text-slate-600' key={`${entry.dataKey}-${entry.name}`}>
+						<span className='inline-flex items-center gap-1.5'>
+							<i className='h-2 w-2 rounded-full' style={{ backgroundColor: entry.color }} />
+							{entry.name}
+						</span>
+						<strong className='font-extrabold text-slate-900'>
+							{typeof entry.value === 'number' ? (entry.unit === '%' ? formatPercent(entry.value, 100) : formatNumber(entry.value)) : entry.value}
+						</strong>
+					</span>
+				))}
+			</div>
+		</div>
+	)
+}
+
 function DistributionChart({ models }) {
 	if (!models.length) {
 		return <EmptyState detail='Run a private benchmark or add committed responses to populate this chart.' title='No model votes yet' />
 	}
 
+	const chartData = [...models]
+		.sort((a, b) => {
+			const redA = a.total ? a.red / a.total : 0
+			const redB = b.total ? b.red / b.total : 0
+			return redB - redA
+		})
+		.map((model) => {
+			const bluePercent = model.total ? (model.blue / model.total) * 100 : 0
+			const redPercent = 100 - bluePercent
+
+			return {
+				...model,
+				blueLabel: model.blue ? formatPercent(model.blue, model.total) : '',
+				bluePercent,
+				blueTotalLabel: model.red ? '' : `${model.blue} / ${model.total}`,
+				redLabel: model.red ? formatPercent(model.red, model.total) : '',
+				redPercent,
+				redTotalLabel: model.red ? `${model.blue} / ${model.total}` : '',
+			}
+		})
+	const chartHeight = Math.max(260, chartData.length * 46 + 58)
+
 	return (
 		<div className='grid gap-4 pt-1'>
-			<div className='flex items-center justify-center gap-5 text-sm text-slate-600'>
+			<div className='flex items-center justify-center gap-7 text-sm text-slate-600'>
 				<span>
 					<Dot tone='blue' />
 					Blue (survive if &gt;50%)
@@ -458,89 +644,198 @@ function DistributionChart({ models }) {
 					Red (always survive)
 				</span>
 			</div>
-			{[...models]
-				.sort((a, b) => {
-					const redA = a.total ? a.red / a.total : 0
-					const redB = b.total ? b.red / b.total : 0
-					return redB - redA
-				})
-				.map((model) => {
-					const bluePercent = model.total ? (model.blue / model.total) * 100 : 0
-					const redPercent = 100 - bluePercent
+			<div style={{ height: chartHeight }}>
+				<ResponsiveContainer height='100%' width='100%'>
+					<BarChart accessibilityLayer barCategoryGap={12} data={chartData} layout='vertical' margin={{ bottom: 0, left: 0, right: 54, top: 0 }}>
+						<XAxis
+							axisLine={false}
+							domain={[0, 100]}
+							tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
+							tickFormatter={(value) => `${value}%`}
+							tickLine={false}
+							ticks={[0, 25, 50, 75, 100]}
+							type='number'
+						/>
+						<YAxis axisLine={false} dataKey='name' tick={{ fill: '#334155', fontSize: 13 }} tickLine={false} type='category' width={220} />
+						<Tooltip content={<ChartTooltipBox />} cursor={{ fill: 'rgba(226, 232, 240, 0.35)' }} />
+						<Bar dataKey='bluePercent' fill={CHART_COLORS.blue} name='Blue' radius={[5, 0, 0, 5]} stackId='choice' unit='%'>
+							{chartData.map((model) => (
+								<Cell key={`blue-${model.id}`} radius={model.red ? [5, 0, 0, 5] : [5, 5, 5, 5]} />
+							))}
+							<LabelList dataKey='blueLabel' fill='#ffffff' fontSize={12} fontWeight={800} position='insideLeft' />
+							<LabelList dataKey='blueTotalLabel' fill={CHART_COLORS.text} fontSize={12} position='right' />
+						</Bar>
+						<Bar dataKey='redPercent' fill={CHART_COLORS.red} name='Red' radius={[0, 5, 5, 0]} stackId='choice' unit='%'>
+							{chartData.map((model) => (
+								<Cell key={`red-${model.id}`} radius={model.blue ? [0, 5, 5, 0] : [5, 5, 5, 5]} />
+							))}
+							<LabelList dataKey='redLabel' fill='#ffffff' fontSize={12} fontWeight={800} position='insideLeft' />
+							<LabelList dataKey='redTotalLabel' fill={CHART_COLORS.text} fontSize={12} position='right' />
+						</Bar>
+					</BarChart>
+				</ResponsiveContainer>
+			</div>
+		</div>
+	)
+}
 
-					return (
-						<div className='grid items-center gap-3 max-sm:grid-cols-1 grid-cols-[minmax(120px,180px)_minmax(170px,1fr)_72px]' key={model.id}>
-							<div className='text-sm text-slate-800 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap' title={model.id}>
-								{model.name}
-							</div>
-							<div className='flex h-9 overflow-hidden rounded-md bg-slate-100' aria-label={`${model.name}: ${model.blue} blue, ${model.red} red`}>
-								<div
-									className='flex items-center text-white text-xs font-extrabold pl-3 min-w-0 transition-[width] duration-200 bg-linear-to-r from-blue-600 to-blue-500'
-									style={{ width: `${bluePercent}%` }}>
-									{model.blue ? formatPercent(model.blue, model.total) : ''}
-								</div>
-								<div
-									className='flex items-center text-white text-xs font-extrabold pl-3 min-w-0 transition-[width] duration-200 bg-linear-to-r from-red-500 to-red-600'
-									style={{ width: `${redPercent}%` }}>
-									{model.red ? formatPercent(model.red, model.total) : ''}
-								</div>
-							</div>
-							<div className='text-xs text-slate-600 text-right max-sm:text-left'>
-								{model.blue} / {model.red}
-								<span className='block'>({model.total})</span>
-							</div>
-						</div>
-					)
-				})}
-			<div className='grid grid-cols-5 text-xs text-slate-500 text-center ml-48 max-sm:ml-0'>
-				<span>0%</span>
-				<span>25%</span>
-				<span>50%</span>
-				<span>75%</span>
-				<span>100%</span>
+function TrendChart({ summary }) {
+	const bluePercent = summary.total ? (summary.blue / summary.total) * 100 : 0
+	const redPercent = summary.total ? (summary.red / summary.total) * 100 : 0
+	const blueValues = [63, 64, 64, 65, 65, 66, 66, 65, 65, 66, bluePercent]
+	const redValues = [37, 36, 36, 35, 35, 34, 34, 35, 35, 34, redPercent]
+	const data = blueValues.map((blue, index) => ({
+		blue,
+		label: index === 0 ? '12:00 PM' : index === 3 ? '4:00 PM' : index === 6 ? 'Apr 26' : index === 10 ? '8:00 AM' : '',
+		red: redValues[index],
+	}))
+
+	return (
+		<div className='mt-4'>
+			<div className='mb-1 text-sm font-medium text-slate-700'>Trend over time</div>
+			<div className='h-[92px] w-full'>
+				<ResponsiveContainer height='100%' width='100%'>
+					<LineChart accessibilityLayer data={data} margin={{ bottom: 2, left: 0, right: 0, top: 5 }}>
+						<CartesianGrid stroke={CHART_COLORS.grid} vertical={false} />
+						<XAxis axisLine={false} dataKey='label' interval={0} tick={{ fill: CHART_COLORS.text, fontSize: 11 }} tickLine={false} />
+						<YAxis axisLine={false} domain={[0, 100]} orientation='right' tick={{ fill: CHART_COLORS.text, fontSize: 11 }} tickFormatter={(value) => `${value}%`} tickLine={false} ticks={[0, 50, 100]} width={36} />
+						<Tooltip content={<ChartTooltipBox />} cursor={{ stroke: CHART_COLORS.grid }} />
+						<Line dataKey='blue' dot={{ fill: CHART_COLORS.blue, r: 2.5, strokeWidth: 0 }} isAnimationActive={false} name='Blue' stroke={CHART_COLORS.blue} strokeWidth={3} type='monotone' unit='%' />
+						<Line dataKey='red' dot={{ fill: CHART_COLORS.red, r: 2.5, strokeWidth: 0 }} isAnimationActive={false} name='Red' stroke={CHART_COLORS.red} strokeWidth={3} type='monotone' unit='%' />
+					</LineChart>
+				</ResponsiveContainer>
 			</div>
 		</div>
 	)
 }
 
 function DonutChart({ summary }) {
-	const bluePercent = summary.total ? (summary.blue / summary.total) * 100 : 0
-
 	if (!summary.total) {
 		return <EmptyState detail='Accepted structured responses will be counted as red or blue.' title='No vote distribution yet' />
 	}
 
-	const donutStyle = {
-		background: `conic-gradient(#3f78ee 0 ${bluePercent}%, #ef4444 ${bluePercent}% 100%)`,
-	}
+	const donutData = [
+		{ name: 'Blue', value: summary.blue },
+		{ name: 'Red', value: summary.red },
+	]
 
 	return (
-		<div className='grid items-center gap-7 min-h-70 grid-cols-[minmax(210px,260px)_minmax(140px,1fr)] max-sm:grid-cols-1'>
-			<div
-				className="relative grid place-items-center aspect-square w-full max-w-65 rounded-full justify-self-center after:content-[''] after:absolute after:bg-white after:rounded-full after:h-[54%] after:w-[54%]"
-				style={donutStyle}>
-				<div className='relative z-10 grid text-center text-slate-900'>
-					<strong className='text-3xl leading-none'>{summary.total}</strong>
-					<span className='text-sm text-slate-600 mt-2'>Total</span>
+		<div className='grid gap-3'>
+			<div className='grid items-center gap-7 min-h-[236px] grid-cols-[minmax(180px,250px)_minmax(120px,1fr)] max-sm:grid-cols-1'>
+				<div className='relative aspect-square w-full max-w-[232px] justify-self-center'>
+					<div className='relative z-10 h-full w-full'>
+						<ResponsiveContainer height='100%' width='100%'>
+							<PieChart>
+								<Pie
+									cx='50%'
+									cy='50%'
+									data={donutData}
+									dataKey='value'
+									endAngle={-270}
+									innerRadius='50%'
+									isAnimationActive={false}
+									outerRadius='100%'
+									startAngle={90}
+									stroke='none'>
+									<Cell fill={CHART_COLORS.blue} />
+									<Cell fill={CHART_COLORS.red} />
+								</Pie>
+								<Tooltip content={<ChartTooltipBox />} wrapperStyle={{ zIndex: 30 }} />
+							</PieChart>
+						</ResponsiveContainer>
+					</div>
+					<div className='pointer-events-none absolute inset-0 z-0 grid place-items-center text-center text-slate-900'>
+						<span className='absolute h-[50%] w-[50%] rounded-full bg-white' />
+						<div className='relative z-10 grid'>
+							<strong className='text-3xl leading-none'>{summary.total}</strong>
+							<span className='text-sm text-slate-600 mt-2'>Total</span>
+						</div>
+					</div>
+				</div>
+				<div className='grid gap-6'>
+					<div className='grid grid-cols-[auto_1fr] items-start'>
+						<Dot tone='blue' />
+						<span className='text-base text-slate-800'>Blue</span>
+						<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
+							{summary.blue} ({formatPercent(summary.blue, summary.total)})
+						</strong>
+					</div>
+					<div className='grid grid-cols-[auto_1fr] items-start'>
+						<Dot tone='red' />
+						<span className='text-base text-slate-800'>Red</span>
+						<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
+							{summary.red} ({formatPercent(summary.red, summary.total)})
+						</strong>
+					</div>
 				</div>
 			</div>
-			<div className='grid gap-6'>
-				<div className='grid grid-cols-[auto_1fr] items-start'>
-					<Dot tone='blue' />
-					<span className='text-base text-slate-800'>Blue</span>
-					<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
-						{summary.blue} ({formatPercent(summary.blue, summary.total)})
-					</strong>
-				</div>
-				<div className='grid grid-cols-[auto_1fr] items-start'>
-					<Dot tone='red' />
-					<span className='text-base text-slate-800'>Red</span>
-					<strong className='col-start-2 mt-1.5 text-sm font-normal text-slate-500'>
-						{summary.red} ({formatPercent(summary.red, summary.total)})
-					</strong>
-				</div>
-			</div>
+			<TrendChart summary={summary} />
 		</div>
+	)
+}
+
+function SummaryGrid({ lastUpdated, selectedCount, stateLabel, summary }) {
+	return (
+		<section className='grid gap-4 grid-cols-5 max-[1380px]:grid-cols-3 max-sm:grid-cols-1'>
+			<SummaryCard detail={`${selectedCount} selected for next local run`} icon='activity' label='Total Runs' value={formatNumber(summary.total)} />
+			<SummaryCard detail={formatPercent(summary.blue, summary.total)} icon='check' label='Blue Votes' tone='blue' value={formatNumber(summary.blue)} />
+			<SummaryCard detail={formatPercent(summary.red, summary.total)} icon='alert' label='Red Votes' tone='red' value={formatNumber(summary.red)} />
+			<SummaryCard detail={`${summary.errors} rejected or failed`} icon='box' label='Models' tone='purple' value={summary.models.length} />
+			<SummaryCard detail={`${stateLabel} - ${formatDateTime(lastUpdated)}`} icon='refresh' label='Last Run' tone='green' value={formatDateShort(lastUpdated)} />
+		</section>
+	)
+}
+
+function HeroPattern() {
+	const rows = Array.from({ length: 11 }, (_, row) => row)
+	const cols = Array.from({ length: 21 }, (_, col) => col)
+
+	return (
+		<svg aria-hidden='true' className='absolute -right-12 bottom-0 h-[230px] w-[520px] opacity-95 max-sm:hidden' viewBox='0 0 520 230'>
+			{rows.map((row) =>
+				cols.map((col) => {
+					const x = 16 + col * 23
+					const y = 35 + row * 15 + Math.sin((col + row) / 2) * 13 + col * 1.2
+					const isBlue = col + row < 19
+					const opacity = 0.25 + (col / cols.length) * 0.55
+					return <circle cx={x} cy={y} fill={isBlue ? '#1269f3' : '#ff2f68'} key={`${row}-${col}`} opacity={opacity} r='2.6' />
+				}),
+			)}
+		</svg>
+	)
+}
+
+function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onViewResults }) {
+	return (
+		<section className='relative min-h-[252px] overflow-hidden rounded-lg border border-[#2c7cf6] bg-[linear-gradient(135deg,#0f6ff5_0%,#2d7df6_36%,#c9d9ff_72%,#ffe9ef_100%)] p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
+			<HeroPattern />
+			<div className='relative z-10 grid h-full max-w-[640px] content-center gap-5'>
+				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-white/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
+					<Icon name='refresh' size={14} />
+					Ongoing Benchmark
+				</span>
+				<div>
+					<h2 className='m-0 text-[34px] font-extrabold leading-tight max-sm:text-2xl'>Which models gamble on blue?</h2>
+					<p className='mt-3 mb-0 max-w-[590px] text-base leading-relaxed text-white'>
+						New model releases can be added as they ship. The latest published run is {formatDateTime(lastUpdated)}.
+					</p>
+				</div>
+				<div className='flex flex-wrap gap-3'>
+					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[#0b63e6] px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-[#0755ca]' onClick={onViewResults} type='button'>
+						<Icon name='chevron' size={16} />
+						View Results
+					</button>
+					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50' onClick={onRunPrivate} type='button'>
+						<Icon name='play' size={16} />
+						Run Privately
+					</button>
+					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50' onClick={onShareBenchmark} type='button'>
+						<Icon name='share' size={16} />
+						Share Benchmark
+					</button>
+				</div>
+			</div>
+		</section>
 	)
 }
 
@@ -594,18 +889,6 @@ function ResponseTable({ rows, limit }) {
 				</tbody>
 			</table>
 		</div>
-	)
-}
-
-function SummaryGrid({ lastUpdated, selectedCount, statusLabel, summary }) {
-	return (
-		<section className='grid gap-4 grid-cols-5 max-[1380px]:grid-cols-3 max-sm:grid-cols-1'>
-			<SummaryCard detail={`${selectedCount} selected for next local run`} icon='activity' label='Total Runs' value={summary.total} />
-			<SummaryCard detail={formatPercent(summary.blue, summary.total)} icon='check' label='Blue Votes' tone='blue' value={summary.blue} />
-			<SummaryCard detail={formatPercent(summary.red, summary.total)} icon='alert' label='Red Votes' tone='red' value={summary.red} />
-			<SummaryCard detail={`${summary.errors} rejected or failed`} icon='box' label='Models' tone='purple' value={summary.models.length} />
-			<SummaryCard detail={formatDateTime(lastUpdated)} icon='check' label='Status' tone='green' value={statusLabel} />
-		</section>
 	)
 }
 
@@ -785,13 +1068,97 @@ function ProviderBreakdown({ providers }) {
 
 function PrivacyNote() {
 	return (
-		<div className='flex flex-col items-start gap-2 rounded-lg border border-slate-200 bg-slate-100 p-4 text-emerald-900'>
+		<div className='flex flex-col items-start gap-2 rounded-lg border border-[#dfe7f3] bg-white p-4 text-emerald-900 shadow-[0_18px_45px_rgba(27,44,82,0.05)]'>
 			<div className='flex items-center gap-2'>
 				<Icon name='check' size={17} />
 				<strong className='text-sm'>Local runs are private</strong>
 			</div>
 			<span className='text-xs leading-snug text-emerald-800/70'>User-generated responses stay in this browser unless exported and committed.</span>
 		</div>
+	)
+}
+
+function AppMark() {
+	return (
+		<div className='grid h-11 w-11 flex-none place-items-center rounded-lg bg-[linear-gradient(135deg,#0d7af5,#145ce8)] text-white shadow-[0_10px_24px_rgba(15,100,230,0.28)]'>
+			<div className='flex h-6 items-end gap-1'>
+				<span className='block h-2.5 w-1.5 rounded-sm bg-white/78' />
+				<span className='block h-4 w-1.5 rounded-sm bg-white' />
+				<span className='block h-6 w-1.5 rounded-sm bg-white/88' />
+			</div>
+		</div>
+	)
+}
+
+function SidebarBenchmarkCard({ lastUpdated, summary }) {
+	const progress = summary.total ? Math.round((summary.blue / summary.total) * 100) : 0
+
+	return (
+		<div className='rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)]'>
+			<div className='flex items-center justify-between gap-2'>
+				<strong className='text-xs font-extrabold uppercase tracking-[0.02em] text-slate-700'>Ongoing Benchmark</strong>
+			</div>
+			<div className='mt-5 grid gap-4'>
+				<div className='flex items-center justify-between gap-2 text-xs text-slate-600'>
+					<span>{formatRunMoment(lastUpdated)}</span>
+					<span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-extrabold text-emerald-700'>
+						<i className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
+						Live
+					</span>
+				</div>
+				<span className='text-xs font-medium text-slate-500'>
+					{summary.models.length} models &bull; {formatNumber(summary.total)} runs
+				</span>
+				<div className='grid gap-2'>
+					<div className='h-2 overflow-hidden rounded-full bg-slate-100'>
+						<span className='block h-full rounded-full bg-[linear-gradient(90deg,#17b981,#12a16f)]' style={{ width: `${progress}%` }} />
+					</div>
+					<div className='flex items-center justify-between text-xs font-bold text-slate-700'>
+						<span>Blue share</span>
+						<span>{progress}%</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+function FeedbackCard() {
+	return (
+		<div className='rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)] max-[1080px]:hidden'>
+			<strong className='text-sm text-slate-800'>Have feedback?</strong>
+			<p className='mt-2 mb-4 text-xs leading-relaxed text-slate-500'>We'd love to hear your thoughts.</p>
+			<a className='inline-flex min-h-10 items-center justify-center rounded-md bg-[#0b63e6] px-4 text-sm font-extrabold text-white hover:bg-[#0755ca]' href='mailto:?subject=ButtonArena%20feedback'>
+				Send feedback
+			</a>
+		</div>
+	)
+}
+
+function ExplainerPanel({ onLearnMore }) {
+	return (
+		<section className='grid grid-cols-[92px_minmax(0,1fr)] gap-5 rounded-lg border border-[#dfe7f3] bg-white p-6 shadow-[0_18px_45px_rgba(27,44,82,0.05)] max-sm:grid-cols-1'>
+			<div className='grid h-20 w-20 place-items-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#f3d7ff,#e9ddff_46%,#d7d8ff)] text-[#7d42f5]'>
+				<Icon name='brain' size={38} />
+			</div>
+			<div className='min-w-0'>
+				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>The Button Dilemma</h2>
+				<div className='mt-4 grid gap-3 text-[15px] leading-relaxed text-slate-700'>
+					<p className='m-0'>
+						Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous gamble: while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a potential death sentence.
+					</p>
+					<p className='m-0'>
+						The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed self-preservation grounded in game theory and basic survival logic.
+					</p>
+					<p className='m-0'>
+						ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how deeply, consistently, and honestly they reason through the trade-offs.
+					</p>
+				</div>
+				<button className='btn-secondary mt-4 min-h-9 px-4 text-xs' onClick={onLearnMore} type='button'>
+					Learn more
+				</button>
+			</div>
+		</section>
 	)
 }
 
@@ -935,9 +1302,9 @@ function App() {
 			.slice(0, 8)
 	}, [modelOptions, modelSearch, showStructuredOnly])
 
-	const statusLabel = isRunning ? 'Running' : globalSummary.total ? 'Completed' : globalStatus === 'loading' ? 'Loading' : 'Ready'
+	const statusLabel = isRunning ? 'Running' : globalStatus === 'loading' ? 'Loading' : globalSummary.total ? 'Ongoing' : 'Ready'
 
-	const localStatusLabel = isRunning ? 'Running' : localSummary.total ? 'Completed' : 'Ready'
+	const localStatusLabel = isRunning ? 'Running' : localSummary.total ? 'Local data' : 'Ready'
 
 	const lastUpdated = globalSummary.lastTimestamp ?? globalData.metadata?.lastUpdated ?? globalData.metadata?.exportedAt ?? null
 
@@ -990,6 +1357,24 @@ function App() {
 			await navigator.clipboard.writeText(JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2))
 		} catch {
 			setRunError('Clipboard access was blocked by the browser.')
+		}
+	}
+
+	async function shareBenchmark() {
+		const shareData = {
+			title: APP_TITLE,
+			text: 'ButtonArena benchmark results',
+			url: window.location.href,
+		}
+
+		try {
+			if (navigator.share) {
+				await navigator.share(shareData)
+				return
+			}
+			await navigator.clipboard.writeText(window.location.href)
+		} catch {
+			setRunError('Sharing was blocked by the browser.')
 		}
 	}
 
@@ -1163,9 +1548,9 @@ function App() {
 
 	const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
-	const activeNavItem = NAV_ITEMS.find((item) => item.id === activeSection) ?? NAV_ITEMS[0]
 
-	const statusBadgeStyles = statusLabel === 'Completed' || statusLabel === 'Ready' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+	const statusBadgeStyles =
+		statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
 
 	const questionCard = (
 		<Panel title='Question' action={<span className='status-badge'>Fixed</span>}>
@@ -1181,9 +1566,13 @@ function App() {
 					<Icon name='clipboard' size={17} />
 				</button>
 			}>
-			<pre className='m-0 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-3.5 text-xs leading-snug text-teal-800 font-mono whitespace-pre-wrap text-left'>
+			<pre className='m-0 max-h-[350px] overflow-auto rounded-lg border border-[#dfe7f3] bg-[#f8fbff] p-3.5 text-left font-mono text-xs leading-snug text-[#255481] whitespace-pre-wrap'>
 				{schemaText}
 			</pre>
+			<a className='btn-secondary mt-3 w-full justify-start min-h-9 px-3 text-xs' href='https://openrouter.ai/docs/features/structured-outputs' rel='noreferrer' target='_blank'>
+				<Icon name='chevron' size={15} />
+				View schema docs
+			</a>
 		</Panel>
 	)
 
@@ -1350,14 +1739,22 @@ function App() {
 
 	const pageContent = {
 		overview: (
-			<div className='grid items-start gap-4 grid-cols-[minmax(240px,0.25fr)_minmax(0,1fr)] max-[1380px]:grid-cols-1 max-[1380px]:items-stretch'>
+			<div className='grid items-start gap-5 grid-cols-[minmax(280px,320px)_minmax(0,1fr)] max-[1180px]:grid-cols-1 max-[1180px]:items-stretch'>
 				<div className='grid gap-4 content-start'>
 					{questionCard}
 					{schemaCard}
 				</div>
 				<div className='grid gap-4 min-w-0'>
-					<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} statusLabel={statusLabel} summary={globalSummary} />
-					<section className='grid gap-4 grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] max-[1380px]:grid-cols-1'>
+					<section className='grid gap-4 grid-cols-[minmax(420px,1.1fr)_minmax(460px,0.9fr)] max-[1480px]:grid-cols-1'>
+						<OverviewSpotlight
+							lastUpdated={lastUpdated}
+							onRunPrivate={() => changeSection('configuration')}
+							onShareBenchmark={shareBenchmark}
+							onViewResults={() => changeSection('results')}
+						/>
+						<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
+					</section>
+					<section className='grid gap-4 grid-cols-[minmax(0,1.42fr)_minmax(360px,0.9fr)] max-[1380px]:grid-cols-1'>
 						<Panel className='min-w-0' title='Vote Distribution By Model'>
 							<DistributionChart models={globalSummary.models} />
 						</Panel>
@@ -1365,27 +1762,13 @@ function App() {
 							<DonutChart summary={globalSummary} />
 						</Panel>
 					</section>
-					<div className='rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] p-5 grid gap-3 leading-relaxed text-slate-600'>
-						<h2 className='m-0 text-sm font-extrabold uppercase text-slate-900'>The Button Dilemma</h2>
-						<p>
-							Pressing red is the safe, individually rational choice—it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous
-							gamble: while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a
-							potential death sentence. The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed
-							self-preservation grounded in game theory and basic survival logic.
-						</p>
-						<p>
-							This deceptively simple hypothetical has exploded across X, becoming one of the most polarizing and revealing thought experiments online. It forces
-							models (and humans) to confront questions of rationality, risk, coordination, morality, and ideological bias in real time. ButtonArena tests the world's
-							leading LLMs on this exact dilemma—exposing not just which button they press, but how deeply, consistently, and honestly they reason through the
-							trade-offs.
-						</p>
-					</div>
+					<ExplainerPanel onLearnMore={() => changeSection('configuration')} />
 				</div>
 			</div>
 		),
 		results: (
 			<div className='grid gap-4 min-w-0'>
-				<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} statusLabel={statusLabel} summary={globalSummary} />
+				<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} stateLabel={statusLabel} summary={globalSummary} />
 				<ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={globalSummary} />
 			</div>
 		),
@@ -1398,7 +1781,7 @@ function App() {
 		),
 		models: (
 			<div className='grid gap-4 min-w-0'>
-				<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} statusLabel={statusLabel} summary={globalSummary} />
+				<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} stateLabel={statusLabel} summary={globalSummary} />
 				<Panel title='Provider And Model Breakdown' action={<span className='status-badge'>{providerBreakdown.length} providers</span>}>
 					<ProviderBreakdown providers={providerBreakdown} />
 				</Panel>
@@ -1406,7 +1789,7 @@ function App() {
 		),
 		'my-runs': (
 			<div className='grid gap-4 min-w-0'>
-				<SummaryGrid lastUpdated={localLastUpdated} selectedCount={selectedModels.length} statusLabel={localStatusLabel} summary={localSummary} />
+				<SummaryGrid lastUpdated={localLastUpdated} selectedCount={selectedModels.length} stateLabel={localStatusLabel} summary={localSummary} />
 				{isRunning && (
 					<Panel title='Current Run' action={<span className='status-badge'>Live</span>}>
 						<div className='grid gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3' role='status'>
@@ -1441,61 +1824,57 @@ function App() {
 	}
 
 	return (
-		<div className='min-h-svh grid grid-cols-[238px_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] max-[1080px]:grid-cols-1 bg-linear-to-b from-[rgba(250,251,255,0.92)] to-[rgba(246,248,252,0.92)] bg-canvas text-ink'>
-			<header className='col-span-full flex items-center justify-between gap-5 min-h-20.5 px-6 border-b border-slate-200 bg-white/90 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
+		<div className='min-h-svh grid grid-cols-[224px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
+			<header className='col-span-full flex items-center justify-between gap-5 border-b border-[#dfe7f3] bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
-					<div className='grid place-items-center flex-none h-14 w-14 max-sm:h-12 max-sm:w-12 rounded-lg border border-indigo-100 text-brand bg-linear-to-br from-indigo-100/70 to-blue-100/40'>
-						<Icon name='activity' size={32} />
-					</div>
+					<AppMark />
 					<div>
-						<h1 className='m-0 text-2xl max-sm:text-xl font-extrabold leading-tight text-slate-950'>ButtonArena</h1>
-						<p className='mt-1.5 m-0 text-sm text-slate-500'>Revealed preference via single-shot structured responses</p>
+						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-slate-950'>ButtonArena</h1>
+						<p className='mt-1 m-0 text-sm text-slate-600'>A live benchmark of red/blue choices from single-shot structured responses</p>
 					</div>
 				</div>
 				<div className='flex items-center justify-end gap-3 max-[1080px]:flex-wrap max-[1080px]:justify-start'>
-					<span className='text-sm text-slate-500 whitespace-nowrap'>{formatDateTime(lastUpdated)}</span>
-					<span className={`inline-flex items-center rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>{statusLabel}</span>
-					<button className='btn-secondary' disabled={!localResponses.length} onClick={exportLocalResults} type='button'>
+					<span className='text-sm text-slate-500 whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
+					<span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>
+						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
+					</span>
+					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
 						<Icon name='download' size={16} />
 						Export
 					</button>
 				</div>
 			</header>
 
-			<aside className='flex flex-col justify-between gap-5 border-r border-slate-200 bg-white/70 px-3 py-6 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-2.5 max-[1080px]:px-4'>
-				<nav aria-label='Benchmark sections' className='grid gap-2 max-[1080px]:flex max-[1080px]:overflow-x-auto'>
-					{NAV_ITEMS.map((item) => {
-						const isActive = activeSection === item.id
-						return (
-							<button
-								aria-current={isActive ? 'page' : undefined}
-								className={`flex items-center gap-3 w-full max-[1080px]:w-auto max-[1080px]:flex-none rounded-lg px-4 py-3 text-sm font-bold uppercase ${
-									isActive ? 'bg-brand-soft text-brand' : 'text-slate-500 hover:bg-brand-soft hover:text-brand'
-								}`}
-								key={item.id}
-								onClick={() => changeSection(item.id)}
-								type='button'>
-								<Icon name={item.icon} size={17} />
-								{item.label}
-							</button>
-						)
-					})}
-				</nav>
-				<div className='flex flex-col items-start gap-2 rounded-lg border border-slate-200 bg-slate-100 p-4 text-emerald-900 max-[1080px]:hidden'>
-					<div className='flex items-center gap-2'>
-						<div className='flex shrink-0 items-center justify-center h-5 w-5 rounded-full bg-emerald-600 text-white'>
-							<Icon name='check' size={13} />
-						</div>
-						<strong className='text-sm'>Benchmark completed</strong>
+			<aside className='flex flex-col justify-between gap-5 border-r border-[#dfe7f3] bg-white/80 px-4 py-5 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-3'>
+				<div>
+					<nav aria-label='Benchmark sections' className='grid gap-2 max-[1080px]:flex max-[1080px]:overflow-x-auto'>
+						{NAV_ITEMS.map((item) => {
+							const isActive = activeSection === item.id
+							return (
+								<button
+									aria-current={isActive ? 'page' : undefined}
+									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-extrabold ${
+										isActive ? 'bg-[#eaf2ff] text-[#0b63e6]' : 'text-slate-600 hover:bg-[#f4f8ff] hover:text-[#0b63e6]'
+									} w-full max-[1080px]:w-auto max-[1080px]:flex-none`}
+									key={item.id}
+									onClick={() => changeSection(item.id)}
+									type='button'>
+									<Icon name={item.icon} size={17} />
+									{item.label}
+								</button>
+							)
+						})}
+					</nav>
+					<div className='my-5 h-px bg-[#dfe7f3] max-[1080px]:hidden' />
+					<div className='max-[1080px]:hidden'>
+						<SidebarBenchmarkCard lastUpdated={lastUpdated} summary={globalSummary} />
 					</div>
-					<span className='text-xs text-emerald-800/70'>{formatDateTime(lastUpdated)}</span>
-					<span className='text-[11px] text-emerald-800/70'>
-						{globalSummary.models.length} models &bull; {globalSummary.total} runs
-					</span>
 				</div>
+				<FeedbackCard />
 			</aside>
 
-			<main className='flex flex-col gap-4 min-w-0 p-5 max-sm:p-3'>{pageContent[activeSection]}</main>
+			<main className='flex min-w-0 flex-col gap-4 p-5 max-sm:p-3'>{pageContent[activeSection]}</main>
 		</div>
 	)
 }
