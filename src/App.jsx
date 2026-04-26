@@ -29,7 +29,6 @@ const VOTE_RESPONSE_FORMAT = {
         comment: {
           type: ['string', 'null'],
           description: 'Optional concise rationale for the choice.',
-          maxLength: 200,
         },
       },
       required: ['choice', 'comment'],
@@ -230,12 +229,14 @@ function buildBenchmarkRequestBody(model, settings) {
   }
   const omittedParameters = []
 
-  if (supportsParameter(model, 'max_tokens')) {
-    body.max_tokens = Number(settings.maxTokens)
-  } else if (supportsParameter(model, 'max_completion_tokens')) {
-    body.max_completion_tokens = Number(settings.maxTokens)
-  } else {
-    omittedParameters.push('max_tokens')
+  if (settings.maxTokens !== '' && settings.maxTokens != null) {
+    if (supportsParameter(model, 'max_tokens')) {
+      body.max_tokens = Number(settings.maxTokens)
+    } else if (supportsParameter(model, 'max_completion_tokens')) {
+      body.max_completion_tokens = Number(settings.maxTokens)
+    } else {
+      omittedParameters.push('max_tokens')
+    }
   }
 
   return { body, omittedParameters }
@@ -885,6 +886,16 @@ function ProviderBreakdown({ providers }) {
   )
 }
 
+function PrivacyNote() {
+  return (
+    <div className="privacy-card">
+      <Icon name="check" size={17} />
+      <strong>Local runs are private</strong>
+      <span>User-generated responses stay in this browser unless exported and committed.</span>
+    </div>
+  )
+}
+
 function App() {
   const abortRef = useRef(null)
   const [activeSection, setActiveSection] = useState('overview')
@@ -898,7 +909,7 @@ function App() {
   )
   const [logLimit, setLogLimit] = useState(10)
   const [concurrency, setConcurrency] = useState(5)
-  const [maxTokens, setMaxTokens] = useState(256)
+  const [maxTokens, setMaxTokens] = useState('')
   const [modelSearch, setModelSearch] = useState('')
   const [modelStatus, setModelStatus] = useState('loading')
   const [requireParameters, setRequireParameters] = useState(true)
@@ -1113,7 +1124,7 @@ function App() {
       rawResponse: '',
       request: {
         iteration,
-        maxTokens: Number(maxTokens),
+        maxTokens: maxTokens !== '' ? Number(maxTokens) : null,
         omittedParameters,
         question: QUESTION,
         requireParameters,
@@ -1392,7 +1403,7 @@ function App() {
         </label>
         <label className="field compact-field">
           <span>Max tokens</span>
-          <input max="512" min="16" onChange={(event) => setMaxTokens(event.target.value)} type="number" value={maxTokens} />
+          <input min="1" onChange={(event) => setMaxTokens(event.target.value)} placeholder="unlimited" type="number" value={maxTokens} />
         </label>
         <label className="field compact-field">
           <span>Concurrency</span>
@@ -1561,6 +1572,7 @@ function App() {
         <section className="config-reference">
           {questionCard}
           {schemaCard}
+          <PrivacyNote />
         </section>
         {runSettingsCard}
       </div>
@@ -1605,9 +1617,14 @@ function App() {
           ))}
         </nav>
         <div className="privacy-card">
-          <Icon name="check" size={17} />
-          <strong>Local runs are private</strong>
-          <span>User-generated responses stay in this browser unless exported and committed.</span>
+          <div className="privacy-card-header">
+            <div className="privacy-card-icon">
+              <Icon name="check" size={13} />
+            </div>
+            <strong>Benchmark completed</strong>
+          </div>
+          <span>{formatDateTime(lastUpdated)}</span>
+          <span className="privacy-card-meta">{globalSummary.models.length} models &bull; {globalSummary.total} runs</span>
         </div>
       </aside>
 
