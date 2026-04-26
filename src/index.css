@@ -53,7 +53,7 @@ body {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-[#7257e8] to-[#5d36d9] shadow-[0_12px_24px_rgba(105,75,224,0.2)] disabled:cursor-not-allowed disabled:opacity-55;
+  @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold text-white min-h-12 px-5 bg-linear-to-br from-[#7257e8] to-brand-deep shadow-[0_12px_24px_rgba(105,75,224,0.2)] disabled:cursor-not-allowed disabled:opacity-55;
 }
 
 .btn-danger {
@@ -73,7 +73,7 @@ body {
 }
 
 .empty-state {
-  @apply grid place-items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 min-h-[180px] p-7 text-center text-slate-600;
+  @apply grid place-items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 min-h-45 p-7 text-center text-slate-600;
 }
 
 .table-cell {

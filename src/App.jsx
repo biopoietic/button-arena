@@ -418,7 +418,7 @@ function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const valueClass = tone === 'green' ? 'text-2xl' : 'text-3xl'
 
 	return (
-		<article className={`flex items-start gap-4 rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] min-h-[128px] p-5 ${tones.card}`}>
+		<article className={`flex items-start gap-4 rounded-lg border border-slate-200 bg-white/90 shadow-[0_20px_60px_rgba(57,70,102,0.06)] min-h-32 p-5 ${tones.card}`}>
 			<div className={`grid place-items-center rounded-md h-8 w-8 flex-none ${tones.icon}`}>
 				<Icon name={icon} size={22} />
 			</div>
@@ -515,9 +515,9 @@ function DonutChart({ summary }) {
 	}
 
 	return (
-		<div className='grid items-center gap-7 min-h-[280px] grid-cols-[minmax(210px,260px)_minmax(140px,1fr)] max-sm:grid-cols-1'>
+		<div className='grid items-center gap-7 min-h-70 grid-cols-[minmax(210px,260px)_minmax(140px,1fr)] max-sm:grid-cols-1'>
 			<div
-				className="relative grid place-items-center aspect-square w-full max-w-[260px] rounded-full justify-self-center after:content-[''] after:absolute after:bg-white after:rounded-full after:h-[54%] after:w-[54%]"
+				className="relative grid place-items-center aspect-square w-full max-w-65 rounded-full justify-self-center after:content-[''] after:absolute after:bg-white after:rounded-full after:h-[54%] after:w-[54%]"
 				style={donutStyle}>
 				<div className='relative z-10 grid text-center text-slate-900'>
 					<strong className='text-3xl leading-none'>{summary.total}</strong>
@@ -565,7 +565,7 @@ function ResponseTable({ rows, limit }) {
 
 	return (
 		<div className='overflow-auto'>
-			<table className='w-full min-w-[880px] border-collapse'>
+			<table className='w-full min-w-220 border-collapse'>
 				<thead>
 					<tr>
 						<th className='table-cell bg-slate-50 font-bold text-slate-600'>Time</th>
@@ -626,7 +626,7 @@ function ResultsPanels({ logLimit, setLogLimit, summary }) {
 				title={`Response Log ${logLimit === 10 ? '(Latest 10)' : '(All)'}`}
 				action={
 					<button
-						className='btn-secondary min-h-[32px]'
+						className='btn-secondary min-h-8'
 						disabled={!summary.latest.length}
 						onClick={() => setLogLimit((current) => (current === 10 ? summary.latest.length : 10))}
 						type='button'>
@@ -661,7 +661,7 @@ function RunsTable({ page, rows, setPage }) {
 	return (
 		<>
 			<div className='overflow-auto'>
-				<table className='w-full min-w-[880px] border-collapse'>
+				<table className='w-full min-w-220 border-collapse'>
 					<thead>
 						<tr>
 							<th className={headerCell}>Time</th>
@@ -696,7 +696,7 @@ function RunsTable({ page, rows, setPage }) {
 										<ChoicePill choice={row.choice} />
 									</td>
 									<td className={bodyCell}>{row.latencyMs == null ? '-' : `${row.latencyMs} ms`}</td>
-									<td className='table-cell min-w-[260px]' title={row.rawResponse || row.error}>
+									<td className='table-cell min-w-65' title={row.rawResponse || row.error}>
 										{trimText(row.rawResponse || row.error, 180)}
 									</td>
 								</tr>
@@ -710,18 +710,14 @@ function RunsTable({ page, rows, setPage }) {
 					{pageStart + 1}-{Math.min(pageStart + RUNS_PAGE_SIZE, rows.length)} of {rows.length}
 				</span>
 				<div className='flex items-center gap-2.5 max-sm:justify-between'>
-					<button
-						className='btn-secondary min-h-[32px] px-2.5 text-xs'
-						disabled={safePage <= 1}
-						onClick={() => setPage((current) => Math.max(1, current - 1))}
-						type='button'>
+					<button className='btn-secondary min-h-8 px-2.5 text-xs' disabled={safePage <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))} type='button'>
 						Previous
 					</button>
 					<strong>
 						Page {safePage} of {totalPages}
 					</strong>
 					<button
-						className='btn-secondary min-h-[32px] px-2.5 text-xs'
+						className='btn-secondary min-h-8 px-2.5 text-xs'
 						disabled={safePage >= totalPages}
 						onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
 						type='button'>
@@ -745,7 +741,7 @@ function ProviderBreakdown({ providers }) {
 					<div className='flex justify-between gap-3.5 items-start'>
 						<div>
 							<h3 className='m-0 text-lg leading-tight text-slate-900'>{provider.name}</h3>
-							<span className='block text-xs text-slate-500 mt-1 break-words'>{provider.id}</span>
+							<span className='block text-xs text-slate-500 mt-1 wrap-break-word'>{provider.id}</span>
 						</div>
 						<strong className='text-2xl leading-none text-slate-900'>{provider.total}</strong>
 					</div>
@@ -770,7 +766,7 @@ function ProviderBreakdown({ providers }) {
 							<div className='grid items-center gap-3 grid-cols-[minmax(0,1fr)_auto] border-b border-slate-200 py-3 last:border-b-0 last:pb-0' key={model.id}>
 								<div>
 									<strong className='text-sm text-slate-700'>{model.name}</strong>
-									<span className='block text-xs text-slate-500 mt-1 break-words'>{model.id}</span>
+									<span className='block text-xs text-slate-500 mt-1 wrap-break-word'>{model.id}</span>
 								</div>
 								<div className='text-right'>
 									<span className='block text-lg font-extrabold text-slate-900'>{model.total}</span>
@@ -1202,7 +1198,7 @@ function App() {
 			}>
 			<label className='grid gap-2'>
 				<span className='field-label'>OpenRouter API key</span>
-				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-[40px]'>
+				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-10'>
 					<Icon name='key' size={16} />
 					<input
 						autoComplete='off'
@@ -1224,7 +1220,7 @@ function App() {
 						Could not load the OpenRouter model catalog. Check the network connection and reload.
 					</div>
 				)}
-				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-[40px]'>
+				<div className='flex items-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 min-h-10'>
 					<Icon name='search' size={16} />
 					<input
 						className='flex-1 min-w-0 border-0 outline-0 bg-transparent text-base text-slate-900'
@@ -1236,7 +1232,7 @@ function App() {
 						type='text'
 						value={modelSearch}
 					/>
-					<button className='btn-secondary min-h-[30px] px-3' onClick={() => addModel(modelSearch)} type='button'>
+					<button className='btn-secondary min-h-7.5 px-3' onClick={() => addModel(modelSearch)} type='button'>
 						Add
 					</button>
 				</div>
@@ -1244,7 +1240,7 @@ function App() {
 					<input checked={showStructuredOnly} className='accent-brand' onChange={(event) => setShowStructuredOnly(event.target.checked)} type='checkbox' />
 					Only show structured-output capable models (recommended)
 				</label>
-				<div className='grid gap-1.5 max-h-[230px] overflow-auto'>
+				<div className='grid gap-1.5 max-h-57.5 overflow-auto'>
 					{filteredModels.length ? (
 						filteredModels.map((model) => {
 							const isSelected = selectedModelIds.includes(model.id)
@@ -1258,7 +1254,7 @@ function App() {
 									type='button'>
 									<span>
 										<strong className='block text-sm'>{modelLabel(model)}</strong>
-										<small className='block text-xs text-slate-500 mt-1 break-words'>{model.id}</small>
+										<small className='block text-xs text-slate-500 mt-1 wrap-break-word'>{model.id}</small>
 									</span>
 									{supportsStructuredOutput(model) && (
 										<em className='inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 px-2 py-1.5 text-xs font-bold not-italic'>structured</em>
@@ -1431,7 +1427,7 @@ function App() {
 
 	return (
 		<div className='min-h-svh grid grid-cols-[238px_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] max-[1080px]:grid-cols-1 bg-linear-to-b from-[rgba(250,251,255,0.92)] to-[rgba(246,248,252,0.92)] bg-canvas text-ink'>
-			<header className='col-span-full flex items-center justify-between gap-5 min-h-[82px] px-6 border-b border-slate-200 bg-white/90 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
+			<header className='col-span-full flex items-center justify-between gap-5 min-h-20.5 px-6 border-b border-slate-200 bg-white/90 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<div className='grid place-items-center flex-none h-14 w-14 max-sm:h-12 max-sm:w-12 rounded-lg border border-indigo-100 text-brand bg-linear-to-br from-indigo-100/70 to-blue-100/40'>
 						<Icon name='activity' size={32} />
