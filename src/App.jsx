@@ -214,6 +214,31 @@ function supportsStructuredOutput(model) {
   return supported.includes('structured_outputs') || supported.includes('response_format')
 }
 
+function supportsParameter(model, parameter) {
+  return (model.supported_parameters ?? []).includes(parameter)
+}
+
+function buildBenchmarkRequestBody(model, settings) {
+  const body = {
+    model: model.id,
+    messages: [{ role: 'user', content: QUESTION }],
+    provider: { require_parameters: settings.requireParameters },
+    response_format: VOTE_RESPONSE_FORMAT,
+    stream: false,
+  }
+  const omittedParameters = []
+
+  if (supportsParameter(model, 'max_tokens')) {
+    body.max_tokens = Number(settings.maxTokens)
+  } else if (supportsParameter(model, 'max_completion_tokens')) {
+    body.max_completion_tokens = Number(settings.maxTokens)
+  } else {
+    omittedParameters.push('max_tokens')
+  }
+
+  return { body, omittedParameters }
+}
+
 function modelLabel(model) {
   if (!model) return 'Unknown model'
   return model.name && model.name !== model.id ? model.name : model.id
@@ -902,8 +927,7 @@ function App() {
   const [runError, setRunError] = useState('')
   const [runProgress, setRunProgress] = useState({ active: '', completed: 0, total: 0 })
   const [selectedModelIds, setSelectedModelIds] = useState([])
-  const [showStructuredOnly, setShowStructuredOnly] = useState(false)
-  const [temperature, setTemperature] = useState(0)
+  const [showStructuredOnly, setShowStructuredOnly] = useState(true)
   const [isRunning, setIsRunning] = useState(false)
 
   useEffect(() => {
@@ -1057,6 +1081,10 @@ function App() {
       setRunError('That model ID is not in the live OpenRouter catalog.')
       return
     }
+    if (modelStatus === 'ready' && !supportsStructuredOutput(modelsById.get(id))) {
+      setRunError('That model does not advertise structured-output support in OpenRouter.')
+      return
+    }
     setSelectedModelIds((current) => [...current, id])
     setModelSearch('')
     setRunError('')
@@ -1098,6 +1126,10 @@ function App() {
   async function runSingleRequest(model, batchId, iteration) {
     const timestamp = new Date().toISOString()
     const startedAt = performance.now()
+    const { body: requestBody, omittedParameters } = buildBenchmarkRequestBody(model, {
+      maxTokens,
+      requireParameters,
+    })
     const baseRow = {
       id: createId(),
       source: 'local',
@@ -1111,24 +1143,16 @@ function App() {
       request: {
         iteration,
         maxTokens: Number(maxTokens),
+        omittedParameters,
         question: QUESTION,
         requireParameters,
-        temperature: Number(temperature),
       },
       status: 'error',
     }
 
     try {
       const response = await fetch(`${OPENROUTER_API}/chat/completions`, {
-        body: JSON.stringify({
-          model: model.id,
-          messages: [{ role: 'user', content: QUESTION }],
-          max_tokens: Number(maxTokens),
-          provider: { require_parameters: requireParameters },
-          response_format: VOTE_RESPONSE_FORMAT,
-          stream: false,
-          temperature: Number(temperature),
-        }),
+        body: JSON.stringify(requestBody),
         headers: {
           Authorization: `Bearer ${apiKey.trim()}`,
           'Content-Type': 'application/json',
@@ -1190,6 +1214,14 @@ function App() {
       const invalidModelIds = selectedModelIds.filter((modelId) => !modelsById.has(modelId))
       if (invalidModelIds.length) {
         setRunError(`Remove unavailable model IDs before running: ${invalidModelIds.join(', ')}`)
+        return
+      }
+
+      const unsupportedStructuredModelIds = selectedModels
+        .filter((model) => !supportsStructuredOutput(model))
+        .map((model) => model.id)
+      if (unsupportedStructuredModelIds.length) {
+        setRunError(`Remove models without structured-output support: ${unsupportedStructuredModelIds.join(', ')}`)
         return
       }
     }
@@ -1346,7 +1378,7 @@ function App() {
             onChange={(event) => setShowStructuredOnly(event.target.checked)}
             type="checkbox"
           />
-          Only show structured-output capable models
+          Only show structured-output capable models (recommended)
         </label>
         <div className="model-results">
           {filteredModels.length ? (
@@ -1391,17 +1423,6 @@ function App() {
             onChange={(event) => setIterations(event.target.value)}
             type="number"
             value={iterations}
-          />
-        </label>
-        <label className="field compact-field">
-          <span>Temperature</span>
-          <input
-            max="2"
-            min="0"
-            onChange={(event) => setTemperature(event.target.value)}
-            step="0.1"
-            type="number"
-            value={temperature}
           />
         </label>
         <label className="field compact-field">
