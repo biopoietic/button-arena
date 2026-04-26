@@ -1,4 +1,23 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  AlertTriangle,
+  BarChart2,
+  Box,
+  Check,
+  ChevronRight,
+  Copy,
+  Download,
+  Home,
+  Key,
+  List,
+  Play,
+  RefreshCw,
+  Search,
+  Settings,
+  Shield,
+  Square,
+  Trash2,
+} from 'lucide-react'
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1'
 const STATIC_RESULTS_URL = '/results/global-results.json'
@@ -79,139 +98,30 @@ const ERROR_ROW_CLASSES = 'bg-red-50/60'
 const TABLE_CELL_CLASSES =
   'border-b border-r border-slate-200 px-3 py-2.5 text-xs text-slate-700 align-top text-left last:border-r-0'
 
-function Icon({ name, size = 18 }) {
-  const paths = {
-    activity: (
-      <>
-        <path d="M4 19V9" />
-        <path d="M10 19V5" />
-        <path d="M16 19v-7" />
-        <path d="M3 19h18" />
-      </>
-    ),
-    alert: (
-      <>
-        <path d="M12 9v4" />
-        <path d="M12 17h.01" />
-        <path d="M10.3 4.6 2.5 18a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 4.6a2 2 0 0 0-3.4 0Z" />
-      </>
-    ),
-    box: (
-      <>
-        <path d="m21 8-9-5-9 5 9 5 9-5Z" />
-        <path d="M3 8v8l9 5 9-5V8" />
-        <path d="M12 13v8" />
-      </>
-    ),
-    check: (
-      <>
-        <path d="M20 6 9 17l-5-5" />
-      </>
-    ),
-    chevron: (
-      <>
-        <path d="m9 18 6-6-6-6" />
-      </>
-    ),
-    clipboard: (
-      <>
-        <rect x="8" y="8" width="12" height="12" rx="2" />
-        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-      </>
-    ),
-    download: (
-      <>
-        <path d="M12 3v12" />
-        <path d="m7 10 5 5 5-5" />
-        <path d="M5 21h14" />
-      </>
-    ),
-    home: (
-      <>
-        <path d="m3 11 9-8 9 8" />
-        <path d="M5 10v10h14V10" />
-        <path d="M10 20v-6h4v6" />
-      </>
-    ),
-    key: (
-      <>
-        <circle cx="7.5" cy="14.5" r="3.5" />
-        <path d="m10 12 9-9" />
-        <path d="m15 4 3 3" />
-        <path d="m13 6 3 3" />
-      </>
-    ),
-    list: (
-      <>
-        <path d="M8 6h13" />
-        <path d="M8 12h13" />
-        <path d="M8 18h13" />
-        <path d="M3 6h.01" />
-        <path d="M3 12h.01" />
-        <path d="M3 18h.01" />
-      </>
-    ),
-    play: (
-      <>
-        <path d="m8 5 11 7-11 7V5Z" />
-      </>
-    ),
-    refresh: (
-      <>
-        <path d="M21 12a9 9 0 0 0-15.4-6.4L3 8" />
-        <path d="M3 3v5h5" />
-        <path d="M3 12a9 9 0 0 0 15.4 6.4L21 16" />
-        <path d="M16 16h5v5" />
-      </>
-    ),
-    search: (
-      <>
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-      </>
-    ),
-    settings: (
-      <>
-        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V22a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H2a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L3.2 8a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 .9-1.5V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 18.8 8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5.9h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
-      </>
-    ),
-    shield: (
-      <>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-      </>
-    ),
-    stop: (
-      <>
-        <rect x="7" y="7" width="10" height="10" rx="1" />
-      </>
-    ),
-    trash: (
-      <>
-        <path d="M3 6h18" />
-        <path d="M8 6V4h8v2" />
-        <path d="M19 6l-1 14H6L5 6" />
-        <path d="M10 11v5" />
-        <path d="M14 11v5" />
-      </>
-    ),
-  }
+const ICON_MAP = {
+  activity: BarChart2,
+  alert: AlertTriangle,
+  box: Box,
+  check: Check,
+  chevron: ChevronRight,
+  clipboard: Copy,
+  download: Download,
+  home: Home,
+  key: Key,
+  list: List,
+  play: Play,
+  refresh: RefreshCw,
+  search: Search,
+  settings: Settings,
+  shield: Shield,
+  stop: Square,
+  trash: Trash2,
+}
 
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      height={size}
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      width={size}
-    >
-      {paths[name]}
-    </svg>
-  )
+function Icon({ name, size = 18 }) {
+  const LucideIcon = ICON_MAP[name]
+  if (!LucideIcon) return null
+  return <LucideIcon aria-hidden="true" size={size} />
 }
 
 function readStoredJson(key, fallback) {
