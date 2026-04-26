@@ -3,6 +3,7 @@ export const APP_TITLE = 'ButtonArena'
 export const STORAGE_KEYS = {
 	apiKey: 'button-arena:openrouter-key',
 	localResponses: 'button-arena:local-responses',
+	theme: 'button-arena:theme',
 }
 
 export const QUESTION =

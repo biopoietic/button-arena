@@ -11,6 +11,8 @@ import {
 	Home,
 	Key,
 	List,
+	Monitor,
+	Moon,
 	Play,
 	RefreshCw,
 	Search,
@@ -18,6 +20,7 @@ import {
 	Share2,
 	Shield,
 	Square,
+	Sun,
 	Trash2,
 } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
@@ -39,12 +42,14 @@ import {
 	writeStorage,
 } from './lib/benchmark-core'
 import { fetchModelCatalog, fetchStaticResults, runBenchmarkRequest } from './lib/benchmark-client'
+import Logo from './assets/logo.svg?react'
 
 const CHART_COLORS = {
-	blue: '#1269f3',
-	red: '#ff4054',
-	grid: '#e6ecf5',
-	text: '#64748b',
+	blue: 'var(--chart-blue)',
+	red: 'var(--chart-red)',
+	grid: 'var(--chart-grid)',
+	text: 'var(--chart-text)',
+	textStrong: 'var(--chart-text-strong)',
 }
 
 const NAV_ITEMS = [
@@ -58,6 +63,12 @@ const NAV_ITEMS = [
 
 const RUNS_PAGE_SIZE = 12
 
+const THEME_OPTIONS = [
+	{ id: 'system', label: 'Use system theme', icon: 'monitor' },
+	{ id: 'light', label: 'Use light theme', icon: 'sun' },
+	{ id: 'dark', label: 'Use dark theme', icon: 'moon' },
+]
+
 const ICON_MAP = {
 	activity: BarChart2,
 	alert: AlertTriangle,
@@ -70,6 +81,8 @@ const ICON_MAP = {
 	home: Home,
 	key: Key,
 	list: List,
+	monitor: Monitor,
+	moon: Moon,
 	play: Play,
 	refresh: RefreshCw,
 	search: Search,
@@ -77,6 +90,7 @@ const ICON_MAP = {
 	share: Share2,
 	shield: Shield,
 	stop: Square,
+	sun: Sun,
 	trash: Trash2,
 }
 
@@ -84,6 +98,56 @@ function Icon({ name, size = 18 }) {
 	const LucideIcon = ICON_MAP[name]
 	if (!LucideIcon) return null
 	return <LucideIcon aria-hidden='true' size={size} />
+}
+
+function isThemePreference(value) {
+	return value === 'system' || value === 'light' || value === 'dark'
+}
+
+function getSystemTheme() {
+	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'light'
+	return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+function resolveThemePreference(preference) {
+	return preference === 'light' || preference === 'dark' ? preference : getSystemTheme()
+}
+
+function getInitialThemePreference() {
+	if (typeof document !== 'undefined' && isThemePreference(document.documentElement.dataset.themePreference)) {
+		return document.documentElement.dataset.themePreference
+	}
+
+	if (typeof window === 'undefined') return 'system'
+
+	try {
+		const storedPreference = window.localStorage.getItem(STORAGE_KEYS.theme)
+		return isThemePreference(storedPreference) ? storedPreference : 'system'
+	} catch {
+		return 'system'
+	}
+}
+
+function ThemeSwitcher({ onChange, value }) {
+	return (
+		<div aria-label='Color theme' className='theme-switcher' role='group'>
+			{THEME_OPTIONS.map((option) => {
+				const isActive = value === option.id
+				return (
+					<button
+						aria-pressed={isActive}
+						className={`theme-switcher__button${isActive ? ' theme-switcher__button--active' : ''}`}
+						key={option.id}
+						onClick={() => onChange(option.id)}
+						title={option.label}
+						type='button'>
+						<Icon name={option.icon} size={16} />
+						<span className='sr-only'>{option.label}</span>
+					</button>
+				)
+			})}
+		</div>
+	)
 }
 
 function Panel({ title, action, children, className = '' }) {
@@ -167,10 +231,10 @@ function Dot({ tone }) {
 function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const toneStyles = {
 		neutral: { card: '', icon: 'bg-blue-50 text-blue-600' },
-		blue: { card: 'bg-linear-to-br from-white to-blue-50/70', icon: 'bg-blue-50 text-blue-600' },
-		red: { card: 'bg-linear-to-br from-white to-red-50/60', icon: 'bg-red-50 text-red-500' },
+		blue: { card: 'summary-card--blue', icon: 'bg-blue-50 text-blue-600' },
+		red: { card: 'summary-card--red', icon: 'bg-red-50 text-red-500' },
 		purple: { card: '', icon: 'bg-blue-50 text-brand' },
-		green: { card: 'bg-linear-to-br from-white to-emerald-50/70', icon: 'bg-emerald-50 text-emerald-600' },
+		green: { card: 'summary-card--green', icon: 'bg-emerald-50 text-emerald-600' },
 	}
 	const tones = toneStyles[tone] ?? toneStyles.neutral
 
@@ -343,7 +407,7 @@ function DistributionChart({ models }) {
 							ticks={[0, 25, 50, 75, 100]}
 							type='number'
 						/>
-						<YAxis axisLine={false} dataKey='name' tick={{ fill: '#334155', fontSize: 13 }} tickLine={false} type='category' width={220} />
+						<YAxis axisLine={false} dataKey='name' tick={{ fill: CHART_COLORS.textStrong, fontSize: 13 }} tickLine={false} type='category' width={220} />
 						<Tooltip content={<ChartTooltipBox />} cursor={{ fill: 'rgba(226, 232, 240, 0.35)' }} />
 						<Bar dataKey='bluePercent' fill={CHART_COLORS.blue} name='Blue' radius={[5, 0, 0, 5]} stackId='choice' unit='%'>
 							{chartData.map((model) => (
@@ -570,7 +634,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 			<div
 				aria-labelledby='share-benchmark-title'
 				aria-modal='true'
-				className='w-full max-w-xl rounded-[28px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.98)_100%)] p-5 text-slate-950 shadow-[0_28px_80px_rgba(15,23,42,0.22)]'
+				className='share-dialog w-full max-w-xl rounded-lg border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.98)_100%)] p-5 text-slate-950 shadow-[0_28px_80px_rgba(15,23,42,0.22)]'
 				onClick={(event) => event.stopPropagation()}
 				role='dialog'>
 				<div className='flex items-start justify-between gap-4'>
@@ -866,18 +930,6 @@ function PrivacyNote() {
 	)
 }
 
-function AppMark() {
-	return (
-		<div className='grid h-11 w-11 flex-none place-items-center rounded-lg bg-[linear-gradient(135deg,#0d7af5,#145ce8)] text-white shadow-[0_10px_24px_rgba(15,100,230,0.28)]'>
-			<div className='flex h-6 items-end gap-1'>
-				<span className='block h-2.5 w-1.5 rounded-sm bg-white/78' />
-				<span className='block h-4 w-1.5 rounded-sm bg-white' />
-				<span className='block h-6 w-1.5 rounded-sm bg-white/88' />
-			</div>
-		</div>
-	)
-}
-
 function SidebarBenchmarkCard({ lastUpdated, summary }) {
 	const progress = summary.total ? Math.round((summary.blue / summary.total) * 100) : 0
 
@@ -972,7 +1024,32 @@ function App() {
 	const [shareDialogOpen, setShareDialogOpen] = useState(false)
 	const [shareStatus, setShareStatus] = useState(null)
 	const [showStructuredOnly, setShowStructuredOnly] = useState(true)
+	const [themePreference, setThemePreference] = useState(getInitialThemePreference)
 	const [isRunning, setIsRunning] = useState(false)
+
+	useEffect(() => {
+		if (typeof document === 'undefined') return undefined
+
+		function applyTheme() {
+			const resolvedTheme = resolveThemePreference(themePreference)
+			document.documentElement.dataset.theme = resolvedTheme
+			document.documentElement.dataset.themePreference = themePreference
+			document.documentElement.style.colorScheme = resolvedTheme
+		}
+
+		applyTheme()
+		writeStorage(STORAGE_KEYS.theme, themePreference)
+
+		if (themePreference !== 'system' || typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+			return undefined
+		}
+
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+		mediaQuery.addEventListener('change', applyTheme)
+		return () => {
+			mediaQuery.removeEventListener('change', applyTheme)
+		}
+	}, [themePreference])
 
 	useEffect(() => {
 		if (!shareDialogOpen) return undefined
@@ -1604,7 +1681,7 @@ function App() {
 			/>
 			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
-					<AppMark />
+					<Logo aria-hidden='true' className='brand-mark' />
 					<div>
 						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-slate-950'>ButtonArena</h1>
 						<p className='mt-1 m-0 text-sm text-slate-600'>A live benchmark of red/blue choices from single-shot structured responses</p>
@@ -1616,6 +1693,7 @@ function App() {
 						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
+					<ThemeSwitcher onChange={setThemePreference} value={themePreference} />
 					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
 						<Icon name='download' size={16} />
 						Export

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Track whether frontier models choose cooperation or self-preservation in the red vs. blue survival benchmark." />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ButtonArena | Red vs. Blue benchmark" />
@@ -17,6 +18,29 @@
     <meta name="twitter:description" content="See how the latest benchmark vote breaks between cooperation and self-preservation." />
     <meta name="twitter:image" content="/og/latest-benchmark.png" />
     <title>ButtonArena</title>
+    <script>
+      ;(() => {
+        const storageKey = 'button-arena:theme'
+        const saved = (() => {
+          try {
+            return localStorage.getItem(storageKey)
+          } catch {
+            return null
+          }
+        })()
+        const preference = saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system'
+        const theme =
+          preference === 'light' || preference === 'dark'
+            ? preference
+            : typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+
+        document.documentElement.dataset.theme = theme
+        document.documentElement.dataset.themePreference = preference
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
     <!-- Privacy-friendly analytics by Plausible -->
     <script async src="https://plausible.io/js/pa-k_Z_wLnv_9Vu8QFcw1GJP.js"></script>
     <script>
