@@ -1394,12 +1394,7 @@ function App() {
 	const shareUrl = getShareUrl()
 	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
-	const statusBadgeStyles =
-		statusLabel === 'Ongoing'
-			? 'bg-success-soft text-success'
-			: statusLabel === 'Ready'
-				? 'bg-success-soft text-success'
-				: 'bg-blue-soft text-blue-deep'
+	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-success-soft text-success' : statusLabel === 'Ready' ? 'bg-success-soft text-success' : 'bg-blue-soft text-blue-deep'
 
 	const questionCard = (
 		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
@@ -1499,9 +1494,7 @@ function App() {
 										<small className='block text-xs text-ink-muted mt-1 wrap-break-word'>{model.id}</small>
 									</span>
 									{supportsStructuredOutput(model) && (
-										<em className='inline-flex items-center rounded-md bg-success-soft text-success px-2 py-1.5 text-xs font-bold not-italic'>
-											structured
-										</em>
+										<em className='inline-flex items-center rounded-md bg-success-soft text-success px-2 py-1.5 text-xs font-bold not-italic'>structured</em>
 									)}
 								</button>
 							)
@@ -1696,7 +1689,9 @@ function App() {
 					<Logo aria-hidden='true' className='h-12 w-19 flex-none overflow-visible' />
 					<div>
 						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-ink'>Button Arena</h1>
-						<p className='mt-1 m-0 text-sm text-ink-muted'>A live benchmark of red/blue choices from single-shot structured responses</p>
+						<p className='mt-1 m-0 text-sm text-ink-muted'>
+							A live evaluation of world's leading LLMs on the ultimate moral gamble: sacrifice for the many, or survive alone?
+						</p>
 					</div>
 				</div>
 				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
