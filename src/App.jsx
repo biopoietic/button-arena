@@ -20,21 +20,7 @@ import {
 	Square,
 	Trash2,
 } from 'lucide-react'
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Cell,
-	LabelList,
-	Line,
-	LineChart,
-	Pie,
-	PieChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1'
 const STATIC_RESULTS_URL = '/results/global-results.json'
@@ -128,7 +114,7 @@ function Icon({ name, size = 18 }) {
 
 function Panel({ title, action, children, className = '' }) {
 	return (
-		<article className={`rounded-lg border border-[#dfe7f3] bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-4${className ? ` ${className}` : ''}`}>
+		<article className={`rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)] p-4${className ? ` ${className}` : ''}`}>
 			<div className='flex items-center justify-between gap-3 mb-3.5'>
 				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>{title}</h2>
 				{action}
@@ -488,7 +474,7 @@ function SummaryCard({ tone = 'neutral', icon, label, value, detail }) {
 	const tones = toneStyles[tone] ?? toneStyles.neutral
 
 	return (
-		<article className={`flex min-h-[104px] items-start gap-3 rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_18px_45px_rgba(27,44,82,0.05)] ${tones.card}`}>
+		<article className={`flex min-h-26 items-start gap-3 rounded-lg border border-line bg-white p-4 shadow-[0_18px_45px_rgba(27,44,82,0.05)] ${tones.card}`}>
 			<div className={`grid h-9 w-9 flex-none place-items-center rounded-md ${tones.icon}`}>
 				<Icon name={icon} size={19} />
 			</div>
@@ -518,7 +504,7 @@ function Sparkline({ tone = 'blue', values }) {
 
 function MetricTile({ className = '', detail, icon, label, status, value }) {
 	return (
-		<div className={`grid min-h-[104px] content-center border-[#dfe7f3] p-4 ${className}`}>
+		<div className={`grid min-h-26 content-center border-line p-4 ${className}`}>
 			<div className='flex items-start justify-between gap-3'>
 				<div className='min-w-0'>
 					<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
@@ -527,7 +513,7 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 					{status && <span className='mt-2 block text-sm font-bold text-emerald-600'>{status}</span>}
 				</div>
 				{icon && (
-					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-[#dfe7f3] bg-white text-slate-500 shadow-[0_8px_24px_rgba(27,44,82,0.05)]'>
+					<div className='grid h-10 w-10 flex-none place-items-center rounded-lg border border-line bg-white text-slate-500 shadow-[0_8px_24px_rgba(27,44,82,0.05)]'>
 						<Icon name={icon} size={20} />
 					</div>
 				)}
@@ -538,7 +524,7 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 
 function ShareMetricTile({ detail, label, tone, value, values }) {
 	return (
-		<div className='grid min-h-[116px] content-center border-r border-[#dfe7f3] p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
+		<div className='grid min-h-29 content-center border-r border-line p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
 			<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
 			<strong className='mt-2 block text-[28px] leading-none text-slate-950'>{value}</strong>
 			<div className='mt-3'>
@@ -556,11 +542,11 @@ function OverviewMetrics({ lastUpdated, stateLabel, summary }) {
 	const redTrend = [56, 52, 50, 46, 47, 42, 39, 36, redPercent]
 
 	return (
-		<section className='grid overflow-hidden rounded-lg border border-[#dfe7f3] bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)]'>
-			<div className='grid grid-cols-3 border-b border-[#dfe7f3] max-sm:grid-cols-1'>
+		<section className='grid overflow-hidden rounded-lg border border-line bg-white shadow-[0_18px_45px_rgba(27,44,82,0.06)]'>
+			<div className='grid grid-cols-3 border-b border-line max-sm:grid-cols-1'>
 				<ShareMetricTile detail={`${summary.blue} blue votes`} label='Blue Share' tone='blue' value={formatPercent(summary.blue, summary.total)} values={blueTrend} />
 				<ShareMetricTile detail={`${summary.red} red votes`} label='Red Share' tone='red' value={formatPercent(summary.red, summary.total)} values={redTrend} />
-				<MetricTile className='min-h-[116px]' icon='box' label='Models' value={summary.models.length} />
+				<MetricTile className='min-h-29' icon='box' label='Models' value={summary.models.length} />
 			</div>
 			<div className='grid grid-cols-4 max-[1220px]:grid-cols-2 max-sm:grid-cols-1'>
 				<MetricTile className='border-r max-[1220px]:border-b max-sm:border-r-0' label='Total Runs' value={formatNumber(summary.total)} />
@@ -586,7 +572,7 @@ function ChartTooltipBox({ active, label, payload }) {
 	if (!active || !payload?.length) return null
 
 	return (
-		<div className='rounded-lg border border-[#dfe7f3] bg-white px-3 py-2 text-xs shadow-[0_14px_32px_rgba(27,44,82,0.12)]'>
+		<div className='rounded-lg border border-line bg-white px-3 py-2 text-xs shadow-[0_14px_32px_rgba(27,44,82,0.12)]'>
 			{label && <strong className='mb-1.5 block max-w-60 truncate text-slate-800'>{label}</strong>}
 			<div className='grid gap-1'>
 				{payload.map((entry) => (
@@ -693,15 +679,42 @@ function TrendChart({ summary }) {
 	return (
 		<div className='mt-4'>
 			<div className='mb-1 text-sm font-medium text-slate-700'>Trend over time</div>
-			<div className='h-[92px] w-full'>
+			<div className='h-23 w-full'>
 				<ResponsiveContainer height='100%' width='100%'>
 					<LineChart accessibilityLayer data={data} margin={{ bottom: 2, left: 0, right: 0, top: 5 }}>
 						<CartesianGrid stroke={CHART_COLORS.grid} vertical={false} />
 						<XAxis axisLine={false} dataKey='label' interval={0} tick={{ fill: CHART_COLORS.text, fontSize: 11 }} tickLine={false} />
-						<YAxis axisLine={false} domain={[0, 100]} orientation='right' tick={{ fill: CHART_COLORS.text, fontSize: 11 }} tickFormatter={(value) => `${value}%`} tickLine={false} ticks={[0, 50, 100]} width={36} />
+						<YAxis
+							axisLine={false}
+							domain={[0, 100]}
+							orientation='right'
+							tick={{ fill: CHART_COLORS.text, fontSize: 11 }}
+							tickFormatter={(value) => `${value}%`}
+							tickLine={false}
+							ticks={[0, 50, 100]}
+							width={36}
+						/>
 						<Tooltip content={<ChartTooltipBox />} cursor={{ stroke: CHART_COLORS.grid }} />
-						<Line dataKey='blue' dot={{ fill: CHART_COLORS.blue, r: 2.5, strokeWidth: 0 }} isAnimationActive={false} name='Blue' stroke={CHART_COLORS.blue} strokeWidth={3} type='monotone' unit='%' />
-						<Line dataKey='red' dot={{ fill: CHART_COLORS.red, r: 2.5, strokeWidth: 0 }} isAnimationActive={false} name='Red' stroke={CHART_COLORS.red} strokeWidth={3} type='monotone' unit='%' />
+						<Line
+							dataKey='blue'
+							dot={{ fill: CHART_COLORS.blue, r: 2.5, strokeWidth: 0 }}
+							isAnimationActive={false}
+							name='Blue'
+							stroke={CHART_COLORS.blue}
+							strokeWidth={3}
+							type='monotone'
+							unit='%'
+						/>
+						<Line
+							dataKey='red'
+							dot={{ fill: CHART_COLORS.red, r: 2.5, strokeWidth: 0 }}
+							isAnimationActive={false}
+							name='Red'
+							stroke={CHART_COLORS.red}
+							strokeWidth={3}
+							type='monotone'
+							unit='%'
+						/>
 					</LineChart>
 				</ResponsiveContainer>
 			</div>
@@ -721,8 +734,8 @@ function DonutChart({ summary }) {
 
 	return (
 		<div className='grid gap-3'>
-			<div className='grid items-center gap-7 min-h-[236px] grid-cols-[minmax(180px,250px)_minmax(120px,1fr)] max-sm:grid-cols-1'>
-				<div className='relative aspect-square w-full max-w-[232px] justify-self-center'>
+			<div className='grid items-center gap-7 min-h-59 grid-cols-[minmax(180px,250px)_minmax(120px,1fr)] max-sm:grid-cols-1'>
+				<div className='relative aspect-square w-full max-w-58 justify-self-center'>
 					<div className='relative z-10 h-full w-full'>
 						<ResponsiveContainer height='100%' width='100%'>
 							<PieChart>
@@ -791,7 +804,7 @@ function HeroPattern() {
 	const cols = Array.from({ length: 21 }, (_, col) => col)
 
 	return (
-		<svg aria-hidden='true' className='absolute -right-12 bottom-0 h-[230px] w-[520px] opacity-95 max-sm:hidden' viewBox='0 0 520 230'>
+		<svg aria-hidden='true' className='absolute -right-12 bottom-0 h-57.5 w-130 opacity-95 max-sm:hidden' viewBox='0 0 520 230'>
 			{rows.map((row) =>
 				cols.map((col) => {
 					const x = 16 + col * 23
@@ -807,29 +820,38 @@ function HeroPattern() {
 
 function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onViewResults }) {
 	return (
-		<section className='relative min-h-[252px] overflow-hidden rounded-lg border border-[#2c7cf6] bg-[linear-gradient(135deg,#0f6ff5_0%,#2d7df6_36%,#c9d9ff_72%,#ffe9ef_100%)] p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
+		<section className='relative min-h-63 overflow-hidden rounded-lg border border-[#2c7cf6] bg-[linear-gradient(135deg,#0f6ff5_0%,#2d7df6_36%,#c9d9ff_72%,#ffe9ef_100%)] p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
 			<HeroPattern />
-			<div className='relative z-10 grid h-full max-w-[640px] content-center gap-5'>
+			<div className='relative z-10 grid h-full max-w-160 content-center gap-5'>
 				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-white/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
 					<Icon name='refresh' size={14} />
 					Ongoing Benchmark
 				</span>
 				<div>
 					<h2 className='m-0 text-[34px] font-extrabold leading-tight max-sm:text-2xl'>Which models gamble on blue?</h2>
-					<p className='mt-3 mb-0 max-w-[590px] text-base leading-relaxed text-white'>
+					<p className='mt-3 mb-0 max-w-147.5 text-base leading-relaxed text-white'>
 						New model releases can be added as they ship. The latest published run is {formatDateTime(lastUpdated)}.
 					</p>
 				</div>
 				<div className='flex flex-wrap gap-3'>
-					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[#0b63e6] px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-[#0755ca]' onClick={onViewResults} type='button'>
+					<button
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-[#0755ca]'
+						onClick={onViewResults}
+						type='button'>
 						<Icon name='chevron' size={16} />
 						View Results
 					</button>
-					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50' onClick={onRunPrivate} type='button'>
+					<button
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50'
+						onClick={onRunPrivate}
+						type='button'>
 						<Icon name='play' size={16} />
 						Run Privately
 					</button>
-					<button className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50' onClick={onShareBenchmark} type='button'>
+					<button
+						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-slate-950 shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-50'
+						onClick={onShareBenchmark}
+						type='button'>
 						<Icon name='share' size={16} />
 						Share Benchmark
 					</button>
@@ -1068,7 +1090,7 @@ function ProviderBreakdown({ providers }) {
 
 function PrivacyNote() {
 	return (
-		<div className='flex flex-col items-start gap-2 rounded-lg border border-[#dfe7f3] bg-white p-4 text-emerald-900 shadow-[0_18px_45px_rgba(27,44,82,0.05)]'>
+		<div className='flex flex-col items-start gap-2 rounded-lg border border-line bg-white p-4 text-emerald-900 shadow-[0_18px_45px_rgba(27,44,82,0.05)]'>
 			<div className='flex items-center gap-2'>
 				<Icon name='check' size={17} />
 				<strong className='text-sm'>Local runs are private</strong>
@@ -1094,7 +1116,7 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 	const progress = summary.total ? Math.round((summary.blue / summary.total) * 100) : 0
 
 	return (
-		<div className='rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)]'>
+		<div className='rounded-lg border border-line bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)]'>
 			<div className='flex items-center justify-between gap-2'>
 				<strong className='text-xs font-extrabold uppercase tracking-[0.02em] text-slate-700'>Ongoing Benchmark</strong>
 			</div>
@@ -1125,10 +1147,12 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 
 function FeedbackCard() {
 	return (
-		<div className='rounded-lg border border-[#dfe7f3] bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)] max-[1080px]:hidden'>
+		<div className='rounded-lg border border-line bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)] max-[1080px]:hidden'>
 			<strong className='text-sm text-slate-800'>Have feedback?</strong>
 			<p className='mt-2 mb-4 text-xs leading-relaxed text-slate-500'>We'd love to hear your thoughts.</p>
-			<a className='inline-flex min-h-10 items-center justify-center rounded-md bg-[#0b63e6] px-4 text-sm font-extrabold text-white hover:bg-[#0755ca]' href='mailto:?subject=ButtonArena%20feedback'>
+			<a
+				className='inline-flex min-h-10 items-center justify-center rounded-md bg-brand px-4 text-sm font-extrabold text-white hover:bg-[#0755ca]'
+				href='mailto:?subject=ButtonArena%20feedback'>
 				Send feedback
 			</a>
 		</div>
@@ -1137,7 +1161,7 @@ function FeedbackCard() {
 
 function ExplainerPanel({ onLearnMore }) {
 	return (
-		<section className='grid grid-cols-[92px_minmax(0,1fr)] gap-5 rounded-lg border border-[#dfe7f3] bg-white p-6 shadow-[0_18px_45px_rgba(27,44,82,0.05)] max-sm:grid-cols-1'>
+		<section className='grid grid-cols-[92px_minmax(0,1fr)] gap-5 rounded-lg border border-line bg-white p-6 shadow-[0_18px_45px_rgba(27,44,82,0.05)] max-sm:grid-cols-1'>
 			<div className='grid h-20 w-20 place-items-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#f3d7ff,#e9ddff_46%,#d7d8ff)] text-[#7d42f5]'>
 				<Icon name='brain' size={38} />
 			</div>
@@ -1145,13 +1169,17 @@ function ExplainerPanel({ onLearnMore }) {
 				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-slate-950'>The Button Dilemma</h2>
 				<div className='mt-4 grid gap-3 text-[15px] leading-relaxed text-slate-700'>
 					<p className='m-0'>
-						Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous gamble: while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a potential death sentence.
+						Pressing red is the safe, individually rational choice: it guarantees your survival with zero risk. Pressing blue, however, introduces a dangerous gamble:
+						while it may enable a superior collective outcome if enough people coordinate on it, failure to reach that critical mass turns it into a potential death
+						sentence.
 					</p>
 					<p className='m-0'>
-						The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed self-preservation grounded in game theory and basic survival logic.
+						The blue button is frequently criticized as virtue signaling or naive collectivism, while red is defended as clear-eyed self-preservation grounded in game
+						theory and basic survival logic.
 					</p>
 					<p className='m-0'>
-						ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how deeply, consistently, and honestly they reason through the trade-offs.
+						ButtonArena tests the world's leading LLMs on this exact dilemma, exposing not just which button they press, but how deeply, consistently, and honestly they
+						reason through the trade-offs.
 					</p>
 				</div>
 				<button className='btn-secondary mt-4 min-h-9 px-4 text-xs' onClick={onLearnMore} type='button'>
@@ -1549,8 +1577,7 @@ function App() {
 	const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
 
-	const statusBadgeStyles =
-		statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
+	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-emerald-50 text-emerald-700' : statusLabel === 'Ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
 
 	const questionCard = (
 		<Panel title='Question' action={<span className='status-badge'>Fixed</span>}>
@@ -1566,10 +1593,14 @@ function App() {
 					<Icon name='clipboard' size={17} />
 				</button>
 			}>
-			<pre className='m-0 max-h-[350px] overflow-auto rounded-lg border border-[#dfe7f3] bg-[#f8fbff] p-3.5 text-left font-mono text-xs leading-snug text-[#255481] whitespace-pre-wrap'>
+			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-[#f8fbff] p-3.5 text-left font-mono text-xs leading-snug text-[#255481] whitespace-pre-wrap'>
 				{schemaText}
 			</pre>
-			<a className='btn-secondary mt-3 w-full justify-start min-h-9 px-3 text-xs' href='https://openrouter.ai/docs/features/structured-outputs' rel='noreferrer' target='_blank'>
+			<a
+				className='btn-secondary mt-3 w-full justify-start min-h-9 px-3 text-xs'
+				href='https://openrouter.ai/docs/features/structured-outputs'
+				rel='noreferrer'
+				target='_blank'>
 				<Icon name='chevron' size={15} />
 				View schema docs
 			</a>
@@ -1825,7 +1856,7 @@ function App() {
 
 	return (
 		<div className='min-h-svh grid grid-cols-[224px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
-			<header className='col-span-full flex items-center justify-between gap-5 border-b border-[#dfe7f3] bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
+			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<AppMark />
 					<div>
@@ -1846,7 +1877,7 @@ function App() {
 				</div>
 			</header>
 
-			<aside className='flex flex-col justify-between gap-5 border-r border-[#dfe7f3] bg-white/80 px-4 py-5 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-3'>
+			<aside className='flex flex-col justify-between gap-5 border-r border-line bg-white/80 px-4 py-5 max-[1080px]:border-r-0 max-[1080px]:border-b max-[1080px]:py-3'>
 				<div>
 					<nav aria-label='Benchmark sections' className='grid gap-2 max-[1080px]:flex max-[1080px]:overflow-x-auto'>
 						{NAV_ITEMS.map((item) => {
@@ -1855,7 +1886,7 @@ function App() {
 								<button
 									aria-current={isActive ? 'page' : undefined}
 									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-extrabold ${
-										isActive ? 'bg-[#eaf2ff] text-[#0b63e6]' : 'text-slate-600 hover:bg-[#f4f8ff] hover:text-[#0b63e6]'
+										isActive ? 'bg-brand-soft text-brand' : 'text-slate-600 hover:bg-[#f4f8ff] hover:text-brand'
 									} w-full max-[1080px]:w-auto max-[1080px]:flex-none`}
 									key={item.id}
 									onClick={() => changeSection(item.id)}
@@ -1866,7 +1897,7 @@ function App() {
 							)
 						})}
 					</nav>
-					<div className='my-5 h-px bg-[#dfe7f3] max-[1080px]:hidden' />
+					<div className='my-5 h-px bg-line max-[1080px]:hidden' />
 					<div className='max-[1080px]:hidden'>
 						<SidebarBenchmarkCard lastUpdated={lastUpdated} summary={globalSummary} />
 					</div>
