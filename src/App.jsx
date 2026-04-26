@@ -29,6 +29,7 @@ const VOTE_RESPONSE_FORMAT = {
         comment: {
           type: ['string', 'null'],
           description: 'Optional concise rationale for the choice.',
+          maxLength: 200,
         },
       },
       required: ['choice', 'comment'],
@@ -293,9 +294,25 @@ function parseVoteContent(content) {
 }
 
 function extractContent(payload) {
-  const content = payload?.choices?.[0]?.message?.content
-  if (typeof content === 'string') return content
-  if (content == null) return ''
+  const choice = payload?.choices?.[0]
+  const content = choice?.message?.content
+  const finishReason = choice?.finish_reason
+
+  if (content == null) {
+    if (finishReason === 'length') {
+      throw new Error('Response truncated: model ran out of tokens before producing output. Try increasing max_tokens.')
+    }
+    return ''
+  }
+
+  if (typeof content === 'string') {
+    if (finishReason === 'length') {
+      // Content was cut mid-stream; safeJsonParse will try to recover it
+      return content
+    }
+    return content
+  }
+
   return JSON.stringify(content)
 }
 
