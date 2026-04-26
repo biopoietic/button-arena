@@ -498,8 +498,8 @@ function Sparkline({ tone = 'blue', values }) {
 	const data = values.map((value, index) => ({ index, value }))
 
 	return (
-		<div aria-hidden='true' className='h-8 w-full'>
-			<ResponsiveContainer height='100%' width='100%'>
+		<div aria-hidden='true' className='h-8 min-w-0 w-full'>
+			<ResponsiveContainer height='100%' initialDimension={{ height: 32, width: 180 }} minWidth={0} width='100%'>
 				<LineChart data={data} margin={{ bottom: 3, left: 0, right: 0, top: 3 }}>
 					<Line dataKey='value' dot={false} isAnimationActive={false} stroke={color} strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.4} type='monotone' />
 				</LineChart>
@@ -530,10 +530,10 @@ function MetricTile({ className = '', detail, icon, label, status, value }) {
 
 function ShareMetricTile({ detail, label, tone, value, values }) {
 	return (
-		<div className='grid min-h-29 content-center border-r border-line p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
+		<div className='grid min-h-29 min-w-0 content-center border-r border-line p-4 last:border-r-0 max-sm:border-r-0 max-sm:border-b'>
 			<span className='block text-[11px] font-extrabold uppercase tracking-[0.02em] text-slate-500'>{label}</span>
 			<strong className='mt-2 block text-[28px] leading-none text-slate-950'>{value}</strong>
-			<div className='mt-3'>
+			<div className='mt-3 min-w-0'>
 				<Sparkline tone={tone} values={values} />
 			</div>
 			{detail && <span className='sr-only'>{detail}</span>}
@@ -636,8 +636,8 @@ function DistributionChart({ models }) {
 					Red (always survive)
 				</span>
 			</div>
-			<div style={{ height: chartHeight }}>
-				<ResponsiveContainer height='100%' width='100%'>
+			<div className='min-w-0' style={{ height: chartHeight }}>
+				<ResponsiveContainer height='100%' initialDimension={{ height: chartHeight, width: 640 }} minWidth={0} width='100%'>
 					<BarChart accessibilityLayer barCategoryGap={12} data={chartData} layout='vertical' margin={{ bottom: 0, left: 0, right: 54, top: 0 }}>
 						<XAxis
 							axisLine={false}
@@ -685,8 +685,8 @@ function TrendChart({ summary }) {
 	return (
 		<div className='mt-4'>
 			<div className='mb-1 text-sm font-medium text-slate-700'>Trend over time</div>
-			<div className='h-23 w-full'>
-				<ResponsiveContainer height='100%' width='100%'>
+			<div className='h-23 min-w-0 w-full'>
+				<ResponsiveContainer height='100%' initialDimension={{ height: 92, width: 480 }} minWidth={0} width='100%'>
 					<LineChart accessibilityLayer data={data} margin={{ bottom: 2, left: 0, right: 0, top: 5 }}>
 						<CartesianGrid stroke={CHART_COLORS.grid} vertical={false} />
 						<XAxis axisLine={false} dataKey='label' interval={0} tick={{ fill: CHART_COLORS.text, fontSize: 11 }} tickLine={false} />
@@ -742,8 +742,8 @@ function DonutChart({ summary }) {
 		<div className='grid gap-3'>
 			<div className='grid items-center gap-7 min-h-59 grid-cols-[minmax(180px,250px)_minmax(120px,1fr)] max-sm:grid-cols-1'>
 				<div className='relative aspect-square w-full max-w-58 justify-self-center'>
-					<div className='relative z-10 h-full w-full'>
-						<ResponsiveContainer height='100%' width='100%'>
+					<div className='relative z-10 h-full min-w-0 w-full'>
+						<ResponsiveContainer height='100%' initialDimension={{ height: 232, width: 232 }} minWidth={0} width='100%'>
 							<PieChart>
 								<Pie
 									cx='50%'
