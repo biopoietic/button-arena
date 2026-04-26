@@ -1049,7 +1049,7 @@ function App() {
         question: QUESTION,
         note: 'Local runs are private browser data unless this exported file is committed or published.',
       },
-      responses: localResponses,
+      responses: localResponses.filter((r) => normalizeChoice(r.choice)),
     }
 
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
