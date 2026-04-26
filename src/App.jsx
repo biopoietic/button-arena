@@ -880,6 +880,7 @@ function App() {
     normalizeResponses(readStoredJson(STORAGE_KEYS.localResponses, []), 'local'),
   )
   const [logLimit, setLogLimit] = useState(10)
+  const [concurrency, setConcurrency] = useState(5)
   const [maxTokens, setMaxTokens] = useState(256)
   const [modelSearch, setModelSearch] = useState('')
   const [modelStatus, setModelStatus] = useState('loading')
@@ -1180,6 +1181,7 @@ function App() {
     }
 
     const safeIterations = Math.max(1, Math.min(1000, Number(iterations) || 1))
+    const safeConcurrency = Math.max(1, Math.min(20, Number(concurrency) || 5))
     const totalRequests = selectedModels.length * safeIterations
     const batchId = createId()
 
@@ -1189,31 +1191,41 @@ function App() {
     setRunProgress({ active: 'Starting run', completed: 0, total: totalRequests })
     abortRef.current = new AbortController()
 
+    const tasks = []
+    for (const model of selectedModels) {
+      for (let iteration = 1; iteration <= safeIterations; iteration += 1) {
+        tasks.push({ model, iteration })
+      }
+    }
+
+    let taskIndex = 0
     let completed = 0
 
-    try {
-      for (const model of selectedModels) {
-        for (let iteration = 1; iteration <= safeIterations; iteration += 1) {
-          if (abortRef.current.signal.aborted) throw new Error('Run stopped.')
-          setRunProgress({
-            active: `${modelLabel(model)} ${iteration}/${safeIterations}`,
-            completed,
-            total: totalRequests,
-          })
-
-          const row = await runSingleRequest(model, batchId, iteration)
-          completed += 1
-          setLocalResponses((current) => [row, ...current])
-          setRunProgress({
-            active: `${modelLabel(model)} ${iteration}/${safeIterations}`,
-            completed,
-            total: totalRequests,
-          })
+    async function worker() {
+      while (taskIndex < tasks.length) {
+        if (abortRef.current?.signal.aborted) break
+        const index = taskIndex++
+        const { model, iteration } = tasks[index]
+        let row
+        try {
+          row = await runSingleRequest(model, batchId, iteration)
+        } catch {
+          break
         }
+        completed += 1
+        setLocalResponses((current) => [row, ...current])
+        setRunProgress({ active: `${completed}/${totalRequests} complete`, completed, total: totalRequests })
       }
+    }
+
+    try {
+      await Promise.all(Array.from({ length: Math.min(safeConcurrency, tasks.length) }, worker))
     } catch (error) {
       setRunError(error instanceof Error ? error.message : 'Run stopped.')
     } finally {
+      if (abortRef.current?.signal.aborted) {
+        setRunError('Run stopped.')
+      }
       setIsRunning(false)
       abortRef.current = null
     }
@@ -1364,6 +1376,10 @@ function App() {
         <label className="field compact-field">
           <span>Max tokens</span>
           <input max="512" min="16" onChange={(event) => setMaxTokens(event.target.value)} type="number" value={maxTokens} />
+        </label>
+        <label className="field compact-field">
+          <span>Concurrency</span>
+          <input max="20" min="1" onChange={(event) => setConcurrency(event.target.value)} type="number" value={concurrency} />
         </label>
       </div>
 
