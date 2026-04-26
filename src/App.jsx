@@ -1148,12 +1148,14 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 function FeedbackCard() {
 	return (
 		<div className='rounded-lg border border-line bg-white p-4 shadow-[0_14px_32px_rgba(27,44,82,0.05)] max-[1080px]:hidden'>
-			<strong className='text-sm text-slate-800'>Have feedback?</strong>
-			<p className='mt-2 mb-4 text-xs leading-relaxed text-slate-500'>We'd love to hear your thoughts.</p>
+			<strong className='text-sm text-slate-800'>Contribute</strong>
+			<p className='mt-2 mb-4 text-xs leading-relaxed text-slate-500'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
 			<a
 				className='inline-flex min-h-10 items-center justify-center rounded-md bg-brand px-4 text-sm font-extrabold text-white hover:bg-[#0755ca]'
-				href='mailto:?subject=ButtonArena%20feedback'>
-				Send feedback
+				href='https://github.com/biopoietic/button-arena'
+				target='_blank'
+				rel='noreferrer'>
+				View on GitHub
 			</a>
 		</div>
 	)
@@ -1848,7 +1850,7 @@ function App() {
 	}
 
 	return (
-		<div className='min-h-svh grid grid-cols-[224px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
+		<div className='min-h-svh grid grid-cols-[240px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-[1080px]:grid-cols-1 max-[1080px]:grid-rows-[auto_auto_minmax(0,1fr)]'>
 			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-white px-6 max-[1080px]:flex-col max-[1080px]:items-start max-[1080px]:p-4'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<AppMark />
