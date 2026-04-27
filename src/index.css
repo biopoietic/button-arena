@@ -56,7 +56,7 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 		--color-canvas: #07111f;
 		--color-surface: #0d1b2a;
 		--color-surface-muted: #111f33;
-		--color-line: #20314b;
+		--color-line: #152030;
 
 		--color-ink: #edf4ff;
 		--color-ink-muted: #a7b3c6;
@@ -94,7 +94,7 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 referencing the semantic theme tokens above so dark mode is automatic. */
 @layer components {
 	.status-badge {
-		@apply inline-flex items-center rounded-md bg-blue-soft px-2.5 py-2 text-xs font-bold leading-none text-blue-deep;
+		@apply inline-flex gap-2 items-center rounded-md bg-blue-soft px-2.5 py-2 text-xs font-bold leading-none text-blue-deep;
 	}
 
 	.field-label {

@@ -157,7 +157,7 @@ function ThemeSwitcher({ onChange, value }) {
 
 function Panel({ title, action, children, className = '' }) {
 	return (
-		<article className={`rounded-lg border border-line bg-surface shadow-soft p-4${className ? ` ${className}` : ''}`}>
+		<article className={`relative rounded-lg border border-line bg-surface shadow-soft p-4${className ? ` ${className}` : ''}`}>
 			<div className='flex items-center justify-between gap-3 mb-3.5'>
 				<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>{title}</h2>
 				{action}
@@ -228,7 +228,7 @@ function formatNumber(value) {
 }
 
 function Dot({ tone }) {
-	const color = tone === 'blue' ? 'bg-blue-soft' : 'bg-red-soft'
+	const color = tone === 'blue' ? 'bg-blue' : 'bg-red'
 	return <i className={`inline-block h-2.5 w-2.5 rounded-full mr-2 align-[1px] ${color}`} />
 }
 
@@ -592,7 +592,7 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 		<section className='relative overflow-hidden min-h-63 rounded-lg border border-blue-soft bg-linear-to-r from-blue to-blue/5 p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
 			<HeroPattern />
 			<div className='relative z-10 grid h-full max-w-160 content-center gap-5'>
-				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-surface/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
+				<span className='status-badge w-fit bg-surface/16 text-white ring-1 ring-white/25'>
 					<Icon name='refresh' size={14} />
 					Ongoing Benchmark
 				</span>
@@ -603,15 +603,15 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 					</p>
 				</div>
 				<div className='flex flex-wrap gap-3'>
-					<button className='button min-h-10 px-4 font-extrabold' onClick={onViewResults} type='button'>
+					<button className='button' onClick={onViewResults} type='button'>
 						<Icon name='chevron' size={16} />
 						View Results
 					</button>
-					<button className='button secondary min-h-10 px-4 font-extrabold hover:bg-blue-soft' onClick={onRunPrivate} type='button'>
+					<button className='button secondary' onClick={onRunPrivate} type='button'>
 						<Icon name='play' size={16} />
 						Run Privately
 					</button>
-					<button className='button secondary min-h-10 px-4 font-extrabold hover:bg-blue-soft' onClick={onShareBenchmark} type='button'>
+					<button className='button secondary' onClick={onShareBenchmark} type='button'>
 						<Icon name='share' size={16} />
 						Share Benchmark
 					</button>
@@ -634,12 +634,12 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 				role='dialog'>
 				<div className='flex items-start justify-between gap-4'>
 					<div className='space-y-2'>
-						<span className='inline-flex items-center gap-2 rounded-full bg-blue-soft px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-blue-deep'>
+						<span className='status-badge rounded-full'>
 							<Icon name='share' size={13} />
 							Share Benchmark
 						</span>
 						<div>
-							<h3 className='m-0 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
+							<h3 className='mt-2 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
 								Share Button Arena
 							</h3>
 							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-ink-muted'>{shareDescription}</p>
@@ -940,7 +940,7 @@ function SidebarBenchmarkCard({ lastUpdated, summary }) {
 			<div className='mt-5 grid gap-4'>
 				<div className='flex items-center justify-between gap-2 text-xs text-ink-muted'>
 					<span>{formatRunMoment(lastUpdated)}</span>
-					<span className='inline-flex items-center gap-1.5 rounded-full bg-success-soft px-2 py-1 text-[11px] font-extrabold text-success'>
+					<span className='status-badge bg-success-soft text-success'>
 						<i className='h-1.5 w-1.5 rounded-full bg-success-soft' />
 						Live
 					</span>
@@ -967,7 +967,7 @@ function FeedbackCard() {
 		<div className='rounded-lg border border-line bg-surface p-4 shadow-soft max-2xl:hidden'>
 			<strong className='text-sm text-ink'>Contribute</strong>
 			<p className='mt-2 mb-4 text-xs leading-relaxed text-ink-muted'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
-			<a className='button min-h-10 px-4 font-extrabold' href='https://github.com/biopoietic/button-arena' target='_blank' rel='noreferrer'>
+			<a className='button' href='https://github.com/biopoietic/button-arena' target='_blank' rel='noreferrer'>
 				View on GitHub
 			</a>
 		</div>
@@ -1674,7 +1674,7 @@ function App() {
 				</div>
 				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
 					<span className='text-sm text-ink-muted whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
-					<span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-bold leading-none ${statusBadgeStyles}`}>
+					<span className={`status-badge ${statusBadgeStyles}`}>
 						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-success-soft' : 'bg-blue-soft'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
