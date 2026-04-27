@@ -333,13 +333,13 @@ function renderTextLines(lines, x, y, fontSize, lineHeight, extraAttributes = ''
 
 function renderModelRows(summary) {
 	if (!summary.models.length) {
-		return `<text x="72" y="358" fill="#CCD7EA" font-size="26" font-family="DejaVu Sans, Arial, sans-serif">No committed responses yet</text>`
+		return `<text x="72" y="358" fill="#a7b3c6" font-size="26" font-family="Inter, DejaVu Sans, Arial, sans-serif">No committed responses yet</text>`
 	}
 
 	return summary.models
 		.slice(0, 7)
 		.map((model, index) => {
-			const rowTop = 306 + index * 43
+			const rowTop = 308 + index * 43
 			const rowBaseline = rowTop + 28
 			const barX = 560
 			const barY = rowTop + 10
@@ -349,15 +349,15 @@ function renderModelRows(summary) {
 			const blueWidth = Math.max(0, barWidth - redWidth)
 			const { provider, label } = splitModelName(model.name)
 			return [
-				`<line x1="72" y1="${rowTop + 39}" x2="1128" y2="${rowTop + 39}" stroke="#18263A" />`,
-				`<rect x="72" y="${rowTop + 2}" width="110" height="24" rx="12" fill="#0E1A2E" stroke="#23334D" />`,
-				`<text x="127" y="${rowTop + 18}" fill="#AFC5E6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(provider)}</text>`,
-				`<text x="200" y="${rowBaseline}" fill="#F4F8FF" font-size="24" font-weight="700" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(label)}</text>`,
-				`<rect x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="9" fill="#111D34" />`,
-				`<rect x="${barX}" y="${barY}" width="${redWidth}" height="${barHeight}" rx="9" fill="#E45871" />`,
-				`<rect x="${barX + redWidth}" y="${barY}" width="${blueWidth}" height="${barHeight}" rx="9" fill="#56B9FF" />`,
-				`<line x1="${barX + barWidth / 2}" y1="${barY - 6}" x2="${barX + barWidth / 2}" y2="${barY + barHeight + 6}" stroke="#D8E3F5" stroke-opacity="0.5" />`,
-				`<text x="1128" y="${rowBaseline}" fill="#D5E2F4" font-size="18" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif"><tspan fill="#56B9FF">${model.blue} blue</tspan><tspan fill="#7B8CA8" xml:space="preserve"> / </tspan><tspan fill="#E45871">${model.red} red</tspan></text>`,
+				`<line x1="72" y1="${rowTop}" x2="1128" y2="${rowTop}" stroke="#152030" />`,
+				`<rect x="72" y="${rowTop + 9}" width="120" height="24" rx="12" fill="#0d1b2a" stroke="#1c2d3f" />`,
+				`<text x="132" y="${rowTop + 25}" fill="#a7b3c6" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="1.2" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(provider)}</text>`,
+				`<text x="210" y="${rowBaseline}" fill="#edf4ff" font-size="24" font-weight="700" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(label)}</text>`,
+				`<rect x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="9" fill="#0d1b2a" />`,
+				`<rect x="${barX}" y="${barY}" width="${redWidth}" height="${barHeight}" rx="9" fill="#ff4f45" />`,
+				`<rect x="${barX + redWidth}" y="${barY}" width="${blueWidth}" height="${barHeight}" rx="9" fill="#4c85ff" />`,
+				`<line x1="${barX + barWidth / 2}" y1="${barY - 6}" x2="${barX + barWidth / 2}" y2="${barY + barHeight + 6}" stroke="#edf4ff" stroke-opacity="0.5" />`,
+				`<text x="1128" y="${rowBaseline}" fill="#a7b3c6" font-size="18" text-anchor="end" font-family="Inter, DejaVu Sans, Arial, sans-serif"><tspan fill="#4c85ff">${model.blue} blue</tspan><tspan fill="#a7b3c6" xml:space="preserve"> / </tspan><tspan fill="#ff4f45">${model.red} red</tspan></text>`,
 			].join('')
 		})
 		.join('')
@@ -383,57 +383,57 @@ function renderSvg(summary, options) {
 <svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="88" y1="48" x2="1112" y2="582" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#06101D" />
-      <stop offset="1" stop-color="#111D34" />
+      <stop stop-color="#07111f" />
+      <stop offset="1" stop-color="#0d1b2a" />
     </linearGradient>
     <linearGradient id="redPanel" x1="72" y1="302" x2="352" y2="522" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FF6779" />
-      <stop offset="1" stop-color="#A61F3D" />
+      <stop stop-color="#ff7266" />
+      <stop offset="1" stop-color="#c01518" />
     </linearGradient>
     <linearGradient id="bluePanel" x1="392" y1="302" x2="672" y2="522" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6BC8FF" />
-      <stop offset="1" stop-color="#0F63B8" />
+      <stop stop-color="#6699ff" />
+      <stop offset="1" stop-color="#2d6bff" />
     </linearGradient>
     <radialGradient id="redGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(206 154) rotate(37.9111) scale(358.49 266.284)">
-      <stop stop-color="#FF536C" stop-opacity="0.45" />
-      <stop offset="1" stop-color="#FF536C" stop-opacity="0" />
+      <stop stop-color="#ff4f45" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#ff4f45" stop-opacity="0" />
     </radialGradient>
     <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(988 136) rotate(138.209) scale(332.302 239.728)">
-      <stop stop-color="#34A6FF" stop-opacity="0.42" />
-      <stop offset="1" stop-color="#34A6FF" stop-opacity="0" />
+      <stop stop-color="#4c85ff" stop-opacity="0.42" />
+      <stop offset="1" stop-color="#4c85ff" stop-opacity="0" />
     </radialGradient>
     <filter id="cardShadow" x="0" y="0" width="1200" height="630" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
       <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#020711" flood-opacity="0.42" />
     </filter>
   </defs>
 
-  <rect width="1200" height="630" rx="32" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#bg)" />
   <circle cx="206" cy="154" r="280" fill="url(#redGlow)" />
   <circle cx="988" cy="136" r="260" fill="url(#blueGlow)" />
-	<path d="M0 530C250 470 360 544 542 544C768 544 860 444 1200 500V630H0V530Z" fill="#07111E" fill-opacity="0.66" />
+	<path d="M0 530C250 470 360 544 542 544C768 544 860 444 1200 500V630H0V530Z" fill="#07111f" fill-opacity="0.66" />
 
   <g opacity="0.32">
-    <path d="M711 0L1200 346V0H711Z" fill="#173C63" />
-    <path d="M0 0V260L308 0H0Z" fill="#4D1725" />
+    <path d="M711 0L1200 346V0H711Z" fill="#0e2248" />
+    <path d="M0 0V260L308 0H0Z" fill="#380d0f" />
   </g>
 
-  <text x="72" y="72" fill="#C9D8F5" font-size="21" font-weight="700" letter-spacing="3.4" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(options.title.toUpperCase())}</text>
-	<rect x="${updatedX}" y="44" width="${updatedWidth}" height="42" rx="21" fill="#111D34" fill-opacity="0.88" stroke="#28456D" />
-	<text x="${updatedX + updatedWidth / 2}" y="71" fill="#E9F2FF" font-size="18" font-weight="700" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(updatedLabel)}</text>
+  <text x="72" y="72" fill="#a7b3c6" font-size="21" font-weight="700" letter-spacing="3.4" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(options.title.toUpperCase())}</text>
+	<rect x="${updatedX}" y="44" width="${updatedWidth}" height="42" rx="21" fill="#0d1b2a" fill-opacity="0.88" stroke="#1e3355" />
+	<text x="${updatedX + updatedWidth / 2}" y="71" fill="#edf4ff" font-size="16" font-weight="700" text-anchor="middle" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(updatedLabel)}</text>
 
-	<text x="72" y="150" fill="#F7FAFF" font-size="56" font-weight="800" letter-spacing="-1.8" font-family="DejaVu Sans, Arial, sans-serif">Every model's survival vote</text>
-	<text x="72" y="190" fill="#91A6C7" font-size="22" font-family="DejaVu Sans, Arial, sans-serif">${summary.total} published runs • ${summary.modelCount} models</text>
+	<text x="72" y="150" fill="#edf4ff" font-size="56" font-weight="800" letter-spacing="-1.8" font-family="Inter, DejaVu Sans, Arial, sans-serif">Which Button Does AI Press?</text>
+	<text x="72" y="190" fill="#a7b3c6" font-size="22" font-family="Inter, DejaVu Sans, Arial, sans-serif">${summary.total} published runs • ${summary.modelCount} models</text>
 
-	<text x="72" y="231" fill="#FF9EAA" font-size="22" font-weight="700" letter-spacing="1.2" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(redPercent)} RED</text>
-	<text x="1128" y="231" fill="#8ED4FF" font-size="22" font-weight="700" letter-spacing="1.2" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif">${escapeXml(bluePercent)} BLUE</text>
-	<rect x="72" y="246" width="${overallBarWidth}" height="22" rx="11" fill="#111D34" />
+	<text x="72" y="231" fill="#ff948e" font-size="22" font-weight="700" letter-spacing="1.2" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(redPercent)} RED</text>
+	<text x="1128" y="231" fill="#99b3ff" font-size="22" font-weight="700" letter-spacing="1.2" text-anchor="end" font-family="Inter, DejaVu Sans, Arial, sans-serif">${escapeXml(bluePercent)} BLUE</text>
+	<rect x="72" y="246" width="${overallBarWidth}" height="22" rx="11" fill="#0d1b2a" />
 	<rect x="72" y="246" width="${overallRedWidth}" height="22" rx="11" fill="url(#redPanel)" />
 	<rect x="${72 + overallRedWidth}" y="246" width="${overallBlueWidth}" height="22" rx="11" fill="url(#bluePanel)" />
-	<line x1="600" y1="238" x2="600" y2="276" stroke="#E8F0FF" stroke-opacity="0.45" />
+	<line x1="600" y1="238" x2="600" y2="276" stroke="#edf4ff" stroke-opacity="0.45" />
 
-	<text x="72" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" font-family="DejaVu Sans, Arial, sans-serif">MODEL</text>
-	<text x="560" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" font-family="DejaVu Sans, Arial, sans-serif">DISTRIBUTION</text>
-	<text x="1128" y="294" fill="#8DA4C9" font-size="15" font-weight="700" letter-spacing="1.8" text-anchor="end" font-family="DejaVu Sans, Arial, sans-serif">COUNTS</text>
+	<text x="72" y="298" fill="#a7b3c6" font-size="15" font-weight="700" letter-spacing="1.8" font-family="Inter, DejaVu Sans, Arial, sans-serif">MODEL</text>
+	<text x="560" y="298" fill="#a7b3c6" font-size="15" font-weight="700" letter-spacing="1.8" font-family="Inter, DejaVu Sans, Arial, sans-serif">DISTRIBUTION</text>
+	<text x="1128" y="298" fill="#a7b3c6" font-size="15" font-weight="700" letter-spacing="1.8" text-anchor="end" font-family="Inter, DejaVu Sans, Arial, sans-serif">COUNTS</text>
 	${renderModelRows(summary)}
 </svg>`.trim()
 }
