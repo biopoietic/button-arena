@@ -735,6 +735,7 @@ function ArenaVoteBar({ summary }) {
 	const bluePercent = summary.total ? (summary.blue / summary.total) * 100 : 50
 	return (
 		<div className='grid gap-2 rounded-lg border border-line bg-surface-muted p-3.5'>
+			<h2 className='mb-2 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>Live Replay</h2>
 			<div className='h-3 overflow-hidden rounded-full bg-surface'>
 				<div className='flex h-full'>
 					<span className='block h-full bg-blue transition-[width] duration-500' style={{ width: `${bluePercent}%` }} />
@@ -755,56 +756,37 @@ function ArenaVoteBar({ summary }) {
 	)
 }
 
-function ArenaBubble({ choice, comment, modelId, modelName }) {
-	const isBlue = choice === 'blue'
-	const avatarColor = arenaAvatarColor(modelId || modelName)
-	const initials = arenaInitials(modelName)
+function ArenaCard({ modelName, choice, children }) {
 	return (
-		<div className={`rounded-xl ring-1 ring-line border-l-4 bg-surface p-4 shadow-control ${isBlue ? 'border-blue' : 'border-red'}`}>
-			<div className='mb-3 flex items-center justify-between gap-3'>
-				<div className='flex min-w-0 items-center gap-2'>
-					<div className='grid h-6 w-6 flex-none place-items-center rounded-md text-[9px] font-extrabold text-white' style={{ backgroundColor: avatarColor }}>
-						{initials}
-					</div>
-					<span className='truncate text-xs font-semibold text-ink-muted'>{modelName}</span>
-				</div>
-				<span
-					className={`inline-flex flex-none items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${isBlue ? 'bg-blue-soft text-blue-deep' : 'bg-red-soft text-red-deep'}`}>
-					<i className={`h-1.5 w-1.5 rounded-full ${isBlue ? 'bg-blue' : 'bg-red'}`} />
-					Voted {isBlue ? 'Blue' : 'Red'}
-				</span>
-			</div>
-			<p className='text-sm leading-relaxed text-ink'>{comment}</p>
+		<div className='rounded-lg border border-line bg-surface p-4'>
+			<div className={`mb-3 text-xs font-semibold capitalize ${choice === 'red' ? 'text-red' : 'text-blue'}`}>{modelName}</div>
+			{children}
 		</div>
 	)
 }
 
-function ArenaTypingIndicator({ choice, modelId, modelName }) {
-	const isBlue = choice === 'blue'
-	const avatarColor = arenaAvatarColor(modelId || modelName || 'unknown')
-	const initials = arenaInitials(modelName || '??')
+function ArenaBubble({ modelName, choice, comment }) {
 	return (
-		<div className={`rounded-xl ring-1 ring-line border-l-4 bg-surface p-4 shadow-control ${isBlue ? 'border-blue-soft' : 'border-red-soft'}`}>
-			<div className='mb-4 flex items-center gap-2'>
-				<div className='grid h-6 w-6 flex-none place-items-center rounded-md text-[9px] font-extrabold text-white' style={{ backgroundColor: avatarColor }}>
-					{initials}
-				</div>
-				<span className='text-xs font-semibold text-ink-muted'>{modelName}</span>
-			</div>
-			<div className='flex items-center gap-1'>
+		<ArenaCard modelName={modelName} choice={choice}>
+			<p className='text-sm leading-relaxed text-ink'>{comment}</p>
+		</ArenaCard>
+	)
+}
+
+function ArenaTypingIndicator({ modelName }) {
+	return (
+		<ArenaCard modelName={modelName}>
+			<div className='pt-2 flex items-center gap-1'>
 				{[0, 160, 320].map((delay) => (
-					<span key={delay} className='h-1.5 w-1.5 animate-bounce rounded-full bg-ink-muted/50' style={{ animationDelay: `${delay}ms`, animationDuration: '900ms' }} />
+					<span key={delay} className='h-1 w-1 animate-bounce rounded-full bg-ink-muted' style={{ animationDelay: `${delay}ms`, animationDuration: '900ms' }} />
 				))}
 			</div>
-		</div>
+		</ArenaCard>
 	)
 }
 
 function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '440px' }) {
-	const bottomRef = useRef(null)
-	const containerRef = useRef(null)
 	const cycleIndexRef = useRef(0)
-	const hasScrolledInitially = useRef(false)
 	const sortedRef = useRef([])
 	const uidRef = useRef(0)
 	const [messages, setMessages] = useState([])
@@ -819,22 +801,6 @@ function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '44
 		cycleIndexRef.current = 0
 		setMessages(shuffled.slice(-ARENA_WINDOW).map((r) => ({ ...r, _uid: uidRef.current++ })))
 	}, [accepted])
-
-	useEffect(() => {
-		if (!messages.length || !containerRef.current) return
-		const el = containerRef.current
-		if (!hasScrolledInitially.current) {
-			el.scrollTop = el.scrollHeight
-		} else {
-			el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
-		}
-		hasScrolledInitially.current = true
-	}, [messages])
-
-	useEffect(() => {
-		if (!typingItems.length || !containerRef.current) return
-		containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' })
-	}, [typingItems.length])
 
 	useEffect(() => {
 		let active = true
@@ -865,7 +831,7 @@ function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '44
 				const typingMs = Math.min(ARENA_TYPING_MIN + (item.comment?.length ?? 0) * ARENA_TYPING_PER_CHAR, ARENA_TYPING_MAX)
 				const tid = uidRef.current++
 
-				setTypingItems((prev) => [...prev, { _tid: tid, choice: item.choice ?? 'blue', modelId: item.modelId, modelName: item.modelName }])
+				setTypingItems((prev) => [{ _tid: tid, choice: item.choice ?? 'blue', modelId: item.modelId, modelName: item.modelName }, ...prev])
 
 				// Schedule the next cycle now so it can overlap with this typing indicator
 				scheduleNext()
@@ -875,8 +841,8 @@ function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '44
 					setTypingItems((prev) => prev.filter((t) => t._tid !== tid))
 					setMessages((prev) => {
 						const msg = { ...item, _uid: uidRef.current++ }
-						const next = [...prev, msg]
-						return next.length > ARENA_WINDOW ? next.slice(-ARENA_WINDOW) : next
+						const next = [msg, ...prev]
+						return next.length > ARENA_WINDOW ? next.slice(0, ARENA_WINDOW) : next
 					})
 				}, typingMs)
 			}, delay)
@@ -896,36 +862,22 @@ function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '44
 
 	return (
 		<div
-			ref={containerRef}
-			className='grid auto-rows-max gap-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scrollbar-gutter:stable] content-start'
+			className='grid auto-rows-max gap-4 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scrollbar-gutter:stable] content-start'
 			style={{ height, minHeight }}>
-			{messages.map((msg) => (
-				<ArenaBubble choice={msg.choice} comment={msg.comment} key={msg._uid} modelId={msg.modelId} modelName={msg.modelName} />
-			))}
 			{typingItems.map((t) => (
-				<ArenaTypingIndicator choice={t.choice} key={t._tid} modelId={t.modelId} modelName={t.modelName} />
+				<ArenaTypingIndicator key={t._tid} modelName={t.modelName} />
 			))}
-			<div ref={bottomRef} />
+			{messages.map((msg) => (
+				<ArenaBubble key={msg._uid} modelName={msg.modelName} choice={msg.choice} comment={msg.comment} />
+			))}
 		</div>
 	)
 }
 
-function ArenaChatMini({ onViewArena, responses }) {
+function ArenaChatMini({ responses }) {
 	return (
-		<div className='flex flex-col max-2xl:max-h-120 2xl:sticky 2xl:top-23 2xl:h-[calc(100svh-112px)]'>
-			<div className='flex flex-none items-center justify-between gap-3 px-1 py-3'>
-				<div className='flex items-center gap-2'>
-					<i className='h-1.5 w-1.5 flex-none rounded-full bg-success animate-pulse' />
-					<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>Live Arena</h2>
-				</div>
-				<button className='button secondary min-h-7 px-2.5 text-xs' onClick={onViewArena} type='button'>
-					<Icon name='swords' size={12} />
-					Open Arena
-				</button>
-			</div>
-			<div className='flex-1 min-h-0 overflow-hidden rounded-t-xl'>
-				<ArenaChat height='100%' minHeight='0' responses={responses} />
-			</div>
+		<div className='flex flex-col overflow-hidden rounded-b-lg max-2xl:max-h-120 2xl:sticky 2xl:top-23 2xl:h-[calc(100svh-112px)]'>
+			<ArenaChat height='100%' minHeight='0' responses={responses} />
 		</div>
 	)
 }
@@ -1805,8 +1757,8 @@ function App() {
 
 	const pageContent = {
 		overview: (
-			<div className='grid gap-5 grid-cols-[minmax(0,1fr)_340px] max-2xl:grid-cols-1'>
-				<div className='grid gap-5 min-w-0 self-start'>
+			<div className='grid gap-4 grid-cols-[minmax(0,1fr)_340px] max-2xl:grid-cols-1'>
+				<div className='grid gap-4 min-w-0 self-start'>
 					<section className='grid gap-4 grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] max-lg:grid-cols-1'>
 						<OverviewSpotlight
 							lastUpdated={lastUpdated}
@@ -1839,23 +1791,11 @@ function App() {
 			</div>
 		),
 		arena: (
-			<div className='grid gap-4 min-w-0'>
-				<Panel
-					className='min-w-0'
-					title='Arena'
-					action={
-						<span className='status-badge bg-success-soft text-success'>
-							<i className='h-1.5 w-1.5 animate-pulse rounded-full bg-success' />
-							Live Replay
-						</span>
-					}>
-					<div className='grid gap-4'>
-						<ArenaVoteBar summary={globalSummary} />
-						<div className='rounded-b-xl'>
-							<ArenaChat responses={globalResponses} />
-						</div>
-					</div>
-				</Panel>
+			<div className='grid gap-4'>
+				<ArenaVoteBar summary={globalSummary} />
+				<div className='overflow-hidden rounded-b-lg'>
+					<ArenaChat responses={globalResponses} />
+				</div>
 			</div>
 		),
 		runs: (
@@ -1963,7 +1903,7 @@ function App() {
 				</div>
 			</aside>
 
-			<main className='flex min-w-0 flex-col gap-4 p-5 max-sm:p-3'>{pageContent[activeSection]}</main>
+			<main className='flex min-w-0 flex-col gap-4 p-4 max-sm:p-3'>{pageContent[activeSection]}</main>
 		</div>
 	)
 }

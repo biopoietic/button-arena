@@ -96,7 +96,7 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 referencing the semantic theme tokens above so dark mode is automatic. */
 @layer components {
 	.status-badge {
-		@apply inline-flex gap-2 items-center rounded-md bg-blue-soft px-2.5 py-2 text-xs font-bold leading-none text-blue-deep;
+		@apply inline-flex gap-2 items-center rounded-md bg-blue-soft px-2.5 py-2 text-xs font-bold leading-none text-blue-deep text-nowrap;
 	}
 
 	.field-label {
