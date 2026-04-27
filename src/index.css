@@ -101,16 +101,16 @@ referencing the semantic theme tokens above so dark mode is automatic. */
 		@apply text-sm font-bold text-ink;
 	}
 
-	.btn-primary {
-		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-blue to-blue-deep px-5 text-sm font-extrabold text-white shadow-blue disabled:cursor-not-allowed disabled:opacity-55;
+	.button {
+		@apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-md bg-blue hover:bg-blue-deep px-5 text-sm font-bold text-white shadow-blue disabled:cursor-not-allowed disabled:opacity-55;
 	}
 
-	.btn-danger {
-		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-linear-to-br from-red to-red-deep px-5 text-sm font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-55;
+	.button.secondary {
+		@apply bg-surface text-ink shadow-control hover:bg-surface-muted;
 	}
 
-	.btn-secondary {
-		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-surface px-3 text-sm font-extrabold text-ink shadow-control hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-55;
+	.button.danger {
+		@apply bg-red shadow-none;
 	}
 
 	.btn-icon {

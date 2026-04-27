@@ -589,7 +589,7 @@ function HeroPattern() {
 
 function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onViewResults }) {
 	return (
-		<section className='relative min-h-63 overflow-hidden rounded-lg border border-[#2c7cf6] bg-[linear-gradient(135deg,#0f6ff5_0%,#2d7df6_36%,#c9d9ff_72%,#ffe9ef_100%)] p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
+		<section className='relative overflow-hidden min-h-63 rounded-lg border border-blue-soft bg-linear-to-r from-blue to-blue/5 p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
 			<HeroPattern />
 			<div className='relative z-10 grid h-full max-w-160 content-center gap-5'>
 				<span className='inline-flex w-fit items-center gap-2 rounded-md bg-surface/16 px-2.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.02em] text-white ring-1 ring-white/25'>
@@ -603,24 +603,15 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 					</p>
 				</div>
 				<div className='flex flex-wrap gap-3'>
-					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue px-4 text-sm font-extrabold text-white shadow-[0_10px_24px_rgba(5,70,175,0.24)] hover:bg-blue-deep'
-						onClick={onViewResults}
-						type='button'>
+					<button className='button min-h-10 px-4 font-extrabold' onClick={onViewResults} type='button'>
 						<Icon name='chevron' size={16} />
 						View Results
 					</button>
-					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-soft'
-						onClick={onRunPrivate}
-						type='button'>
+					<button className='button secondary min-h-10 px-4 font-extrabold hover:bg-blue-soft' onClick={onRunPrivate} type='button'>
 						<Icon name='play' size={16} />
 						Run Privately
 					</button>
-					<button
-						className='inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-surface px-4 text-sm font-extrabold text-ink shadow-[0_10px_24px_rgba(27,44,82,0.12)] hover:bg-blue-soft'
-						onClick={onShareBenchmark}
-						type='button'>
+					<button className='button secondary min-h-10 px-4 font-extrabold hover:bg-blue-soft' onClick={onShareBenchmark} type='button'>
 						<Icon name='share' size={16} />
 						Share Benchmark
 					</button>
@@ -654,7 +645,7 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-ink-muted'>{shareDescription}</p>
 						</div>
 					</div>
-					<button className='btn-secondary min-h-9 px-3' onClick={onClose} type='button'>
+					<button className='button secondary min-h-9 px-3' onClick={onClose} type='button'>
 						Close
 					</button>
 				</div>
@@ -665,12 +656,12 @@ function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeS
 				</div>
 
 				<div className='mt-4 flex flex-wrap gap-3'>
-					<button className='btn-primary flex-1' onClick={onCopyLink} type='button'>
+					<button className='button flex-1' onClick={onCopyLink} type='button'>
 						<Icon name='clipboard' size={16} />
 						Copy Link
 					</button>
 					{canUseNativeShare ? (
-						<button className='btn-secondary flex-1' onClick={onNativeShare} type='button'>
+						<button className='button secondary flex-1' onClick={onNativeShare} type='button'>
 							<Icon name='share' size={16} />
 							Open Share Sheet
 						</button>
@@ -765,7 +756,7 @@ function ResultsPanels({ logLimit, setLogLimit, summary }) {
 				title={`Response Log ${logLimit === 10 ? '(Latest 10)' : '(All)'}`}
 				action={
 					<button
-						className='btn-secondary min-h-8'
+						className='button secondary min-h-8'
 						disabled={!summary.latest.length}
 						onClick={() => setLogLimit((current) => (current === 10 ? summary.latest.length : 10))}
 						type='button'>
@@ -849,14 +840,18 @@ function RunsTable({ page, rows, setPage }) {
 					{pageStart + 1}-{Math.min(pageStart + RUNS_PAGE_SIZE, rows.length)} of {rows.length}
 				</span>
 				<div className='flex items-center gap-2.5 max-sm:justify-between'>
-					<button className='btn-secondary min-h-8 px-2.5 text-xs' disabled={safePage <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))} type='button'>
+					<button
+						className='button secondary min-h-8 px-2.5 text-xs'
+						disabled={safePage <= 1}
+						onClick={() => setPage((current) => Math.max(1, current - 1))}
+						type='button'>
 						Previous
 					</button>
 					<strong>
 						Page {safePage} of {totalPages}
 					</strong>
 					<button
-						className='btn-secondary min-h-8 px-2.5 text-xs'
+						className='button secondary min-h-8 px-2.5 text-xs'
 						disabled={safePage >= totalPages}
 						onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
 						type='button'>
@@ -972,11 +967,7 @@ function FeedbackCard() {
 		<div className='rounded-lg border border-line bg-surface p-4 shadow-soft max-2xl:hidden'>
 			<strong className='text-sm text-ink'>Contribute</strong>
 			<p className='mt-2 mb-4 text-xs leading-relaxed text-ink-muted'>This project is open source. Add models, fix bugs, or suggest improvements on GitHub.</p>
-			<a
-				className='inline-flex min-h-10 items-center justify-center rounded-md bg-blue px-4 text-sm font-extrabold text-white hover:bg-blue-deep'
-				href='https://github.com/biopoietic/button-arena'
-				target='_blank'
-				rel='noreferrer'>
+			<a className='button min-h-10 px-4 font-extrabold' href='https://github.com/biopoietic/button-arena' target='_blank' rel='noreferrer'>
 				View on GitHub
 			</a>
 		</div>
@@ -1409,17 +1400,7 @@ function App() {
 					<Icon name='clipboard' size={17} />
 				</button>
 			}>
-			<pre className='m-0 max-h-87.5 overflow-auto rounded-lg border border-line bg-surface-muted p-3.5 text-left font-mono text-xs leading-snug text-blue-deep whitespace-pre-wrap'>
-				{schemaText}
-			</pre>
-			<a
-				className='btn-secondary mt-3 w-full justify-start min-h-9 px-3 text-xs'
-				href='https://openrouter.ai/docs/features/structured-outputs'
-				rel='noreferrer'
-				target='_blank'>
-				<Icon name='chevron' size={15} />
-				View schema docs
-			</a>
+			<pre className='m-0 rounded-lg border border-line bg-surface-muted p-3.5 text-left font-mono text-xs leading-snug text-blue-deep whitespace-pre-wrap'>{schemaText}</pre>
 		</Panel>
 	)
 
@@ -1468,7 +1449,7 @@ function App() {
 						type='text'
 						value={modelSearch}
 					/>
-					<button className='btn-secondary min-h-7.5 px-3' onClick={() => addModel(modelSearch)} type='button'>
+					<button className='button secondary min-h-7.5 px-3' onClick={() => addModel(modelSearch)} type='button'>
 						Add
 					</button>
 				</div>
@@ -1565,17 +1546,17 @@ function App() {
 
 			<div className='flex items-center gap-2.5 max-sm:flex-col max-sm:items-stretch'>
 				{isRunning ? (
-					<button className='btn-danger flex-1' onClick={stopRun} type='button'>
+					<button className='button danger flex-1' onClick={stopRun} type='button'>
 						<Icon name='stop' size={16} />
 						Stop Run
 					</button>
 				) : (
-					<button className='btn-primary flex-1' onClick={runBenchmark} type='button'>
+					<button className='button flex-1' onClick={runBenchmark} type='button'>
 						<Icon name='play' size={16} />
 						Run Benchmark
 					</button>
 				)}
-				<button className='btn-secondary' disabled={isRunning || !localResponses.length} onClick={clearLocalResults} type='button'>
+				<button className='button secondary' disabled={isRunning || !localResponses.length} onClick={clearLocalResults} type='button'>
 					<Icon name='trash' size={16} />
 					Clear Local
 				</button>
@@ -1683,14 +1664,12 @@ function App() {
 				shareStatus={shareStatus}
 				url={shareUrl}
 			/>
-			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-surface px-6 max-2xl:flex-col max-2xl:items-start max-2xl:p-4'>
+			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-surface/90 backdrop-blur-md px-6 max-2xl:flex-col max-2xl:items-start max-2xl:p-4 2xl:sticky 2xl:top-0 2xl:z-50'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<Logo aria-hidden='true' className='h-12 w-19 flex-none overflow-visible' />
 					<div>
 						<h1 className='m-0 text-xl max-sm:text-lg font-extrabold leading-tight text-ink'>Button Arena</h1>
-						<p className='mt-1 m-0 text-sm text-ink-muted'>
-							A live evaluation of world's leading LLMs on the ultimate moral gamble: sacrifice for the many, or survive alone?
-						</p>
+						<p className='mt-1 m-0 text-sm text-ink-muted'>The ultimate moral gamble: sacrifice for the many, or survive alone?</p>
 					</div>
 				</div>
 				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
@@ -1699,14 +1678,14 @@ function App() {
 						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-success-soft' : 'bg-blue-soft'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
-					<button className='btn-secondary min-h-10' onClick={exportLocalResults} type='button'>
+					<button className='button secondary' onClick={exportLocalResults} type='button'>
 						<Icon name='download' size={16} />
 						Export
 					</button>
 				</div>
 			</header>
 
-			<aside className='flex flex-col justify-between gap-5 border-r border-line bg-surface/80 px-4 py-5 max-2xl:border-r-0 max-2xl:border-b max-2xl:py-3'>
+			<aside className='flex flex-col justify-between gap-5 border-r border-line bg-surface/90 px-4 py-5 max-2xl:border-r-0 max-2xl:border-b max-2xl:py-3 2xl:sticky 2xl:top-18 2xl:h-[calc(100svh-72px)] 2xl:overflow-y-auto'>
 				<div>
 					<nav aria-label='Benchmark sections' className='grid gap-2 max-2xl:flex max-2xl:overflow-x-auto'>
 						{NAV_ITEMS.map((item) => {
@@ -1714,7 +1693,7 @@ function App() {
 							return (
 								<button
 									aria-current={isActive ? 'page' : undefined}
-									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-extrabold ${
+									className={`flex min-h-11 items-center gap-3 rounded-lg px-3.5 text-sm font-bold uppercase ${
 										isActive ? 'bg-blue-soft text-blue' : 'text-ink-muted hover:bg-surface-muted hover:text-blue'
 									} w-full max-2xl:w-auto max-2xl:flex-none`}
 									key={item.id}
