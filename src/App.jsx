@@ -800,8 +800,9 @@ function ArenaTypingIndicator({ choice, modelId, modelName }) {
 	)
 }
 
-function ArenaChat({ responses }) {
+function ArenaChat({ responses, height = 'calc(100svh - 270px)', minHeight = '440px' }) {
 	const bottomRef = useRef(null)
+	const containerRef = useRef(null)
 	const cycleIndexRef = useRef(0)
 	const hasScrolledInitially = useRef(false)
 	const sortedRef = useRef([])
@@ -820,14 +821,19 @@ function ArenaChat({ responses }) {
 	}, [accepted])
 
 	useEffect(() => {
-		if (!messages.length || !bottomRef.current) return
-		bottomRef.current.scrollIntoView({ behavior: hasScrolledInitially.current ? 'smooth' : 'instant' })
+		if (!messages.length || !containerRef.current) return
+		const el = containerRef.current
+		if (!hasScrolledInitially.current) {
+			el.scrollTop = el.scrollHeight
+		} else {
+			el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+		}
 		hasScrolledInitially.current = true
 	}, [messages])
 
 	useEffect(() => {
-		if (!typingItems.length || !bottomRef.current) return
-		bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+		if (!typingItems.length || !containerRef.current) return
+		containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' })
 	}, [typingItems.length])
 
 	useEffect(() => {
@@ -889,7 +895,10 @@ function ArenaChat({ responses }) {
 	}
 
 	return (
-		<div className='grid auto-rows-max gap-3 overflow-y-auto px-5 py-5 content-start' style={{ height: 'calc(100svh - 270px)', minHeight: '440px' }}>
+		<div
+			ref={containerRef}
+			className='grid auto-rows-max gap-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [scrollbar-gutter:stable] content-start'
+			style={{ height, minHeight }}>
 			{messages.map((msg) => (
 				<ArenaBubble choice={msg.choice} comment={msg.comment} key={msg._uid} modelId={msg.modelId} modelName={msg.modelName} />
 			))}
@@ -897,6 +906,26 @@ function ArenaChat({ responses }) {
 				<ArenaTypingIndicator choice={t.choice} key={t._tid} modelId={t.modelId} modelName={t.modelName} />
 			))}
 			<div ref={bottomRef} />
+		</div>
+	)
+}
+
+function ArenaChatMini({ onViewArena, responses }) {
+	return (
+		<div className='flex flex-col max-2xl:max-h-120 2xl:sticky 2xl:top-23 2xl:h-[calc(100svh-112px)]'>
+			<div className='flex flex-none items-center justify-between gap-3 px-1 py-3'>
+				<div className='flex items-center gap-2'>
+					<i className='h-1.5 w-1.5 flex-none rounded-full bg-success animate-pulse' />
+					<h2 className='m-0 text-sm font-extrabold uppercase tracking-[0.01em] text-ink'>Live Arena</h2>
+				</div>
+				<button className='button secondary min-h-7 px-2.5 text-xs' onClick={onViewArena} type='button'>
+					<Icon name='swords' size={12} />
+					Open Arena
+				</button>
+			</div>
+			<div className='flex-1 min-h-0 overflow-hidden rounded-t-xl'>
+				<ArenaChat height='100%' minHeight='0' responses={responses} />
+			</div>
 		</div>
 	)
 }
@@ -1187,7 +1216,10 @@ function RunProgress({ progress }) {
 				</strong>
 			</div>
 			<div className='h-2 overflow-hidden rounded-full bg-surface'>
-				<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: formatPercent(progress.completed, progress.total) }} />
+				<span
+					className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150'
+					style={{ width: formatPercent(progress.completed, progress.total) }}
+				/>
 			</div>
 		</div>
 	)
@@ -1605,8 +1637,8 @@ function App() {
 	const statusBadgeStyles = statusLabel === 'Ongoing' || statusLabel === 'Ready' ? 'bg-success-soft text-success' : 'bg-blue-soft text-blue-deep'
 
 	const questionCard = (
-		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
-			<p className='m-0 text-sm leading-relaxed text-ink'>{QUESTION}</p>
+		<Panel title='The Question'>
+			<p className='text-sm leading-relaxed text-ink-muted'>{QUESTION}</p>
 		</Panel>
 	)
 
@@ -1773,32 +1805,31 @@ function App() {
 
 	const pageContent = {
 		overview: (
-			<div className='grid gap-5'>
-				<div className='grid items-start gap-5 grid-cols-[minmax(280px,320px)_minmax(0,1fr)] max-[1180px]:grid-cols-1 max-[1180px]:items-stretch'>
-					<div className='grid gap-4 content-start'>
+			<div className='grid gap-5 grid-cols-[minmax(0,1fr)_340px] max-2xl:grid-cols-1'>
+				<div className='grid gap-5 min-w-0 self-start'>
+					<section className='grid gap-4 grid-cols-[minmax(0,1.2fr)_minmax(420px,0.8fr)] max-lg:grid-cols-1'>
+						<OverviewSpotlight
+							lastUpdated={lastUpdated}
+							onRunPrivate={() => changeSection('configuration')}
+							onShareBenchmark={openShareDialog}
+							onViewResults={() => changeSection('results')}
+						/>
+						<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
+					</section>
+					<section className='grid gap-4 grid-cols-[minmax(0,1.42fr)_minmax(360px,0.9fr)] max-lg:grid-cols-1'>
+						<Panel className='min-w-0' title='Vote Distribution By Model'>
+							<DistributionChart models={globalSummary.models} />
+						</Panel>
+						<Panel title='Overall Vote Distribution'>
+							<DonutChart summary={globalSummary} />
+						</Panel>
+					</section>
+					<section className='grid gap-4 grid-cols-[minmax(220px,1fr)_minmax(280px,2fr)] max-[900px]:grid-cols-1'>
 						{questionCard}
 						<ExplainerPanel />
-					</div>
-					<div className='grid gap-4 min-w-0'>
-						<section className='grid gap-4 grid-cols-[minmax(420px,1.1fr)_minmax(460px,0.9fr)] max-[1480px]:grid-cols-1'>
-							<OverviewSpotlight
-								lastUpdated={lastUpdated}
-								onRunPrivate={() => changeSection('configuration')}
-								onShareBenchmark={openShareDialog}
-								onViewResults={() => changeSection('results')}
-							/>
-							<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
-						</section>
-						<section className='grid gap-4 grid-cols-[minmax(0,1.42fr)_minmax(360px,0.9fr)] max-[1380px]:grid-cols-1'>
-							<Panel className='min-w-0' title='Vote Distribution By Model'>
-								<DistributionChart models={globalSummary.models} />
-							</Panel>
-							<Panel title='Overall Vote Distribution'>
-								<DonutChart summary={globalSummary} />
-							</Panel>
-						</section>
-					</div>
+					</section>
 				</div>
+				<ArenaChatMini onViewArena={() => changeSection('arena')} responses={globalResponses} />
 			</div>
 		),
 		results: (
@@ -1820,7 +1851,7 @@ function App() {
 					}>
 					<div className='grid gap-4'>
 						<ArenaVoteBar summary={globalSummary} />
-						<div className='-mx-4 -mb-4 rounded-b-xl border-t border-line bg-canvas'>
+						<div className='rounded-b-xl'>
 							<ArenaChat responses={globalResponses} />
 						</div>
 					</div>
