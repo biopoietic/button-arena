@@ -73,11 +73,13 @@ classes (e.g. `bg-surface`, `text-ink`) and each `--shadow-*` into
 
 	html {
 		scroll-behavior: smooth;
+		overflow-x: hidden;
 	}
 
 	body {
 		margin: 0;
 		min-width: 320px;
+		overflow-x: hidden;
 	}
 
 	#root {
