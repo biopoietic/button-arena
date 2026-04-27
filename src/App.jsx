@@ -21,6 +21,7 @@ import {
 	Shield,
 	Square,
 	Sun,
+	Swords,
 	Trash2,
 } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
@@ -55,6 +56,7 @@ const CHART_COLORS = {
 const NAV_ITEMS = [
 	{ id: 'overview', label: 'Overview', icon: 'home' },
 	{ id: 'results', label: 'Results', icon: 'activity' },
+	{ id: 'arena', label: 'Arena', icon: 'swords' },
 	{ id: 'runs', label: 'Runs', icon: 'list' },
 	{ id: 'models', label: 'Models', icon: 'box' },
 	{ id: 'my-runs', label: 'My Runs', icon: 'play' },
@@ -62,6 +64,36 @@ const NAV_ITEMS = [
 ]
 
 const RUNS_PAGE_SIZE = 12
+
+const ARENA_WINDOW = 150
+const ARENA_DELAY_MIN = 1500
+const ARENA_DELAY_MAX = 7500
+const ARENA_TYPING_MIN = 700
+const ARENA_TYPING_MAX = 3200
+const ARENA_TYPING_PER_CHAR = 14
+
+const ARENA_AVATAR_PALETTE = ['#6366f1', '#8b5cf6', '#d946ef', '#f59e0b', '#10b981', '#06b6d4', '#f97316', '#84cc16', '#14b8a6', '#a855f7', '#e11d48', '#0ea5e9']
+
+function shuffleArray(array) {
+	const arr = [...array]
+	for (let i = arr.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1))
+		;[arr[i], arr[j]] = [arr[j], arr[i]]
+	}
+	return arr
+}
+
+function arenaAvatarColor(id) {
+	let hash = 0
+	for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0
+	return ARENA_AVATAR_PALETTE[hash % ARENA_AVATAR_PALETTE.length]
+}
+
+function arenaInitials(name) {
+	const parts = name.split(/:\s*/)
+	if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+	return name.slice(0, 2).toUpperCase()
+}
 
 const THEME_OPTIONS = [
 	{ id: 'system', label: 'Use system theme', icon: 'monitor' },
@@ -91,6 +123,7 @@ const ICON_MAP = {
 	shield: Shield,
 	stop: Square,
 	sun: Sun,
+	swords: Swords,
 	trash: Trash2,
 }
 
@@ -589,7 +622,7 @@ function HeroPattern() {
 
 function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onViewResults }) {
 	return (
-		<section className='relative overflow-hidden min-h-63 rounded-lg border border-blue-soft bg-linear-to-r from-blue to-blue/5 p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
+		<section className='relative overflow-hidden min-h-63 rounded-lg ring-1 ring-line bg-linear-to-r from-blue to-blue/5 p-6 text-white shadow-[0_18px_45px_rgba(27,91,209,0.18)]'>
 			<HeroPattern />
 			<div className='relative z-10 grid h-full max-w-160 content-center gap-5'>
 				<span className='status-badge w-fit bg-surface/16 text-white ring-1 ring-white/25'>
@@ -695,6 +728,176 @@ function ChoicePill({ choice }) {
 			<Dot tone={choice} />
 			{choice}
 		</span>
+	)
+}
+
+function ArenaVoteBar({ summary }) {
+	const bluePercent = summary.total ? (summary.blue / summary.total) * 100 : 50
+	return (
+		<div className='grid gap-2 rounded-lg border border-line bg-surface-muted p-3.5'>
+			<div className='h-3 overflow-hidden rounded-full bg-surface'>
+				<div className='flex h-full'>
+					<span className='block h-full bg-blue transition-[width] duration-500' style={{ width: `${bluePercent}%` }} />
+					<span className='block h-full bg-red transition-[width] duration-500' style={{ width: `${100 - bluePercent}%` }} />
+				</div>
+			</div>
+			<div className='flex items-center justify-between text-xs font-bold'>
+				<span className='text-blue-deep'>
+					<Dot tone='blue' />
+					{formatPercent(summary.blue, summary.total)} Blue ({formatNumber(summary.blue)})
+				</span>
+				<span className='text-red-deep'>
+					<Dot tone='red' />
+					{formatPercent(summary.red, summary.total)} Red ({formatNumber(summary.red)})
+				</span>
+			</div>
+		</div>
+	)
+}
+
+function ArenaBubble({ choice, comment, modelId, modelName }) {
+	const isBlue = choice === 'blue'
+	const avatarColor = arenaAvatarColor(modelId || modelName)
+	const initials = arenaInitials(modelName)
+	return (
+		<div className={`rounded-xl ring-1 ring-line border-l-4 bg-surface p-4 shadow-control ${isBlue ? 'border-blue' : 'border-red'}`}>
+			<div className='mb-3 flex items-center justify-between gap-3'>
+				<div className='flex min-w-0 items-center gap-2'>
+					<div className='grid h-6 w-6 flex-none place-items-center rounded-md text-[9px] font-extrabold text-white' style={{ backgroundColor: avatarColor }}>
+						{initials}
+					</div>
+					<span className='truncate text-xs font-semibold text-ink-muted'>{modelName}</span>
+				</div>
+				<span
+					className={`inline-flex flex-none items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${isBlue ? 'bg-blue-soft text-blue-deep' : 'bg-red-soft text-red-deep'}`}>
+					<i className={`h-1.5 w-1.5 rounded-full ${isBlue ? 'bg-blue' : 'bg-red'}`} />
+					Voted {isBlue ? 'Blue' : 'Red'}
+				</span>
+			</div>
+			<p className='text-sm leading-relaxed text-ink'>{comment}</p>
+		</div>
+	)
+}
+
+function ArenaTypingIndicator({ choice, modelId, modelName }) {
+	const isBlue = choice === 'blue'
+	const avatarColor = arenaAvatarColor(modelId || modelName || 'unknown')
+	const initials = arenaInitials(modelName || '??')
+	return (
+		<div className={`rounded-xl ring-1 ring-line border-l-4 bg-surface p-4 shadow-control ${isBlue ? 'border-blue-soft' : 'border-red-soft'}`}>
+			<div className='mb-4 flex items-center gap-2'>
+				<div className='grid h-6 w-6 flex-none place-items-center rounded-md text-[9px] font-extrabold text-white' style={{ backgroundColor: avatarColor }}>
+					{initials}
+				</div>
+				<span className='text-xs font-semibold text-ink-muted'>{modelName}</span>
+			</div>
+			<div className='flex items-center gap-1'>
+				{[0, 160, 320].map((delay) => (
+					<span key={delay} className='h-1.5 w-1.5 animate-bounce rounded-full bg-ink-muted/50' style={{ animationDelay: `${delay}ms`, animationDuration: '900ms' }} />
+				))}
+			</div>
+		</div>
+	)
+}
+
+function ArenaChat({ responses }) {
+	const bottomRef = useRef(null)
+	const cycleIndexRef = useRef(0)
+	const hasScrolledInitially = useRef(false)
+	const sortedRef = useRef([])
+	const uidRef = useRef(0)
+	const [messages, setMessages] = useState([])
+	const [typingItems, setTypingItems] = useState([])
+
+	const accepted = useMemo(() => responses.filter((r) => r.choice && r.comment && r.status === 'accepted'), [responses])
+
+	useEffect(() => {
+		if (!accepted.length || sortedRef.current.length) return
+		const shuffled = shuffleArray(accepted)
+		sortedRef.current = shuffled
+		cycleIndexRef.current = 0
+		setMessages(shuffled.slice(-ARENA_WINDOW).map((r) => ({ ...r, _uid: uidRef.current++ })))
+	}, [accepted])
+
+	useEffect(() => {
+		if (!messages.length || !bottomRef.current) return
+		bottomRef.current.scrollIntoView({ behavior: hasScrolledInitially.current ? 'smooth' : 'instant' })
+		hasScrolledInitially.current = true
+	}, [messages])
+
+	useEffect(() => {
+		if (!typingItems.length || !bottomRef.current) return
+		bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+	}, [typingItems.length])
+
+	useEffect(() => {
+		let active = true
+		const timers = new Set()
+
+		function later(fn, ms) {
+			const id = setTimeout(() => {
+				timers.delete(id)
+				fn()
+			}, ms)
+			timers.add(id)
+		}
+
+		function scheduleNext() {
+			const delay = ARENA_DELAY_MIN + Math.random() * (ARENA_DELAY_MAX - ARENA_DELAY_MIN)
+			later(() => {
+				if (!active) return
+				const sorted = sortedRef.current
+				if (!sorted.length) {
+					scheduleNext()
+					return
+				}
+
+				// Capture item and advance index immediately so parallel schedules don't collide
+				const item = sorted[cycleIndexRef.current % sorted.length]
+				cycleIndexRef.current += 1
+
+				const typingMs = Math.min(ARENA_TYPING_MIN + (item.comment?.length ?? 0) * ARENA_TYPING_PER_CHAR, ARENA_TYPING_MAX)
+				const tid = uidRef.current++
+
+				setTypingItems((prev) => [...prev, { _tid: tid, choice: item.choice ?? 'blue', modelId: item.modelId, modelName: item.modelName }])
+
+				// Schedule the next cycle now so it can overlap with this typing indicator
+				scheduleNext()
+
+				later(() => {
+					if (!active) return
+					setTypingItems((prev) => prev.filter((t) => t._tid !== tid))
+					setMessages((prev) => {
+						const msg = { ...item, _uid: uidRef.current++ }
+						const next = [...prev, msg]
+						return next.length > ARENA_WINDOW ? next.slice(-ARENA_WINDOW) : next
+					})
+				}, typingMs)
+			}, delay)
+		}
+
+		scheduleNext()
+
+		return () => {
+			active = false
+			for (const id of timers) clearTimeout(id)
+		}
+	}, [])
+
+	if (!accepted.length) {
+		return <EmptyState detail='Accepted global responses will populate the live arena once loaded.' title='No arena votes yet' />
+	}
+
+	return (
+		<div className='grid auto-rows-max gap-3 overflow-y-auto px-5 py-5 content-start' style={{ height: 'calc(100svh - 270px)', minHeight: '440px' }}>
+			{messages.map((msg) => (
+				<ArenaBubble choice={msg.choice} comment={msg.comment} key={msg._uid} modelId={msg.modelId} modelName={msg.modelName} />
+			))}
+			{typingItems.map((t) => (
+				<ArenaTypingIndicator choice={t.choice} key={t._tid} modelId={t.modelId} modelName={t.modelName} />
+			))}
+			<div ref={bottomRef} />
+		</div>
 	)
 }
 
@@ -1599,6 +1802,26 @@ function App() {
 			<div className='grid gap-4 min-w-0'>
 				<SummaryGrid lastUpdated={lastUpdated} selectedCount={selectedModels.length} stateLabel={statusLabel} summary={globalSummary} />
 				<ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={globalSummary} />
+			</div>
+		),
+		arena: (
+			<div className='grid gap-4 min-w-0'>
+				<Panel
+					className='min-w-0'
+					title='Arena'
+					action={
+						<span className='status-badge bg-success-soft text-success'>
+							<i className='h-1.5 w-1.5 animate-pulse rounded-full bg-success' />
+							Live Replay
+						</span>
+					}>
+					<div className='grid gap-4'>
+						<ArenaVoteBar summary={globalSummary} />
+						<div className='-mx-4 -mb-4 rounded-b-xl border-t border-line bg-canvas'>
+							<ArenaChat responses={globalResponses} />
+						</div>
+					</div>
+				</Panel>
 			</div>
 		),
 		runs: (
