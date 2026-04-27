@@ -1177,6 +1177,22 @@ function FeedbackCard() {
 	)
 }
 
+function RunProgress({ progress }) {
+	return (
+		<div className='grid gap-2.5 rounded-lg border border-line bg-surface-muted p-3' role='status'>
+			<div className='flex items-center justify-between text-sm text-ink'>
+				<span>{progress.active}</span>
+				<strong>
+					{progress.completed}/{progress.total}
+				</strong>
+			</div>
+			<div className='h-2 overflow-hidden rounded-full bg-surface'>
+				<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: formatPercent(progress.completed, progress.total) }} />
+			</div>
+		</div>
+	)
+}
+
 function ExplainerPanel() {
 	return (
 		<article className='rounded-lg border border-line bg-surface shadow-soft p-5'>
@@ -1579,7 +1595,6 @@ function App() {
 		setRunsPage(1)
 	}
 
-	const progressPercent = runProgress.total ? (runProgress.completed / runProgress.total) * 100 : 0
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
 	const shareDescription = globalSummary.total
 		? `Latest Button Arena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
@@ -1587,7 +1602,7 @@ function App() {
 	const shareUrl = getShareUrl()
 	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
-	const statusBadgeStyles = statusLabel === 'Ongoing' ? 'bg-success-soft text-success' : statusLabel === 'Ready' ? 'bg-success-soft text-success' : 'bg-blue-soft text-blue-deep'
+	const statusBadgeStyles = statusLabel === 'Ongoing' || statusLabel === 'Ready' ? 'bg-success-soft text-success' : 'bg-blue-soft text-blue-deep'
 
 	const questionCard = (
 		<Panel title='The Question' action={<span className='status-badge'>Fixed</span>}>
@@ -1733,19 +1748,7 @@ function App() {
 				</div>
 			)}
 
-			{isRunning && (
-				<div className='grid gap-2.5 rounded-lg border border-line bg-surface-muted p-3' role='status'>
-					<div className='flex items-center justify-between text-sm text-ink'>
-						<span>{runProgress.active}</span>
-						<strong>
-							{runProgress.completed}/{runProgress.total}
-						</strong>
-					</div>
-					<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
-						<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
-					</div>
-				</div>
-			)}
+			{isRunning && <RunProgress progress={runProgress} />}
 
 			<div className='flex items-center gap-2.5 max-sm:flex-col max-sm:items-stretch'>
 				{isRunning ? (
@@ -1844,17 +1847,7 @@ function App() {
 				<SummaryGrid lastUpdated={localLastUpdated} selectedCount={selectedModels.length} stateLabel={localStatusLabel} summary={localSummary} />
 				{isRunning && (
 					<Panel title='Current Run' action={<span className='status-badge'>Live</span>}>
-						<div className='grid gap-2.5 rounded-lg border border-line bg-surface-muted p-3' role='status'>
-							<div className='flex items-center justify-between text-sm text-ink'>
-								<span>{runProgress.active}</span>
-								<strong>
-									{runProgress.completed}/{runProgress.total}
-								</strong>
-							</div>
-							<div className='h-2 overflow-hidden rounded-full bg-surface-muted'>
-								<span className='block h-full bg-linear-to-r from-blue-500 to-blue transition-[width] duration-150' style={{ width: `${progressPercent}%` }} />
-							</div>
-						</div>
+						<RunProgress progress={runProgress} />
 					</Panel>
 				)}
 				<ResultsPanels logLimit={logLimit} setLogLimit={setLogLimit} summary={localSummary} />
@@ -1898,7 +1891,7 @@ function App() {
 				<div className='flex items-center justify-end gap-3 max-2xl:flex-wrap max-2xl:justify-start'>
 					<span className='text-sm text-ink-muted whitespace-nowrap'>Last run {formatDateTime(lastUpdated)}</span>
 					<span className={`status-badge ${statusBadgeStyles}`}>
-						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' ? 'bg-success-soft' : 'bg-blue-soft'}`} />
+						<i className={`h-1.5 w-1.5 rounded-full ${statusLabel === 'Ongoing' || statusLabel === 'Ready' ? 'bg-success-soft' : 'bg-blue-soft'}`} />
 						{statusLabel === 'Ongoing' ? 'Live' : statusLabel}
 					</span>
 					<button className='button secondary' onClick={exportLocalResults} type='button'>
