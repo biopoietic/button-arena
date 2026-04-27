@@ -26,7 +26,6 @@ import {
 } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
-	APP_TITLE,
 	EMPTY_STATIC_RESULTS,
 	QUESTION,
 	STORAGE_KEYS,
@@ -34,7 +33,6 @@ import {
 	calculateProviderBreakdown,
 	calculateSummary,
 	createId,
-	getShareUrl,
 	modelLabel,
 	normalizeChoice,
 	normalizeResponses,
@@ -44,6 +42,7 @@ import {
 } from './lib/benchmark-core'
 import { fetchModelCatalog, fetchStaticResults, runBenchmarkRequest } from './lib/benchmark-client'
 import Logo from './assets/logo.svg?react'
+import { ShareDialog } from './components/ShareDialog'
 
 const CHART_COLORS = {
 	blue: 'var(--color-blue)',
@@ -639,71 +638,6 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 	)
 }
 
-function ShareDialog({ canUseNativeShare, isOpen, onClose, onCopyLink, onNativeShare, shareDescription, shareStatus, url }) {
-	if (!isOpen) return null
-
-	return (
-		<div className='fixed inset-0 z-50 grid place-items-center bg-[rgba(15,23,42,0.52)] px-4 backdrop-blur-[6px]' onClick={onClose}>
-			<div
-				aria-labelledby='share-benchmark-title'
-				aria-modal='true'
-				className='w-full max-w-xl rounded-lg border border-line bg-linear-to-b from-surface/95 to-surface-muted/95 p-5 text-ink shadow-soft'
-				onClick={(event) => event.stopPropagation()}
-				role='dialog'>
-				<div className='flex items-start justify-between gap-4'>
-					<div className='space-y-2'>
-						<span className='status-badge rounded-full'>
-							<Icon name='share' size={13} />
-							Share Benchmark
-						</span>
-						<div>
-							<h3 className='mt-2 text-2xl font-extrabold tracking-[-0.02em]' id='share-benchmark-title'>
-								Share Button Arena
-							</h3>
-							<p className='mt-2 mb-0 max-w-2xl text-sm leading-relaxed text-ink-muted'>{shareDescription}</p>
-						</div>
-					</div>
-					<button className='button secondary min-h-9 px-3' onClick={onClose} type='button'>
-						Close
-					</button>
-				</div>
-
-				<div className='mt-5 rounded-2xl border border-line bg-surface p-4'>
-					<p className='m-0 text-[11px] font-extrabold uppercase tracking-[0.08em] text-ink-muted'>Benchmark Link</p>
-					<p className='mt-2 mb-0 break-all text-sm font-semibold leading-relaxed text-ink'>{url}</p>
-				</div>
-
-				<div className='mt-4 flex flex-wrap gap-3'>
-					<button className='button flex-1' onClick={onCopyLink} type='button'>
-						<Icon name='clipboard' size={16} />
-						Copy Link
-					</button>
-					{canUseNativeShare ? (
-						<button className='button secondary flex-1' onClick={onNativeShare} type='button'>
-							<Icon name='share' size={16} />
-							Open Share Sheet
-						</button>
-					) : null}
-				</div>
-
-				<div className='mt-3 min-h-6 text-sm'>
-					{shareStatus ? (
-						<span
-							className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 font-bold ${
-								shareStatus.tone === 'error' ? 'bg-red-soft text-red-deep' : 'bg-success-soft text-success'
-							}`}>
-							<Icon name={shareStatus.tone === 'error' ? 'alert' : 'check'} size={14} />
-							{shareStatus.message}
-						</span>
-					) : (
-						<span className='text-sm text-ink-muted'>This shares the main benchmark URL.</span>
-					)}
-				</div>
-			</div>
-		</div>
-	)
-}
-
 function ChoicePill({ choice }) {
 	if (!choice) {
 		return <span className='inline-flex items-center rounded-md bg-red-soft text-red-deep px-2 py-1.5 text-xs font-bold lowercase'>invalid</span>
@@ -1205,7 +1139,6 @@ function App() {
 	const [runProgress, setRunProgress] = useState({ active: '', completed: 0, total: 0 })
 	const [selectedModelIds, setSelectedModelIds] = useState([])
 	const [shareDialogOpen, setShareDialogOpen] = useState(false)
-	const [shareStatus, setShareStatus] = useState(null)
 	const [showStructuredOnly, setShowStructuredOnly] = useState(true)
 	const [themePreference, setThemePreference] = useState(getInitialThemePreference)
 	const [isRunning, setIsRunning] = useState(false)
@@ -1233,22 +1166,6 @@ function App() {
 			mediaQuery.removeEventListener('change', applyTheme)
 		}
 	}, [themePreference])
-
-	useEffect(() => {
-		if (!shareDialogOpen) return undefined
-
-		function handleKeyDown(event) {
-			if (event.key === 'Escape') {
-				setShareDialogOpen(false)
-				setShareStatus(null)
-			}
-		}
-
-		window.addEventListener('keydown', handleKeyDown)
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [shareDialogOpen])
 
 	useEffect(() => {
 		let ignore = false
@@ -1416,53 +1333,6 @@ function App() {
 		}
 	}
 
-	function openShareDialog() {
-		setShareDialogOpen(true)
-		setShareStatus(null)
-	}
-
-	function closeShareDialog() {
-		setShareDialogOpen(false)
-		setShareStatus(null)
-	}
-
-	async function copyShareLink() {
-		try {
-			await navigator.clipboard.writeText(getShareUrl())
-			setShareStatus({ message: 'Benchmark link copied to clipboard.', tone: 'success' })
-		} catch {
-			setShareStatus({ message: 'Clipboard access was blocked by the browser.', tone: 'error' })
-		}
-	}
-
-	async function shareBenchmark() {
-		const shareData = {
-			title: APP_TITLE,
-			text: globalSummary.total
-				? `Latest Button Arena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
-				: 'See the latest Button Arena benchmark results.',
-			url: getShareUrl(),
-		}
-
-		try {
-			if (!navigator.share) {
-				setShareStatus({ message: 'Native sharing is not available in this browser.', tone: 'error' })
-				return
-			}
-			if (navigator.canShare && !navigator.canShare(shareData)) {
-				setShareStatus({ message: 'This browser cannot share the current benchmark link.', tone: 'error' })
-				return
-			}
-			await navigator.share(shareData)
-			closeShareDialog()
-		} catch (error) {
-			if (error instanceof DOMException && error.name === 'AbortError') {
-				return
-			}
-			setShareStatus({ message: 'Sharing was blocked by the browser.', tone: 'error' })
-		}
-	}
-
 	async function runBenchmark() {
 		if (!apiKey.trim()) {
 			setRunError('Enter an OpenRouter API key to run a private benchmark.')
@@ -1565,11 +1435,6 @@ function App() {
 	}
 
 	const schemaText = JSON.stringify(VOTE_RESPONSE_FORMAT.json_schema.schema, null, 2)
-	const shareDescription = globalSummary.total
-		? `Latest Button Arena run: ${globalSummary.blue} blue, ${globalSummary.red} red across ${globalSummary.total} recorded votes.`
-		: 'Copy the benchmark landing page or open your device share sheet.'
-	const shareUrl = getShareUrl()
-	const canUseNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
 	const statusBadgeStyles = statusLabel === 'Ongoing' || statusLabel === 'Ready' ? 'bg-success-soft text-success' : 'bg-blue-soft text-blue-deep'
 
@@ -1748,7 +1613,7 @@ function App() {
 						<OverviewSpotlight
 							lastUpdated={lastUpdated}
 							onRunPrivate={() => changeSection('configuration')}
-							onShareBenchmark={openShareDialog}
+							onShareBenchmark={() => setShareDialogOpen(true)}
 							onViewResults={() => changeSection('results')}
 						/>
 						<OverviewMetrics lastUpdated={lastUpdated} stateLabel={statusLabel} summary={globalSummary} />
@@ -1826,16 +1691,7 @@ function App() {
 
 	return (
 		<div className='min-h-svh grid grid-cols-[240px_minmax(0,1fr)] grid-rows-[72px_minmax(0,1fr)] bg-canvas text-ink max-2xl:grid-cols-1 max-2xl:grid-rows-[auto_auto_minmax(0,1fr)]'>
-			<ShareDialog
-				canUseNativeShare={canUseNativeShare}
-				isOpen={shareDialogOpen}
-				onClose={closeShareDialog}
-				onCopyLink={copyShareLink}
-				onNativeShare={shareBenchmark}
-				shareDescription={shareDescription}
-				shareStatus={shareStatus}
-				url={shareUrl}
-			/>
+			<ShareDialog isOpen={shareDialogOpen} onClose={() => setShareDialogOpen(false)} />
 			<header className='col-span-full flex items-center justify-between gap-5 border-b border-line bg-surface/90 backdrop-blur-md px-6 max-2xl:flex-col max-2xl:items-start max-2xl:p-4 2xl:sticky 2xl:top-0 2xl:z-50'>
 				<div className='flex items-center gap-4 min-w-0 max-sm:items-start'>
 					<Logo aria-hidden='true' className='h-12 w-19 flex-none overflow-visible' />
