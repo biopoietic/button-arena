@@ -72,8 +72,6 @@ const ARENA_TYPING_MIN = 700
 const ARENA_TYPING_MAX = 3200
 const ARENA_TYPING_PER_CHAR = 14
 
-const ARENA_AVATAR_PALETTE = ['#6366f1', '#8b5cf6', '#d946ef', '#f59e0b', '#10b981', '#06b6d4', '#f97316', '#84cc16', '#14b8a6', '#a855f7', '#e11d48', '#0ea5e9']
-
 function shuffleArray(array) {
 	const arr = [...array]
 	for (let i = arr.length - 1; i > 0; i--) {
@@ -81,18 +79,6 @@ function shuffleArray(array) {
 		;[arr[i], arr[j]] = [arr[j], arr[i]]
 	}
 	return arr
-}
-
-function arenaAvatarColor(id) {
-	let hash = 0
-	for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0
-	return ARENA_AVATAR_PALETTE[hash % ARENA_AVATAR_PALETTE.length]
-}
-
-function arenaInitials(name) {
-	const parts = name.split(/:\s*/)
-	if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-	return name.slice(0, 2).toUpperCase()
 }
 
 const THEME_OPTIONS = [
@@ -630,10 +616,9 @@ function OverviewSpotlight({ lastUpdated, onRunPrivate, onShareBenchmark, onView
 					Ongoing Benchmark
 				</span>
 				<div>
-					<h2 className='m-0 text-[34px] font-extrabold leading-tight max-sm:text-2xl'>Which models gamble on blue?</h2>
-					<p className='mt-3 mb-0 max-w-147.5 text-base leading-relaxed text-white'>
-						New model releases can be added as they ship. The latest published run is {formatDateTime(lastUpdated)}.
-					</p>
+					<h2 className='mb-3 text-[34px] font-extrabold leading-tight max-sm:text-2xl'>Which Button Does AI Press?</h2>
+					<p className='mb-2'>See how models reason about altruism vs. self-interest.</p>
+					<p>Latest published run: {formatDateTime(lastUpdated)}.</p>
 				</div>
 				<div className='flex flex-wrap gap-3'>
 					<button className='button' onClick={onViewResults} type='button'>
